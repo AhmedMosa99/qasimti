@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,7 +12,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await GetStorage.init();
-  runApp(MyApp());
+  runZonedGuarded(() async {
+    runApp(MyApp()); // starting point of app
+  }, (error, stackTrace) {
+    print("Error FROM OUT_SIDE FRAMEWORK ");
+    print("--------------------------------");
+    print("Error :  $error");
+    print("StackTrace :  $stackTrace");
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -30,7 +39,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Color(0xFF5F57A0),
-        accentColor: Colors.cyan[600],
       ),
       home: HomeScreen(),
     );

@@ -26,7 +26,7 @@ class _SlidersState extends State<Sliders> {
   Widget build(BuildContext context) {
     return GetBuilder<ApiController>(
       builder: (controller) {
-        return controller.allsliders == null
+        return controller.allsliders.isEmpty
             ? GFLoader(
                 type: GFLoaderType.ios,
               )

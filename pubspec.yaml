@@ -41,10 +41,11 @@ dependencies:
   fdottedline: ^1.0.1
   flutter_datetime_picker:
   fluttertoast: ^8.0.8
-  dio:
+  dio: ^4.0.0
   webview_flutter: ^2.0.13
   url_launcher:
   shared_preferences: ^2.0.7
+  icons_helper: ^1.2.0-nullsafety.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

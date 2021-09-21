@@ -17,7 +17,8 @@ class AddController extends GetxController {
       descrption,
       type,
       code,
-      linkStore;
+      linkStore,
+      link;
 
   TextEditingController dateinputEnter = TextEditingController();
   TextEditingController dateinputEnd = TextEditingController();
@@ -32,7 +33,6 @@ class AddController extends GetxController {
       source: ImageSource.gallery,
     );
     fileImage = File(image.path);
-    print(fileImage);
     update();
   }
 
@@ -46,6 +46,7 @@ class AddController extends GetxController {
     type = TextEditingController();
     code = TextEditingController();
     linkStore = TextEditingController();
+    link = TextEditingController();
 
     super.onInit();
   }
@@ -95,6 +96,7 @@ class AddController extends GetxController {
         id: id,
         type: type.text,
       );
+      print(response);
       response.then((value) {
         if (value['status'] == 200) {
           Get.snackbar(
@@ -102,6 +104,16 @@ class AddController extends GetxController {
             "Your request has been submitted successfully",
           );
           Get.offAll(HomeScreen());
+          soreName.clear();
+          storeName.clear();
+          storeLink.clear();
+          descrption.clear();
+          type.clear();
+          code.clear();
+          linkStore.clear();
+          dateinputEnter.clear();
+          dateinputEnd.clear();
+          fileImage = null;
         } else {
           Get.snackbar(
             "check all ",

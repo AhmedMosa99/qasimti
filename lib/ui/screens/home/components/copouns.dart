@@ -23,7 +23,7 @@ class _CopounsState extends State<Copouns> {
   Widget build(BuildContext context) {
     return GetBuilder<ApiController>(
       builder: (controller) {
-        return controller.allCoupons == null
+        return controller.allCoupons.isEmpty
             ? Center(
                 child: GFLoader(
                 type: GFLoaderType.ios,

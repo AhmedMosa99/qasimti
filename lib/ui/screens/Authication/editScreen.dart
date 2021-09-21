@@ -6,12 +6,12 @@ import 'package:getwidget/getwidget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qasimati/controller/AuthController.dart';
 
-class SignUp extends StatefulWidget {
+class EditScreen extends StatefulWidget {
   @override
-  _SignUpState createState() => _SignUpState();
+  _EditScreenState createState() => _EditScreenState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _EditScreenState extends State<EditScreen> {
   AuthController controller;
   File _image;
   imgFromGallery() async {
@@ -21,7 +21,7 @@ class _SignUpState extends State<SignUp> {
     setState(() {
       _image = File(image.path);
 
-      controller.imageFile = _image;
+      controller.imageEdit = _image;
       print("${controller.imageFile}");
     });
   }
@@ -29,7 +29,7 @@ class _SignUpState extends State<SignUp> {
   @override
   void initState() {
     controller = Get.find<AuthController>();
-
+    controller.getUser();
     super.initState();
   }
 
@@ -42,9 +42,9 @@ class _SignUpState extends State<SignUp> {
         foregroundColor: Colors.transparent,
         centerTitle: true,
         title: Text(
-          "Sign Up",
+          "Edit Account",
           style: TextStyle(
-              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+              fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black),
         ),
         leading: GestureDetector(
             onTap: () {
@@ -61,7 +61,7 @@ class _SignUpState extends State<SignUp> {
         child: ListView(
           children: [
             GetBuilder<AuthController>(
-              builder: (_) {
+              builder: (controller) {
                 return Form(
                   key: controller.singupFromKey,
                   child: Padding(
@@ -118,11 +118,12 @@ class _SignUpState extends State<SignUp> {
                             ),
                           ),
                           TextFormField(
+                            controller: controller.nameEdit,
                             validator: (v) {
                               return controller.validateName(v);
                             },
                             onSaved: (s) {
-                              controller.nameController.text = s;
+                              controller.nameEdit.text = s;
                             },
                             decoration: InputDecoration(
                               labelText: "UserName".tr,
@@ -133,12 +134,8 @@ class _SignUpState extends State<SignUp> {
                             height: 20,
                           ),
                           TextFormField(
-                            validator: (v) {
-                              return controller.validateEmail(v);
-                            },
-                            onSaved: (s) {
-                              controller.emailController.text = s;
-                            },
+                            controller: controller.emialEdit,
+                            enabled: false,
                             decoration: InputDecoration(
                               labelText: "Email".tr,
                               prefixIcon: Icon(Icons.email),
@@ -148,6 +145,8 @@ class _SignUpState extends State<SignUp> {
                             height: 20,
                           ),
                           TextFormField(
+                            obscureText: true,
+                            controller: controller.passwordEdit,
                             validator: (v) {
                               return controller.validatePassword(v);
                             },
@@ -173,7 +172,7 @@ class _SignUpState extends State<SignUp> {
                                 shape: GFButtonShape.pills,
                                 color: Theme.of(context).primaryColor,
                                 child: Text(
-                                  "Sign Up".tr,
+                                  "Update".tr,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 16),

@@ -10,17 +10,28 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthController extends GetxController {
   GlobalKey<FormState> loginKey;
   final GlobalKey<FormState> singupFromKey = GlobalKey<FormState>();
-  TextEditingController emailController, passwordCotroller, nameController;
+  TextEditingController emailController,
+      passwordCotroller,
+      nameController,
+      nameEdit,
+      passwordEdit,
+      emialEdit;
+
   String name;
   String token;
 
   File imageFile;
+  File imageEdit;
 
   @override
   void onInit() {
     emailController = TextEditingController();
     passwordCotroller = TextEditingController();
     nameController = TextEditingController();
+    nameEdit = TextEditingController();
+    nameEdit = TextEditingController();
+    emialEdit = TextEditingController();
+
     loginKey = GlobalKey<FormState>();
     super.onInit();
   }
@@ -129,6 +140,17 @@ class AuthController extends GetxController {
       print(e);
     }
     update();
+  }
+
+  getUser() async {
+    dynamic response = await ApiHelper.apiHelper.getUserByToken(token);
+    if (response != null) {
+      if (response.statusCode == 200) {
+        nameEdit.text = response.data['data']['name'];
+        emialEdit.text = response.data['data']['email'];
+        print(response.data);
+      }
+    }
   }
 
   @override

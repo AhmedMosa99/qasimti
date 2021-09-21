@@ -1,5 +1,5 @@
 const Map<String, String> en = {
-  "Search": "البحث",
+  "Search": "Search",
   "Sign In": "Sign In ",
   "Connect with us": "Connect with us",
   "Rate Us": "Rate Us",
@@ -35,10 +35,10 @@ const Map<String, String> en = {
   "Stores": "Stores",
   "Home": "Home",
   "Menu": "Menu",
-  "Last Valid use:": "آخر استخدام صالح:",
+  "Last Valid use": "آخر استخدام صالح:",
   'Vaild': "vaild",
   "invalid": "invalid",
-  "Derails": "Derails",
+  "Details": "Details",
   "offers": "offer",
   "show now": "show now",
   "Login": "Login",
@@ -53,4 +53,5 @@ const Map<String, String> en = {
   "logout": "Logout",
   "Sorry": "Sorry",
   "Content": "You can only add your coupon when you log in.",
+  "Copy": "نسخ"
 };

@@ -22,13 +22,22 @@ class _AllStoresState extends State<AllStores> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        title: Image.asset(
+          'assets/images/Logo.png',
+          width: MediaQuery.of(context).size.width / 3.5,
+          height: MediaQuery.of(context).size.height / 12,
+          color: Colors.white,
+        ),
+        centerTitle: true,
+      ),
       body: GetBuilder<ApiController>(
         init: ApiController(),
         builder: (c) {
           return Padding(
             padding: const EdgeInsets.all(10.0),
-            child: c.allStores == null
+            child: c.allStores.isEmpty
                 ? GFLoader(
                     type: GFLoaderType.ios,
                   )

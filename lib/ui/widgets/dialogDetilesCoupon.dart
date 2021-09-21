@@ -6,7 +6,9 @@ import 'package:getwidget/getwidget.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
+import 'package:qasimati/controller/ApiController.dart';
 import 'package:qasimati/models/coupon.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetialsCopuon extends StatefulWidget {
   CouponModel couponModel;
@@ -16,11 +18,21 @@ class DetialsCopuon extends StatefulWidget {
 }
 
 class _DetialsCopuonState extends State<DetialsCopuon> {
+  ApiController controller;
+  void launchURL() async => await canLaunch(widget.couponModel.link)
+      ? await launch(widget.couponModel.store.link)
+      : throw 'Could not launch ${widget.couponModel.link}';
   String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
   bool iscopy = false;
   bool isfavarite = false;
   bool isvaild = false;
   bool isNotvaild = false;
+  @override
+  void initState() {
+    controller = Get.find<ApiController>();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return CupertinoAlertDialog(
@@ -30,7 +42,7 @@ class _DetialsCopuonState extends State<DetialsCopuon> {
           GFAvatar(
               size: MediaQuery.of(context).size.width / 5,
               backgroundImage: NetworkImage(widget.couponModel.store.image),
-              shape: GFAvatarShape.circle),
+              shape: GFAvatarShape.square),
           Text(
             widget.couponModel.store.name,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
@@ -45,12 +57,17 @@ class _DetialsCopuonState extends State<DetialsCopuon> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text("show now".tr),
-                Icon(Icons.link_rounded),
-              ],
+            child: GestureDetector(
+              onTap: () {
+                launchURL();
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text("show now".tr),
+                  Icon(Icons.link_rounded),
+                ],
+              ),
             ),
           ),
           SizedBox(
@@ -63,7 +80,7 @@ class _DetialsCopuonState extends State<DetialsCopuon> {
                 "offer".tr,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
               ),
-              Text("10%",
+              Text(widget.couponModel.mainTitle,
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey,
@@ -76,10 +93,10 @@ class _DetialsCopuonState extends State<DetialsCopuon> {
           Column(
             children: [
               Text(
-                "Derails".tr,
+                "Details".tr,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
               ),
-              Text("10% off",
+              Text(widget.couponModel.description,
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey,
@@ -101,7 +118,7 @@ class _DetialsCopuonState extends State<DetialsCopuon> {
               ),
               Expanded(
                 child: Text(
-                  isvaild ? formattedDate : "Less Than hour",
+                  widget.couponModel.enable,
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold),
@@ -116,13 +133,7 @@ class _DetialsCopuonState extends State<DetialsCopuon> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             TextButton(
-                onPressed: () {
-                  FlutterClipboard.copy('hello flutter friends')
-                      .then((value) => print("copeid"));
-                  iscopy = !iscopy;
-
-                  setState(() {});
-                },
+                onPressed: () {},
                 child: Container(
                   width: 180,
                   height: MediaQuery.of(context).size.height / 15,
@@ -159,6 +170,8 @@ class _DetialsCopuonState extends State<DetialsCopuon> {
                         : Text("Copeid"),
                     onPressed: () {
                       iscopy = !iscopy;
+                      FlutterClipboard.copy(widget.couponModel.code)
+                          .then((value) => print(widget.couponModel.code));
 
                       setState(() {});
                     },
@@ -178,6 +191,9 @@ class _DetialsCopuonState extends State<DetialsCopuon> {
                         isvaild = !isvaild;
                         if (isvaild) {
                           isNotvaild = false;
+                          controller.voteCoupon(
+                              'enable', widget.couponModel.id);
+                          controller.getAllCouponInStore();
                         }
                         setState(() {});
                       },
@@ -227,6 +243,7 @@ class _DetialsCopuonState extends State<DetialsCopuon> {
                   actions: [
                     GestureDetector(
                       onTap: () {
+                        controller.voteCoupon('disable', widget.couponModel.id);
                         isNotvaild = !isNotvaild;
 
                         if (isNotvaild) {

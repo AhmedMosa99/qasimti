@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:qasimati/data/ApiHelper.dart';
 import 'package:qasimati/models/StoreModel.dart';
@@ -5,6 +7,7 @@ import 'package:qasimati/models/category.dart';
 import 'package:qasimati/models/country.dart';
 import 'package:qasimati/models/coupon.dart';
 import 'package:qasimati/models/slider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiController extends GetxController {
   List<StoreModel> allStores = [];
@@ -13,42 +16,50 @@ class ApiController extends GetxController {
   List<CategoryModel> allCategories = [];
   List<CouponModel> allCoupons = [];
   List<CouponModel> allCouponStore = [];
+  List<StoreModel> allstoreSearch = [];
   String selectCountry;
   String selectCategoryName;
   String selectedStore;
   int selectCategory;
   String dropdownValue;
+
   @override
   void onInit() {
-    if (this.selectCountry == null) {
-      selectCountry = "all";
+    getCountry();
+    Timer.periodic(Duration(seconds: 2), (x) {
+      getStores();
+
       update();
-    }
-    getStores();
-    getAllCouponInStore();
-    update();
-    getCategories();
-    getAllCountries();
-    getSliders();
+      getCategories();
+      getAllCountries();
+      getSliders();
+    });
     super.onInit();
   }
 
-  // changeCountry() async {
-  //   LocalStorage localStorage = LocalStorage();
-  //   await localStorage.saveCountry(selectCountry);
+  saveCountry() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    await pref.setString("Country", selectCountry);
 
-  //   selectCountry = await localStorage.countrySelected == null
-  //       ? 'all'
-  //       : await localStorage.countrySelected;
-  //   localStorage.countrySelected.then((value) => print(value));
-  //   update();
-  // }
+    print(dropdownValue);
+
+    update();
+  }
+
+  getCountry() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    dropdownValue = pref.get("Country");
+
+    update();
+  }
 
   getAllCountries() async {
     try {
       List<dynamic> countries =
           await ApiHelper.apiHelper.getAllCountry(Get.locale.toString());
-      allcountries = countries.map((e) => Country.fromJson(e)).toList();
+      if (countries != null) {
+        allcountries = countries.map((e) => Country.fromJson(e)).toList();
+      }
       update();
     } on Exception catch (e) {
       print(e);
@@ -56,19 +67,22 @@ class ApiController extends GetxController {
   }
 
   getSliders() async {
-    // allsliders = null;
-    // update();
     try {
-      if (selectCountry == null) {
+      if (dropdownValue == null) {
         List<dynamic> sliders = await ApiHelper.apiHelper.getSliders('all');
-        allsliders = sliders.map((e) => SliderModel.fromJson(e)).toList();
-        update();
-      } else if (selectCountry != null) {
+        if (sliders != null) {
+          allsliders = sliders.map((e) => SliderModel.fromJson(e)).toList();
+          update();
+        } else {
+          Get.snackbar("Eroor", "No EnterNet");
+        }
+      } else if (dropdownValue != null) {
         List<dynamic> sliders =
             await ApiHelper.apiHelper.getSliders(selectCountry);
-        allsliders = sliders.map((e) => SliderModel.fromJson(e)).toList();
-
-        update();
+        if (sliders != null) {
+          allsliders = sliders.map((e) => SliderModel.fromJson(e)).toList();
+          update();
+        }
       }
     } on Exception catch (e) {
       print(e);
@@ -77,10 +91,21 @@ class ApiController extends GetxController {
 
   getStores() async {
     try {
-      List<dynamic> stores = await ApiHelper.apiHelper
-          .getStores(selectCountry, Get.locale.toString());
-      allStores = stores.map((e) => StoreModel.fromJson(e)).toList();
-      update();
+      if (dropdownValue == null) {
+        List<dynamic> stores =
+            await ApiHelper.apiHelper.getStores('all', Get.locale.toString());
+        if (stores != null) {
+          allStores = stores.map((e) => StoreModel.fromJson(e)).toList();
+          update();
+        }
+      } else {
+        List<dynamic> stores = await ApiHelper.apiHelper
+            .getStores(dropdownValue, Get.locale.toString());
+        if (stores != null) {
+          allStores = stores.map((e) => StoreModel.fromJson(e)).toList();
+          update();
+        }
+      }
     } on Exception catch (e) {
       Get.snackbar("خطأ", "لايوجد اتصال بالانترنت");
       print(e);
@@ -91,9 +116,12 @@ class ApiController extends GetxController {
     try {
       List<dynamic> categories =
           await ApiHelper.apiHelper.getCategory(Get.locale.toString());
-      allCategories = categories.map((e) => CategoryModel.fromJson(e)).toList();
+      if (categories != null) {
+        allCategories =
+            categories.map((e) => CategoryModel.fromJson(e)).toList();
 
-      update();
+        update();
+      }
     } on Exception catch (e) {
       print(e);
     }
@@ -105,18 +133,22 @@ class ApiController extends GetxController {
       if (selectCategoryName == null) {
         List<dynamic> coupons = await ApiHelper.apiHelper
             .getAllCoupon('all', Get.locale.toString());
-        allCoupons = coupons.map((e) => CouponModel.fromJson(e)).toList();
-        update();
-      } else {
-        try {
-          List<dynamic> coupons = await ApiHelper.apiHelper
-              .getCouponsByCategory(
-                  category, selectCountry, Get.locale.toString());
+        if (coupons != null) {
           allCoupons = coupons.map((e) => CouponModel.fromJson(e)).toList();
           update();
-        } on Exception catch (e) {
+        } else {
           Get.snackbar("خطأ", "لايوجد اتصال بالانترنت");
-          print(e);
+        }
+
+        update();
+      } else {
+        List<dynamic> coupons = await ApiHelper.apiHelper.getCouponsByCategory(
+            category, dropdownValue, Get.locale.toString());
+        if (coupons != null) {
+          allCoupons = coupons.map((e) => CouponModel.fromJson(e)).toList();
+          update();
+        } else {
+          Get.snackbar("خطأ", "لايوجد اتصال بالانترنت");
         }
       }
     } on Exception catch (e) {
@@ -126,20 +158,81 @@ class ApiController extends GetxController {
   }
 
   getAllCouponInStore() async {
+    allCouponStore = [];
     try {
       if (selectedStore == null) {
-        print("selectCategory");
+        print('notselected');
         update();
-      } else if (selectedStore != null) {
-        List<dynamic> couponsStore = await ApiHelper.apiHelper
-            .getAllCouponInStore(
-                selectedStore, selectCountry, Get.locale.toString());
-        allCouponStore =
-            couponsStore.map((e) => CouponModel.fromJson(e)).toList();
-        print(allCouponStore);
-        update();
+      } else {
+        if (dropdownValue == null) {
+          List<dynamic> couponsStore = await ApiHelper.apiHelper
+              .getAllCouponInStore(selectedStore, "all", Get.locale.toString());
+          if (couponsStore.isNotEmpty) {
+            allCouponStore =
+                couponsStore.map((e) => CouponModel.fromJson(e)).toList();
+
+            update();
+          } else {
+            print("error");
+          }
+        } else {
+          List<dynamic> couponsStore = await ApiHelper.apiHelper
+              .getAllCouponInStore(
+                  selectedStore, dropdownValue, Get.locale.toString());
+          if (couponsStore != null) {
+            allCouponStore =
+                couponsStore.map((e) => CouponModel.fromJson(e)).toList();
+
+            update();
+          } else {
+            print("error");
+          }
+        }
       }
     } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  voteCoupon(String type, int id) async {
+    try {
+      dynamic response = await ApiHelper.apiHelper.vaildCoupon(type, id);
+      return response;
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  searchStore(String query) async {
+    allstoreSearch = [];
+    try {
+      if (dropdownValue == null) {
+        List<dynamic> storeSearch = await ApiHelper.apiHelper
+            .search('all', Get.locale.toString(), query);
+
+        if (storeSearch != null) {
+          allstoreSearch =
+              storeSearch.map((e) => StoreModel.fromJson(e)).toList();
+
+          update();
+        } else {
+          print('error');
+        }
+      } else {
+        List<dynamic> storeSearch = await ApiHelper.apiHelper
+            .search(dropdownValue, Get.locale.toString(), query);
+
+        if (storeSearch != null) {
+          allstoreSearch =
+              storeSearch.map((e) => StoreModel.fromJson(e)).toList();
+
+          update();
+        } else {
+          print('error');
+        }
+      }
+    } on Exception catch (e) {
+      Get.snackbar("خطأ", "لايوجد اتصال بالانترنت");
       print(e);
     }
   }

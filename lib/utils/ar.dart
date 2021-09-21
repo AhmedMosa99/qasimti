@@ -39,7 +39,7 @@ const Map<String, String> ar = {
   "Last Valid use:": "آخر استخدام صالح:",
   'vaild': "فعال",
   "invalid": "غير فعال",
-  "Derails": "التفاصيل",
+  "Details": "التفاصيل",
   "offers": "الخصم",
   "show now": "اعرض الان",
   "Login": "تسجيل الدخول",

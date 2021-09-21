@@ -5,6 +5,7 @@ import 'package:qasimati/controller/AuthController.dart';
 import 'package:qasimati/ui/screens/AddProduct/AddProduchSccreen.dart';
 import 'package:qasimati/ui/screens/Authication/LoginScreen.dart';
 import 'package:get/get.dart';
+import 'package:qasimati/ui/screens/Authication/my_acountScreen.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -12,11 +13,11 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  var controller = Get.find<AuthController>();
+  var controller;
   @override
   void initState() {
+    controller = Get.find<AuthController>();
     controller.getToken();
-    print(controller.name);
     super.initState();
   }
 
@@ -80,25 +81,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ],
                                       )),
                                 )
-                              : Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.person,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        controller.name,
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ],
+                              : GestureDetector(
+                                  onTap: () {
+                                    Get.to(MyAccount());
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.person,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          controller.name,
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                           Divider(),
@@ -317,36 +323,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ],
                               )),
-                          Divider(),
-                          controller.name != null
-                              ? GestureDetector(
-                                  onTap: () {
-                                    print(controller.name);
-                                    controller.removeToken();
-                                  },
-                                  child: Container(
-                                      padding: EdgeInsets.all(8),
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.logout,
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            "logout".tr,
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ],
-                                      )),
-                                )
-                              : Container(),
                         ],
                       ),
                     ),

@@ -5,6 +5,7 @@ import 'package:getwidget/getwidget.dart';
 import 'package:qasimati/controller/ApiController.dart';
 
 import 'package:qasimati/controller/appLanguage.dart';
+import 'package:qasimati/ui/screens/Search/seaechScreen.dart';
 
 class Header extends StatefulWidget implements PreferredSizeWidget {
   Header({Key key})
@@ -32,7 +33,9 @@ class _HeaderState extends State<Header> {
           leading: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Get.to(SearchScreen());
+              },
               child: Icon(
                 Icons.search,
               ),
@@ -57,10 +60,9 @@ class _HeaderState extends State<Header> {
                   value: controller.dropdownValue,
                   onChanged: (newValue) {
                     setState(() {
-                      controller.dropdownValue = newValue;
-                      controller.selectCountry = newValue;
-                      print(controller1.selectCountry);
+                      controller1.dropdownValue = newValue;
                       controller1.selectCountry = newValue;
+                      controller1.saveCountry();
                       controller1.getSliders();
                       controller1.getStores();
                       controller1.getCategories();
@@ -113,11 +115,17 @@ class _HeaderState extends State<Header> {
                           },
                           items: [
                             DropdownMenuItem(
-                              child: Text("en"),
+                              child: Text(
+                                "en",
+                                style: TextStyle(color: Colors.white),
+                              ),
                               value: 'en',
                             ),
                             DropdownMenuItem(
-                              child: Text("ar"),
+                              child: Text(
+                                "ar",
+                                style: TextStyle(color: Colors.white),
+                              ),
                               value: 'ar',
                             ),
                           ],

@@ -1,4 +1,5 @@
 import 'package:dashed_container/dashed_container.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import "package:flutter_datetime_picker/flutter_datetime_picker.dart";
@@ -32,6 +33,7 @@ class _AddCoubonState extends State<AddCoubon> {
   @override
   void initState() {
     country = controller1.allcountries;
+    controller.type.text = dropdownValue;
     super.initState();
   }
 
@@ -183,6 +185,7 @@ class _AddCoubonState extends State<AddCoubon> {
                                 print(controller.selectedCountry);
                               });
                               key.currentState.validate();
+                              key.currentState.save();
                             },
                           ),
                         ],
@@ -253,19 +256,29 @@ class _AddCoubonState extends State<AddCoubon> {
                               ),
                             ],
                           ),
-                          TextFormField(
-                            controller: controller.code,
-                            validator: (v) {
-                              return controller.validatLabel(v);
-                            },
-                            onSaved: (s) {
-                              controller.code.text = s;
-                            },
-                            decoration: InputDecoration(
-                                labelText: dropdownValue == "offer"
-                                    ? "Link offer".tr
-                                    : "Copun code".tr),
-                          ),
+                          dropdownValue == "offer"
+                              ? TextFormField(
+                                  controller: controller.code,
+                                  validator: (v) {
+                                    return controller.validatLabel(v);
+                                  },
+                                  onSaved: (s) {
+                                    controller.code.text = s;
+                                  },
+                                  decoration:
+                                      InputDecoration(labelText: "Link offer"),
+                                )
+                              : TextFormField(
+                                  controller: controller.link,
+                                  validator: (v) {
+                                    return controller.validatLabel(v);
+                                  },
+                                  onSaved: (s) {
+                                    controller.code.text = s;
+                                  },
+                                  decoration: InputDecoration(
+                                      labelText: "Copun code".tr),
+                                ),
                           Container(
                               child: Center(
                                   child: TextFormField(

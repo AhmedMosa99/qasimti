@@ -137,7 +137,7 @@ class Login extends StatelessWidget {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => SingUp()));
+                                          builder: (context) => SignUp()));
                                 },
                                 child: Container(
                                   child: Text(
