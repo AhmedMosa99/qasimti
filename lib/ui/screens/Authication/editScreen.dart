@@ -63,7 +63,7 @@ class _EditScreenState extends State<EditScreen> {
             GetBuilder<AuthController>(
               builder: (controller) {
                 return Form(
-                  key: controller.singupFromKey,
+                  key: controller.updateForm,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 10),
@@ -84,39 +84,70 @@ class _EditScreenState extends State<EditScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              imgFromGallery();
-                            },
-                            child: Center(
-                              child: GFAvatar(
-                                radius: 50,
-                                backgroundColor: Theme.of(context).primaryColor,
-                                child: _image != null
-                                    ? ClipRRect(
-                                        borderRadius: BorderRadius.circular(50),
-                                        child: Image.file(
-                                          _image,
-                                          width: 100,
-                                          height: 100,
-                                          fit: BoxFit.fitHeight,
-                                        ),
-                                      )
-                                    : Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors.grey[200],
-                                            borderRadius:
-                                                BorderRadius.circular(50)),
-                                        width: 100,
-                                        height: 100,
-                                        child: Icon(
-                                          Icons.camera_alt,
-                                          color: Colors.grey[800],
-                                        ),
+                          controller.imageUrl != ""
+                              ? GestureDetector(
+                                  onTap: () {
+                                    imgFromGallery();
+                                    controller.imageUrl = "";
+                                  },
+                                  child: Center(
+                                    child: Container(
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
+                                      height:
+                                          MediaQuery.of(context).size.width / 4,
+                                      child: CircleAvatar(
+                                        backgroundImage:
+                                            NetworkImage(controller.imageUrl),
                                       ),
-                              ),
-                            ),
-                          ),
+                                    ),
+                                  ),
+                                )
+                              : GestureDetector(
+                                  onTap: () {
+                                    imgFromGallery();
+                                  },
+                                  child: Center(
+                                    child: GFAvatar(
+                                      radius: 50,
+                                      backgroundColor:
+                                          Theme.of(context).primaryColor,
+                                      child: _image != null
+                                          ? ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              child: Center(
+                                                child: Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      4,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      4,
+                                                  child: CircleAvatar(
+                                                      backgroundImage:
+                                                          FileImage(_image)),
+                                                ),
+                                              ),
+                                            )
+                                          : Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.grey[200],
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50)),
+                                              width: 100,
+                                              height: 100,
+                                              child: Icon(
+                                                Icons.camera_alt,
+                                                color: Colors.grey[800],
+                                              ),
+                                            ),
+                                    ),
+                                  ),
+                                ),
                           TextFormField(
                             controller: controller.nameEdit,
                             validator: (v) {
@@ -151,7 +182,7 @@ class _EditScreenState extends State<EditScreen> {
                               return controller.validatePassword(v);
                             },
                             onSaved: (s) {
-                              controller.passwordCotroller.text = s;
+                              controller.passwordEdit.text = s;
                             },
                             decoration: InputDecoration(
                               labelText: "password".tr,
@@ -178,7 +209,7 @@ class _EditScreenState extends State<EditScreen> {
                                       fontSize: 16),
                                 ),
                                 onPressed: () {
-                                  controller.checkSignUp();
+                                  controller.updata();
                                 },
                               ),
                             ),

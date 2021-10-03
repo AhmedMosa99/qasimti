@@ -1,7 +1,7 @@
 const Map<String, String> ar = {
   "Search": "البحث",
   "Sign In": "تسجيل دخول",
-  "Connect with us": "تواصل معنا",
+  "Contact us": "تواصل معنا",
   "Rate Us": "قيمنا",
   "Privacy policy": "سياسة الخصوصية",
   "Terms & Conditions": "شروط وأحكام",
@@ -52,7 +52,17 @@ const Map<String, String> ar = {
   "Sign": "تسجيل جديد",
   "Done": "تم",
   "Add Copoun": "إضافة قسيمية",
-  "logout": "تسجيل خروح",
+  "Log Out": "تسجيل خروح",
+  "Copy": "نسخ",
   "Sorry": "آسف",
-  "Content": "لا يمكنك إضافة قسيمتك  الا عند  تسجيل الدخول"
+  "Content": "لا يمكنك إضافة قسيمتك  الا عند  تسجيل الدخول",
+  "My Account": "ملفي الشخصي",
+  "Edit Account": "تفاصيل الحساب",
+  "verifiy": "الرجاء تفعيل حسابك من خلال الرابط في بريدك الاكتروني",
+  "Error": "خطأ",
+  "No internet connection": "لايوجد اتصال بالانترنت",
+  "Username is not Empty": " اسم المستحدم لا يجب ان يكون فارغ ",
+  "Eamil is not vaild": "البريد الإلكتروني غير صالح",
+  "favourites": "لا توجد قسائم للمفضلة",
+  "About us": "من نحن؟"
 };

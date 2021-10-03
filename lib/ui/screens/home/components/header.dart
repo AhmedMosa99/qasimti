@@ -21,6 +21,7 @@ class Header extends StatefulWidget implements PreferredSizeWidget {
 
 class _HeaderState extends State<Header> {
   var controller = Get.put(ApiController());
+  String dropdown;
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +59,14 @@ class _HeaderState extends State<Header> {
                   iconEnabledColor: Colors.white,
                   iconDisabledColor: Colors.white,
                   value: controller.dropdownValue,
+                  icon: Visibility(
+                      visible: controller.dropdownValue == null,
+                      child: Icon(Icons.arrow_downward)),
                   onChanged: (newValue) {
                     setState(() {
+                      dropdown = newValue;
+                      controller.dropdownValue = dropdown;
+                      print(controller1.dropdownValue);
                       controller1.dropdownValue = newValue;
                       controller1.selectCountry = newValue;
                       controller1.saveCountry();
@@ -79,16 +86,19 @@ class _HeaderState extends State<Header> {
                                       MediaQuery.of(context).size.height / 20,
                                   image: NetworkImage(value.image),
                                 ),
-                                Text(
-                                  value.shortcut,
-                                  style: TextStyle(color: Colors.white),
-                                ),
+                                // Text(
+                                //   value.shortcut,
+                                //   style: TextStyle(color: Colors.white),
+                                // ),
                               ],
                             ),
                           ))
                       .toList(),
                 ),
               ),
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 25,
             ),
             Container(
               child: GetBuilder<AppLanguage>(
@@ -104,6 +114,9 @@ class _HeaderState extends State<Header> {
                           focusColor: Theme.of(context).primaryColor,
                           borderRadius: BorderRadius.circular(20),
                           elevation: 0,
+                          icon: Visibility(
+                              visible: Get.locale.toString() == null,
+                              child: Icon(Icons.arrow_downward)),
                           onChanged: (newValue) {
                             controller.changeLanguage(newValue);
                             Get.updateLocale(Locale(newValue));
@@ -116,14 +129,14 @@ class _HeaderState extends State<Header> {
                           items: [
                             DropdownMenuItem(
                               child: Text(
-                                "en",
+                                "English",
                                 style: TextStyle(color: Colors.white),
                               ),
                               value: 'en',
                             ),
                             DropdownMenuItem(
                               child: Text(
-                                "ar",
+                                "العربية",
                                 style: TextStyle(color: Colors.white),
                               ),
                               value: 'ar',

@@ -5,31 +5,35 @@ class CouponModel {
   int id;
   String type;
   int storeId;
-  String mainTitle;
+  StoreModel store;
   String link;
-  String description;
   String startDate;
   String endDate;
   int tagId;
+  Tag tag;
   String code;
   String enable;
-  StoreModel store;
-  Tag tag;
+  String order;
+  String isFavaiort;
+  String mainTitle;
+  String description;
 
-  CouponModel(
-      {this.id,
-      this.type,
-      this.storeId,
-      this.mainTitle,
-      this.link,
-      this.description,
-      this.startDate,
-      this.endDate,
-      this.tagId,
-      this.code,
-      this.enable,
-      this.store,
-      this.tag});
+  CouponModel({
+    this.id,
+    this.type,
+    this.storeId,
+    this.mainTitle,
+    this.link,
+    this.description,
+    this.startDate,
+    this.endDate,
+    this.tagId,
+    this.code,
+    this.enable,
+    this.store,
+    this.tag,
+    this.isFavaiort,
+  });
 
   CouponModel.fromJson(Map<String, dynamic> json) {
     id = json['id'] ?? "";
@@ -40,9 +44,10 @@ class CouponModel {
     description = json['description'] ?? "";
     startDate = json['start_date'] ?? "";
     endDate = json['end_date'] ?? "";
-    tagId = json['tag_id'] ?? "";
+    tagId = json['tag_id'] ?? 0;
     code = json['code'] ?? "";
     enable = json['enable'] ?? "";
+    isFavaiort = json['is_favaiort'] ?? "";
     store = json['store'] != null ? new StoreModel.fromJson(json['store']) : "";
     tag = json['tag'] != null ? new Tag.fromJson(json['tag']) : "";
   }
@@ -60,6 +65,7 @@ class CouponModel {
     data['tag_id'] = this.tagId;
     data['code'] = this.code;
     data['enable'] = this.enable;
+    data['is_favaiort'] = this.isFavaiort;
     if (this.store != null) {
       data['store'] = this.store.toJson();
     }

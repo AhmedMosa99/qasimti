@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/components/loader/gf_loader.dart';
 import 'package:getwidget/types/gf_loader_type.dart';
-import 'package:icons_helper/icons_helper.dart';
 import 'package:qasimati/controller/ApiController.dart';
 
 // We need stateful widget because we need to change some sate on our category
@@ -26,6 +25,7 @@ class _CategorylistState extends State<Categorylist> {
     return GetBuilder<ApiController>(
       init: ApiController(),
       builder: (c) {
+//print(int.parse(c.allCategories.first.icon));
         return c.allCategories.isEmpty
             ? Center(
                 child: GFLoader(
@@ -52,6 +52,11 @@ class _CategorylistState extends State<Categorylist> {
           return GestureDetector(
             onTap: () {
               setState(() {
+                print(controller.allCategories.last.icon
+                    .replaceAll('-', '.')
+                    .split(' ')
+                    .last);
+
                 controller.selectCategory = index;
                 controller.selectCategoryName =
                     controller.allCategories[index].name;
@@ -72,8 +77,10 @@ class _CategorylistState extends State<Categorylist> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Icon(getFontAwesomeIcon(
-                            name: controller.allCategories[index].icon)),
+                        Icon(
+                          Icons.mobile_friendly,
+                          color: Colors.black,
+                        ),
                         SizedBox(
                           width: 10,
                         ),

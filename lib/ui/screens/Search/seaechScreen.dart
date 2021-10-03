@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:qasimati/controller/ApiController.dart';
-import 'package:qasimati/ui/screens/Store/store_screen.dart';
+import 'package:qasimati/ui/widgets/ItemCoupon.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -52,8 +51,6 @@ class _SearchScreenState extends State<SearchScreen> {
                               child: TextFormField(
                                 onChanged: (v) {
                                   controller.searchStore(v);
-
-                                  print(v);
                                 },
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.all(5),
@@ -88,59 +85,21 @@ class _SearchScreenState extends State<SearchScreen> {
             Expanded(
               child: Container(
                 child: GetBuilder<ApiController>(
-                  init: ApiController(),
                   builder: (controller) {
-                    return Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: controller.allstoreSearch.isEmpty
-                          ? GFLoader(
-                              type: GFLoaderType.ios,
-                            )
-                          : GridView.builder(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2),
-                              itemBuilder: (context, position) {
-                                return GestureDetector(
-                                  onTap: () async {
-                                    controller.selectedStore = controller
-                                        .allstoreSearch[position].name;
-                                    controller.getAllCouponInStore();
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                StoreScreen()));
-                                  },
-                                  child: Column(
-                                    children: [
-                                      GFAvatar(
-                                          size: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              5,
-                                          backgroundImage: NetworkImage(
-                                              controller
-                                                  .allstoreSearch[position]
-                                                  .image)),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          child: Text(
-                                            controller
-                                                .allstoreSearch[position].name,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              },
-                              itemCount: controller.allstoreSearch.length,
-                            ),
-                    );
+                    return controller.allstoreSearch.isEmpty
+                        ? Center(
+                            child: Container(
+                            height: MediaQuery.of(context).size.height,
+                          ))
+                        : Container(
+                            height: MediaQuery.of(context).size.height,
+                            child: ListView.builder(
+                                itemCount: controller.allstoreSearch.length,
+                                itemBuilder: (context, index) {
+                                  return ItemCoupon(
+                                      controller.allstoreSearch[index]);
+                                }),
+                          );
                   },
                 ),
               ),

@@ -17,280 +17,346 @@ class DetialsCopuon extends StatefulWidget {
   _DetialsCopuonState createState() => _DetialsCopuonState();
 }
 
-class _DetialsCopuonState extends State<DetialsCopuon> {
+class _DetialsCopuonState extends State<DetialsCopuon>
+    with SingleTickerProviderStateMixin {
+  AnimationController animationController;
+  Animation animation;
   ApiController controller;
+
   void launchURL() async => await canLaunch(widget.couponModel.link)
       ? await launch(widget.couponModel.store.link)
       : throw 'Could not launch ${widget.couponModel.link}';
   String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
   bool iscopy = false;
-  bool isfavarite = false;
+  bool isfavarite;
   bool isvaild = false;
   bool isNotvaild = false;
   @override
   void initState() {
+    isfavarite = widget.couponModel.isFavaiort == "true" ? true : false;
     controller = Get.find<ApiController>();
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    animation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(animationController)
+      ..addListener(() {
+        setState(() {});
+      });
+    animationController.forward();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoAlertDialog(
-      content: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          GFAvatar(
-              size: MediaQuery.of(context).size.width / 5,
-              backgroundImage: NetworkImage(widget.couponModel.store.image),
-              shape: GFAvatarShape.square),
-          Text(
-            widget.couponModel.store.name,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-            width: MediaQuery.of(context).size.width / 3.5,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: GestureDetector(
-              onTap: () {
-                launchURL();
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text("show now".tr),
-                  Icon(Icons.link_rounded),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Divider(),
-          Column(
+    return Transform.scale(
+      scale: animation.value,
+      child: GetBuilder<ApiController>(builder: (controller) {
+        return CupertinoAlertDialog(
+          content: Column(
+            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                child: Stack(
+                  children: [
+                    Positioned(
+                        child: Container(
+                            child: GestureDetector(
+                      onTap: () {
+                        print(widget.couponModel.isFavaiort);
+                        if (widget.couponModel.isFavaiort == "false") {
+                          controller.addFavavrite(widget.couponModel.id,context);
+                        } else if (widget.couponModel.isFavaiort == "true") {
+                          controller.deleteFavavrite(widget.couponModel.id);
+                        }
+                        isfavarite = !isfavarite;
+                        setState(() {});
+                      },
+                      child: Icon(Icons.favorite,
+                          color: isfavarite ? Colors.red : Colors.grey,
+                          size: MediaQuery.of(context).size.width / 10),
+                    ))),
+                    Center(
+                      child: GFAvatar(
+                        size: MediaQuery.of(context).size.width / 5,
+                        backgroundColor: Colors.white,
+                        //  backgroundColor: Colors.grey.withOpacity(.2),
+                        child: Image(
+                          image: NetworkImage(
+                            widget.couponModel.store.image,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Text(
-                "offer".tr,
+                widget.couponModel.store.name,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-              ),
-              Text(widget.couponModel.mainTitle,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey,
-                  )),
-            ],
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Column(
-            children: [
-              Text(
-                "Details".tr,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-              ),
-              Text(widget.couponModel.description,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey,
-                  )),
-            ],
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Last Valid use:".tr,
-                style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(
-                width: 5,
+                height: 10,
               ),
-              Expanded(
-                child: Text(
-                  widget.couponModel.enable,
-                  style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.bold),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                width: MediaQuery.of(context).size.width / 3.5,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
                 ),
+                child: GestureDetector(
+                  onTap: () {
+                    launchURL();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text("show now".tr),
+                      Icon(Icons.link_rounded),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Divider(),
+              Column(
+                children: [
+                  Text(
+                    "offer".tr,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  ),
+                  Text(widget.couponModel.mainTitle,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                      )),
+                ],
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Column(
+                children: [
+                  Text(
+                    "Details".tr,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  ),
+                  Text(widget.couponModel.description,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                      )),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Last Valid use:".tr,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Expanded(
+                    child: Text(
+                      widget.couponModel.enable,
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  )
+                ],
               )
             ],
-          )
-        ],
-      ),
-      actions: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            TextButton(
-                onPressed: () {},
-                child: Container(
-                  width: 180,
-                  height: MediaQuery.of(context).size.height / 15,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).primaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0),
+          ),
+          actions: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TextButton(
+                    onPressed: () {},
+                    child: Container(
+                      width: 180,
+                      height: MediaQuery.of(context).size.height / 15,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                    ),
-                    child: iscopy == false
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(widget.couponModel.code,
-                                  style: TextStyle(fontSize: 18)),
-                              FDottedLine(
-                                color: Colors.white,
-                                height: 50,
-                                strokeWidth: 3.0,
-                                dottedLength: 10.0,
-                                space: 2.0,
-                              ),
-                              Text(
-                                "Coppy",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                            ],
-                          )
-                        : Text("Copeid"),
-                    onPressed: () {
-                      iscopy = !iscopy;
-                      FlutterClipboard.copy(widget.couponModel.code)
-                          .then((value) => print(widget.couponModel.code));
-
-                      setState(() {});
-                    },
-                  ),
-                )),
-          ],
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: CupertinoActionSheet(
-                  actions: [
-                    GestureDetector(
-                      onTap: () {
-                        isvaild = !isvaild;
-                        if (isvaild) {
-                          isNotvaild = false;
-                          controller.voteCoupon(
-                              'enable', widget.couponModel.id);
-                          controller.getAllCouponInStore();
-                        }
-                        setState(() {});
-                      },
-                      child: Container(
-                        color: isvaild
-                            ? Theme.of(context).primaryColor
-                            : Colors.transparent,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Theme.of(context).primaryColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(30.0),
+                          ),
+                        ),
+                        child: iscopy == false
+                            ? Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  FaIcon(
-                                    Icons.thumb_up,
-                                    color: isvaild ? Colors.blue : Colors.grey,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
+                                  Text(widget.couponModel.code,
+                                      style: TextStyle(fontSize: 18)),
+                                  FDottedLine(
+                                    color: Colors.white,
+                                    height: 50,
+                                    strokeWidth: 3.0,
+                                    dottedLength: 10.0,
+                                    space: 2.0,
                                   ),
                                   Text(
-                                    "Valid".tr,
-                                    style: TextStyle(
-                                        color: isvaild
-                                            ? Colors.white
-                                            : Colors.black),
+                                    "Coppy",
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                ],
+                              )
+                            : Text("Copeid"),
+                        onPressed: () {
+                          iscopy = !iscopy;
+                          FlutterClipboard.copy(widget.couponModel.code)
+                              .then((value) => print(widget.couponModel.code));
+
+                          setState(() {});
+                        },
+                      ),
+                    )),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CupertinoActionSheet(
+                      actions: [
+                        GestureDetector(
+                          onTap: () {
+                            isvaild = !isvaild;
+                            if (isvaild) {
+                              isNotvaild = false;
+                              controller.voteCoupon(
+                                  'enable', widget.couponModel.id);
+                              controller.getAllCouponInStore();
+                              controller.getCouponsByCategory(
+                                  controller.selectCategoryName);
+                            }
+                            setState(() {});
+                          },
+                          child: Container(
+                            color: isvaild
+                                ? Theme.of(context).primaryColor
+                                : Colors.transparent,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      FaIcon(
+                                        Icons.thumb_up,
+                                        color:
+                                            isvaild ? Colors.blue : Colors.grey,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        "Valid".tr,
+                                        style: TextStyle(
+                                            color: isvaild
+                                                ? Colors.white
+                                                : Colors.black),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: CupertinoActionSheet(
-                  actions: [
-                    GestureDetector(
-                      onTap: () {
-                        controller.voteCoupon('disable', widget.couponModel.id);
-                        isNotvaild = !isNotvaild;
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CupertinoActionSheet(
+                      actions: [
+                        GestureDetector(
+                          onTap: () {
+                            controller.voteCoupon(
+                                'disable', widget.couponModel.id);
+                            isNotvaild = !isNotvaild;
 
-                        if (isNotvaild) {
-                          isvaild = false;
-                        } else {
-                          isvaild = true;
-                        }
+                            if (isNotvaild) {
+                              isvaild = false;
+                            } else {
+                              isvaild = true;
+                            }
 
-                        setState(() {});
-                      },
-                      child: Container(
-                        color: isNotvaild
-                            ? Theme.of(context).primaryColor
-                            : Colors.transparent,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                            setState(() {});
+                          },
+                          child: Container(
+                            color: isNotvaild
+                                ? Theme.of(context).primaryColor
+                                : Colors.transparent,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
                                 children: [
-                                  FaIcon(
-                                    Icons.thumb_down,
-                                    color:
-                                        isNotvaild ? Colors.blue : Colors.grey,
-                                  ),
-                                  Text(
-                                    "invalid".tr,
-                                    style: TextStyle(
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      FaIcon(
+                                        Icons.thumb_down,
                                         color: isNotvaild
-                                            ? Colors.white
-                                            : Colors.black),
+                                            ? Colors.blue
+                                            : Colors.grey,
+                                      ),
+                                      Text(
+                                        "invalid".tr,
+                                        style: TextStyle(
+                                            color: isNotvaild
+                                                ? Colors.white
+                                                : Colors.black),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
           ],
-        ),
-      ],
+        );
+      }),
     );
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
   }
 }

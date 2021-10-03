@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:qasimati/controller/ApiController.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:qasimati/controller/AuthController.dart';
-import 'package:qasimati/ui/screens/Authication/LoginScreen.dart';
 import 'package:qasimati/ui/screens/Authication/editScreen.dart';
+import 'package:qasimati/ui/screens/home/home_screen.dart';
 
 class MyAccount extends StatefulWidget {
   @override
@@ -12,6 +12,7 @@ class MyAccount extends StatefulWidget {
 
 class _MyAccountState extends State<MyAccount> {
   var controller;
+
   @override
   void initState() {
     super.initState();
@@ -32,13 +33,38 @@ class _MyAccountState extends State<MyAccount> {
             },
             child: Icon(Icons.arrow_back_ios)),
         title: Text(
-          "My Account",
+          "My Account".tr,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
         ),
       ),
       body: GetBuilder<AuthController>(builder: (controller) {
         return Container(
           child: Column(
             children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Container(
+                  width: MediaQuery.of(context).size.width / .2,
+                  child: Row(
+                    children: [
+                      Icon(Icons.error, color: GFColors.DANGER),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text('verifiy'.tr,
+                          style: TextStyle(color: Colors.red, fontSize: 12)),
+                      TextButton(
+                          onPressed: () {},
+                          child: Text("Send it again",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                decoration: TextDecoration.underline,
+                              ))),
+                    ],
+                  ),
+                ),
+              ),
               ListTile(
                 onTap: () {
                   Get.to(EditScreen());
@@ -53,9 +79,9 @@ class _MyAccountState extends State<MyAccount> {
                     size: 30,
                   ),
                 ),
-                title: Text('Edit Account',
+                title: Text('Edit Account'.tr,
                     style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                 contentPadding: EdgeInsets.only(top: 10),
                 subtitle: Divider(
                   height: 10,
@@ -76,9 +102,9 @@ class _MyAccountState extends State<MyAccount> {
                     size: 30,
                   ),
                 ),
-                title: Text('Favarite ',
+                title: Text('Favorite'.tr,
                     style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                 contentPadding: EdgeInsets.symmetric(vertical: 0),
                 subtitle: Divider(
                   height: 10,
@@ -90,7 +116,7 @@ class _MyAccountState extends State<MyAccount> {
               ListTile(
                 onTap: () {
                   controller.removeToken();
-                  Get.offAll(Login());
+                  Get.offAll(HomeScreen());
                 },
                 leading: Container(
                   margin: EdgeInsets.only(
@@ -102,9 +128,9 @@ class _MyAccountState extends State<MyAccount> {
                     size: 30,
                   ),
                 ),
-                title: Text('Log Out ',
+                title: Text('Log Out'.tr,
                     style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                 contentPadding: EdgeInsets.symmetric(vertical: 0),
                 subtitle: Divider(
                   height: 10,

@@ -38,7 +38,6 @@ class Login extends StatelessWidget {
           children: [
             GetBuilder<AuthController>(builder: (_) {
               return Form(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
                 key: controller.loginKey,
                 child: Padding(
                   padding:
@@ -91,16 +90,6 @@ class Login extends StatelessWidget {
                         ),
                         SizedBox(
                           height: 10,
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                              alignment: Alignment.bottomRight,
-                              child: Text(
-                                "Forget Your passwor?".tr,
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 16),
-                              )),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(15.0),

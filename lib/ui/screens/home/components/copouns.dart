@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/components/loader/gf_loader.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:qasimati/controller/ApiController.dart';
 import 'package:qasimati/ui/widgets/ItemCoupon.dart';
 
@@ -25,8 +23,8 @@ class _CopounsState extends State<Copouns> {
       builder: (controller) {
         return controller.allCoupons.isEmpty
             ? Center(
-                child: GFLoader(
-                type: GFLoaderType.ios,
+                child: Container(
+                height: MediaQuery.of(context).size.height,
               ))
             : Container(
                 height: MediaQuery.of(context).size.height,

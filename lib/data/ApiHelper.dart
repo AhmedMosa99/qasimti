@@ -9,7 +9,7 @@ class ApiHelper {
 
   Dio dio = Dio();
 
-  static String baseUrl = 'https://qasimati.com/api';
+  static String baseUrl = 'https://qasimati.com/admin/api';
 
   getAllCountry(String lang) async {
     try {
@@ -77,10 +77,10 @@ class ApiHelper {
     }
   }
 
-  getAllCouponInStore(String store, String country, String lang) async {
+  getAllCouponInStore(String store, String country, String lang, int id) async {
     try {
       Response response = await dio.get(
-        '$baseUrl/stores/$store/coupons/$country-$lang',
+        '$baseUrl/stores/$store/coupons/$country-$lang?user_id=$id',
         options: Options(
           headers: {'device': "w", 'Connection': "keep-alive"},
           followRedirects: false,
@@ -119,34 +119,11 @@ class ApiHelper {
     }
   }
 
-  getCouponsByCategory(String category, String country, String lang) async {
+  getCouponsByCategory(
+      String category, String country, String lang, int id) async {
     try {
-      Response response =
-          await dio.get('$baseUrl/categories/$category/coupons/$country-$lang',
-              options: Options(
-                headers: {
-                  'device': "w",
-                  'Accept': 'application/json',
-                  'Connection': "keep-alive"
-                },
-                followRedirects: false,
-                validateStatus: (status) {
-                  return status < 500;
-                },
-              ));
-      if (response.statusCode == 200) {
-        return response.data['coupons'];
-      } else {
-        return [];
-      }
-    } on Exception catch (e) {
-      print(e);
-    }
-  }
-
-  getAllCoupon(String country, String lang) async {
-    try {
-      Response response = await dio.get("$baseUrl/coupons/$country-$lang",
+      Response response = await dio.get(
+          '$baseUrl/categories/$category/coupons/$country-$lang?user_id=$id',
           options: Options(
             headers: {
               'device': "w",
@@ -159,6 +136,31 @@ class ApiHelper {
             },
           ));
       if (response.statusCode == 200) {
+        return response.data['coupons'];
+      } else {
+        return [];
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  getAllCoupon(String country, String lang, int id) async {
+    try {
+      Response response =
+          await dio.get("$baseUrl/coupons/$country-$lang?user_id=$id",
+              options: Options(
+                headers: {
+                  'device': "w",
+                  'Accept': 'application/json',
+                  'Connection': "keep-alive"
+                },
+                followRedirects: false,
+                validateStatus: (status) {
+                  return status < 500;
+                },
+              ));
+      if (response.statusCode == 200) {
         return response.data['data'];
       } else {
         return [];
@@ -168,14 +170,16 @@ class ApiHelper {
     }
   }
 
-  register(String name, File url, String password, String email) async {
-    String path = url.path.split('/').last;
+  register({String name, File url, String password, String email}) async {
+    String path = url == null ? "" : url.path.split('/').last;
 
     try {
       var formData = FormData.fromMap({
-        'name': 'name',
+        'name': name,
         'password': password,
-        'url': MultipartFile.fromFileSync(url.path, filename: path),
+        'url': url == null
+            ? File
+            : MultipartFile.fromFileSync(url.path, filename: path),
         'email': email,
       });
 
@@ -188,16 +192,13 @@ class ApiHelper {
               return status < 500;
             },
             headers: {
-              'Connection': "keep-alive",
               'Content-Type': 'multipart/form',
-              'Accept': 'application/json',
             },
           ));
+      print(response);
       return response;
     } on DioError catch (e) {
-      if (e.response.statusCode == 422) {
-        print('ahmed');
-      }
+      print(e);
     }
   }
 
@@ -241,8 +242,7 @@ class ApiHelper {
       int id,
       String type}) async {
     try {
-      String path = urlStore.path.split('/').last;
-
+      String path = urlStore == null ? "" : urlStore.path.split('/').last;
       SharedPreferences pref = await SharedPreferences.getInstance();
       String token = pref.get('token');
       var formData = FormData.fromMap({
@@ -313,7 +313,7 @@ class ApiHelper {
   search(String country, String lang, String store) async {
     try {
       Response response =
-          await dio.get('$baseUrl/stores/$country-$lang?se=$store',
+          await dio.get('$baseUrl/stores/$store/coupons/$country-$lang',
               options: Options(
                 followRedirects: false,
                 validateStatus: (status) {
@@ -321,8 +321,9 @@ class ApiHelper {
                 },
                 headers: {'device': "w", 'Connection': "keep-alive"},
               ));
+      print(response.data);
       if (response.statusCode == 200) {
-        return response.data['data'];
+        return response.data['coupons'];
       }
     } on Exception catch (e) {
       print(e);
@@ -341,6 +342,105 @@ class ApiHelper {
         }),
       );
       return response;
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  update(String name, File url, String password, String token) async {
+    String path = url == null ? "" : url.path.split('/').last;
+
+    try {
+      var formData = FormData.fromMap({
+        'name': name,
+        'new_password': password,
+        'url': url == null
+            ? File
+            : MultipartFile.fromFileSync(url.path, filename: path)
+      });
+
+      Response response = await dio.post('$baseUrl/edit/profile',
+          data: formData,
+          options: Options(
+            responseType: ResponseType.json,
+            followRedirects: false,
+            validateStatus: (status) {
+              return status < 500;
+            },
+            headers: {
+              'Connection': "keep-alive",
+              'Content-Type': 'multipart/form',
+              'Accept': 'application/json',
+              'Authorization': "Bearer $token",
+            },
+          ));
+      return response;
+    } on DioError catch (e) {
+      if (e.response.statusCode == 422) {
+        print('ahmed');
+      }
+    }
+  }
+
+  addFavorite(String token, int id) async {
+    try {
+      Response response = await dio.post('$baseUrl/user/add/favorite/coupon',
+          data: {'coupon_id': id},
+          options: Options(
+            responseType: ResponseType.json,
+            followRedirects: false,
+            validateStatus: (status) {
+              return status < 500;
+            },
+            headers: {
+              'Connection': "keep-alive",
+              'Content-Type': 'multipart/form',
+              'Accept': 'application/json',
+              'Authorization': "Bearer $token"
+            },
+          ));
+      print(response.data);
+      return response;
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  deleteFavorite(String token, int couponId) async {
+    try {
+      Response response =
+          await dio.delete('$baseUrl/user/remove/favorite/coupon/$couponId',
+              options: Options(
+                headers: {
+                  'Connection': "keep-alive",
+                  'Content-Type': 'multipart/form',
+                  'Accept': 'application/json',
+                  'Authorization': "Bearer $token"
+                },
+              ));
+      print(response.data);
+      return response;
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  getFavoriteCoupons(
+    String lang,
+    String token,
+  ) async {
+    try {
+      Response response = await dio.get('$baseUrl/user/$lang/favorite/coupon',
+          options: Options(
+            headers: {
+              'Connection': "keep-alive",
+              'Content-Type': 'multipart/form',
+              'Accept': 'application/json',
+              'Authorization': "Bearer $token"
+            },
+          ));
+
+      return response.data['data'];
     } on Exception catch (e) {
       print(e);
     }

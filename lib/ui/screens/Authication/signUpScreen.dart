@@ -15,15 +15,19 @@ class _SignUpState extends State<SignUp> {
   AuthController controller;
   File _image;
   imgFromGallery() async {
-    ImagePicker picker = ImagePicker();
-    XFile image = await picker.pickImage(source: ImageSource.gallery);
+    try {
+      ImagePicker picker = ImagePicker();
+      XFile image = await picker.pickImage(source: ImageSource.gallery);
 
-    setState(() {
-      _image = File(image.path);
+      setState(() {
+        _image = File(image.path);
 
-      controller.imageFile = _image;
-      print("${controller.imageFile}");
-    });
+        controller.imageFile = _image;
+        print("${controller.imageFile}");
+      });
+    } on Exception catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -61,7 +65,7 @@ class _SignUpState extends State<SignUp> {
         child: ListView(
           children: [
             GetBuilder<AuthController>(
-              builder: (_) {
+              builder: (controller) {
                 return Form(
                   key: controller.singupFromKey,
                   child: Padding(
@@ -97,9 +101,11 @@ class _SignUpState extends State<SignUp> {
                                         borderRadius: BorderRadius.circular(50),
                                         child: Image.file(
                                           _image,
-                                          width: 100,
-                                          height: 100,
-                                          fit: BoxFit.fitHeight,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              3,
+                                          fit: BoxFit.cover,
                                         ),
                                       )
                                     : Container(
@@ -118,6 +124,7 @@ class _SignUpState extends State<SignUp> {
                             ),
                           ),
                           TextFormField(
+                            controller: controller.nameController,
                             validator: (v) {
                               return controller.validateName(v);
                             },
@@ -148,6 +155,7 @@ class _SignUpState extends State<SignUp> {
                             height: 20,
                           ),
                           TextFormField(
+                            controller: controller.passwordCotroller,
                             validator: (v) {
                               return controller.validatePassword(v);
                             },

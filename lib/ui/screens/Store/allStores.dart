@@ -22,6 +22,7 @@ class _AllStoresState extends State<AllStores> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         title: Image.asset(
@@ -57,16 +58,25 @@ class _AllStoresState extends State<AllStores> {
                         child: Column(
                           children: [
                             GFAvatar(
-                                size: MediaQuery.of(context).size.width / 5,
-                                backgroundImage:
-                                    NetworkImage(c.allStores[position].image)),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                child: Text(
-                                  c.allStores[position].name,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(),
+                              foregroundColor: Colors.transparent,
+                              backgroundColor: Colors.white,
+                              size: MediaQuery.of(context).size.width / 4,
+                              child: Image(
+                                image:
+                                    NetworkImage(c.allStores[position].image),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Container(
+                                  child: Text(
+                                    c.allStores[position].name,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                  ),
                                 ),
                               ),
                             )

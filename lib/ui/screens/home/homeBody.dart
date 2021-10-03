@@ -23,11 +23,11 @@ class _HomeBodyState extends State<HomeBody> {
           Sliders(),
           StoresComponet(),
           SizedBox(
-            height: 10,
+            height: 5,
           ),
           Categorylist(),
           SizedBox(
-            height: 5,
+            height: 10,
           ),
           Expanded(
             child: Copouns(),

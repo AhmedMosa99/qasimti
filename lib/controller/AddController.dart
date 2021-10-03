@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
@@ -103,7 +104,9 @@ class AddController extends GetxController {
             "Done ",
             "Your request has been submitted successfully",
           );
-          Get.offAll(HomeScreen());
+          Timer(Duration(seconds: 2), () {
+            Get.offAll(HomeScreen());
+          });
           soreName.clear();
           storeName.clear();
           storeLink.clear();

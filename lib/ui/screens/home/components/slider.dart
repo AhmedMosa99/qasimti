@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/components/image/gf_image_overlay.dart';
-import 'package:getwidget/components/loader/gf_loader.dart';
-import 'package:getwidget/types/gf_loader_type.dart';
 import 'package:qasimati/controller/ApiController.dart';
 
 // ignore: must_be_immutable
@@ -27,8 +25,9 @@ class _SlidersState extends State<Sliders> {
     return GetBuilder<ApiController>(
       builder: (controller) {
         return controller.allsliders.isEmpty
-            ? GFLoader(
-                type: GFLoaderType.ios,
+            ? Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height / 6,
               )
             : Container(
                 width: MediaQuery.of(context).size.width,

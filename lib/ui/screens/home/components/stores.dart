@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/components/loader/gf_loader.dart';
-import 'package:getwidget/types/gf_loader_type.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:qasimati/controller/ApiController.dart';
 import 'package:qasimati/ui/screens/Store/store_screen.dart';
 
@@ -18,8 +17,8 @@ class _StoresComponetState extends State<StoresComponet> {
     return GetBuilder<ApiController>(
       builder: (controller) {
         return controller.allStores.isEmpty
-            ? GFLoader(
-                type: GFLoaderType.ios,
+            ? Container(
+                height: MediaQuery.of(context).size.height / 9,
               )
             : Container(
                 height: MediaQuery.of(context).size.height / 9,
@@ -36,11 +35,13 @@ class _StoresComponetState extends State<StoresComponet> {
                           Get.to(StoreScreen());
                         },
                         child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GFAvatar(
+                            shape: GFAvatarShape.square,
+                            foregroundColor: Colors.transparent,
+                            backgroundColor: Colors.white,
+                            size: MediaQuery.of(context).size.width / 5,
                             child: Image(
-                              width: MediaQuery.of(context).size.width / 4.5,
-                              fit: BoxFit.cover,
                               image: NetworkImage(
                                   controller.allStores[index].image),
                             ),

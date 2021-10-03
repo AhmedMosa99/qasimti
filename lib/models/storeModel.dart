@@ -8,11 +8,11 @@ class StoreModel {
   StoreModel({this.id, this.link, this.image, this.status, this.name});
 
   StoreModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    link = json['link'];
-    image = json['image'];
-    status = json['status'];
-    name = json['name'];
+    id = json['id'] ?? "";
+    link = json['link'] ?? "";
+    image = json['image'] ?? "";
+    status = json['status'] ?? "";
+    name = json['name'] ?? r"";
   }
 
   Map<String, dynamic> toJson() {

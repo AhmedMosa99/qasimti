@@ -1,5 +1,4 @@
-import 'dart:async';
-
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qasimati/data/ApiHelper.dart';
 import 'package:qasimati/models/StoreModel.dart';
@@ -7,6 +6,8 @@ import 'package:qasimati/models/category.dart';
 import 'package:qasimati/models/country.dart';
 import 'package:qasimati/models/coupon.dart';
 import 'package:qasimati/models/slider.dart';
+import 'package:qasimati/ui/screens/Authication/LoginScreen.dart';
+import 'package:qasimati/ui/screens/Authication/signUpScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiController extends GetxController {
@@ -16,7 +17,8 @@ class ApiController extends GetxController {
   List<CategoryModel> allCategories = [];
   List<CouponModel> allCoupons = [];
   List<CouponModel> allCouponStore = [];
-  List<StoreModel> allstoreSearch = [];
+  List<CouponModel> allstoreSearch = [];
+  List<CouponModel> allfavorite = [];
   String selectCountry;
   String selectCategoryName;
   String selectedStore;
@@ -26,22 +28,16 @@ class ApiController extends GetxController {
   @override
   void onInit() {
     getCountry();
-    Timer.periodic(Duration(seconds: 2), (x) {
-      getStores();
-
-      update();
-      getCategories();
-      getAllCountries();
-      getSliders();
-    });
+    getSliders();
+    getStores();
+    getCategories();
+    getAllCountries();
     super.onInit();
   }
 
   saveCountry() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     await pref.setString("Country", selectCountry);
-
-    print(dropdownValue);
 
     update();
   }
@@ -59,9 +55,11 @@ class ApiController extends GetxController {
           await ApiHelper.apiHelper.getAllCountry(Get.locale.toString());
       if (countries != null) {
         allcountries = countries.map((e) => Country.fromJson(e)).toList();
+        print(allcountries);
       }
       update();
     } on Exception catch (e) {
+      Get.snackbar("Error".tr, "No internet connection".tr);
       print(e);
     }
   }
@@ -72,21 +70,21 @@ class ApiController extends GetxController {
         List<dynamic> sliders = await ApiHelper.apiHelper.getSliders('all');
         if (sliders != null) {
           allsliders = sliders.map((e) => SliderModel.fromJson(e)).toList();
-          update();
         } else {
-          Get.snackbar("Eroor", "No EnterNet");
+          // Get.snackbar("Error", "No EnterNet");
         }
-      } else if (dropdownValue != null) {
+      } else {
         List<dynamic> sliders =
             await ApiHelper.apiHelper.getSliders(selectCountry);
         if (sliders != null) {
           allsliders = sliders.map((e) => SliderModel.fromJson(e)).toList();
-          update();
         }
       }
     } on Exception catch (e) {
+      Get.snackbar("Error".tr, "No internet connection".tr);
       print(e);
     }
+    update();
   }
 
   getStores() async {
@@ -107,7 +105,7 @@ class ApiController extends GetxController {
         }
       }
     } on Exception catch (e) {
-      Get.snackbar("خطأ", "لايوجد اتصال بالانترنت");
+      Get.snackbar("Error".tr, "No internet connection".tr);
       print(e);
     }
   }
@@ -125,25 +123,26 @@ class ApiController extends GetxController {
     } on Exception catch (e) {
       print(e);
     }
-    return allCategories;
   }
 
   getCouponsByCategory(String category) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    int id = sharedPreferences.getInt('id');
     try {
       if (selectCategoryName == null) {
         List<dynamic> coupons = await ApiHelper.apiHelper
-            .getAllCoupon('all', Get.locale.toString());
+            .getAllCoupon('all', Get.locale.toString(), id);
         if (coupons != null) {
           allCoupons = coupons.map((e) => CouponModel.fromJson(e)).toList();
           update();
         } else {
-          Get.snackbar("خطأ", "لايوجد اتصال بالانترنت");
+          Get.snackbar("Error".tr, "No internet connection".tr);
         }
 
         update();
       } else {
         List<dynamic> coupons = await ApiHelper.apiHelper.getCouponsByCategory(
-            category, dropdownValue, Get.locale.toString());
+            category, dropdownValue, Get.locale.toString(), id);
         if (coupons != null) {
           allCoupons = coupons.map((e) => CouponModel.fromJson(e)).toList();
           update();
@@ -152,12 +151,15 @@ class ApiController extends GetxController {
         }
       }
     } on Exception catch (e) {
+      Get.snackbar("Error".tr, "No internet connection".tr);
       print(e);
     }
     update();
   }
 
   getAllCouponInStore() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    int id = sharedPreferences.getInt('id');
     allCouponStore = [];
     try {
       if (selectedStore == null) {
@@ -166,30 +168,32 @@ class ApiController extends GetxController {
       } else {
         if (dropdownValue == null) {
           List<dynamic> couponsStore = await ApiHelper.apiHelper
-              .getAllCouponInStore(selectedStore, "all", Get.locale.toString());
+              .getAllCouponInStore(
+                  selectedStore, "all", Get.locale.toString(), id);
           if (couponsStore.isNotEmpty) {
             allCouponStore =
                 couponsStore.map((e) => CouponModel.fromJson(e)).toList();
 
             update();
           } else {
-            print("error");
+            Get.snackbar("Error".tr, "No internet connection".tr);
           }
         } else {
           List<dynamic> couponsStore = await ApiHelper.apiHelper
               .getAllCouponInStore(
-                  selectedStore, dropdownValue, Get.locale.toString());
+                  selectedStore, dropdownValue, Get.locale.toString(), id);
           if (couponsStore != null) {
             allCouponStore =
                 couponsStore.map((e) => CouponModel.fromJson(e)).toList();
 
             update();
           } else {
-            print("error");
+            Get.snackbar("Error".tr, "No internet connection".tr);
           }
         }
       }
     } on Exception catch (e) {
+      Get.snackbar("Error".tr, "No internet connection".tr);
       print(e);
     }
   }
@@ -197,8 +201,15 @@ class ApiController extends GetxController {
   voteCoupon(String type, int id) async {
     try {
       dynamic response = await ApiHelper.apiHelper.vaildCoupon(type, id);
+      print(response);
+
+      getCouponsByCategory(selectCategoryName);
+      getAllCouponInStore();
+      update();
+
       return response;
     } on Exception catch (e) {
+      // Get.snackbar("Error".tr, "No internet connection".tr);
       print(e);
     }
   }
@@ -212,8 +223,7 @@ class ApiController extends GetxController {
 
         if (storeSearch != null) {
           allstoreSearch =
-              storeSearch.map((e) => StoreModel.fromJson(e)).toList();
-
+              storeSearch.map((e) => CouponModel.fromJson(e)).toList();
           update();
         } else {
           print('error');
@@ -224,15 +234,125 @@ class ApiController extends GetxController {
 
         if (storeSearch != null) {
           allstoreSearch =
-              storeSearch.map((e) => StoreModel.fromJson(e)).toList();
+              storeSearch.map((e) => CouponModel.fromJson(e)).toList();
 
           update();
         } else {
+          print(storeSearch);
+          // Get.snackbar("Error".tr, "No internet connection".tr);
           print('error');
         }
       }
     } on Exception catch (e) {
-      Get.snackbar("خطأ", "لايوجد اتصال بالانترنت");
+      Get.snackbar("Error".tr, "No internet connection".tr);
+      print(e);
+    }
+  }
+
+  addFavavrite(int couponId,BuildContext context) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String token = preferences.getString('token');
+    dynamic response = await ApiHelper.apiHelper.addFavorite(token, couponId);
+   if(response.statusCode==401) {
+     Get.defaultDialog(
+       title: "Sorry".tr,
+       titleStyle: TextStyle(color: Colors.black87),
+       content: Column(
+         children: [
+           Padding(
+             padding: const EdgeInsets.all(8.0),
+             child: Text(
+               "Content".tr,
+               style: TextStyle(
+                   fontSize: 18, color: Colors.grey),
+               textAlign: TextAlign.center,
+             ),
+           ),
+           SizedBox(
+             width:
+             MediaQuery.of(context).size.width /
+                 19,
+           ),
+           Row(
+             mainAxisAlignment:
+             MainAxisAlignment.spaceAround,
+             children: [
+               Container(
+                 padding: EdgeInsets.symmetric(
+                     horizontal: 10),
+                 decoration: BoxDecoration(
+                     color: Theme.of(context)
+                         .primaryColor,
+                     borderRadius:
+                     BorderRadius.circular(15)),
+                 child: TextButton(
+                     onPressed: () {
+                       Get.off(Login());
+                     },
+                     child: Text(
+                       "Sign In".tr,
+                       style: TextStyle(
+                           color: Colors.white),
+                     )),
+               ),
+               Container(
+                 padding: EdgeInsets.symmetric(
+                     horizontal: 10),
+                 decoration: BoxDecoration(
+                     color: Theme.of(context)
+                         .primaryColor,
+                     borderRadius:
+                     BorderRadius.circular(15)),
+                 child: TextButton(
+                     onPressed: () {
+                       Get.off(SignUp());
+                     },
+                     child: Text(
+                       "Sign Up".tr,
+                       style: TextStyle(
+                           color: Colors.white),
+                     )),
+               ),
+             ],
+           ),
+         ],
+       ),
+     );
+   }
+    getCouponsByCategory(selectCategoryName);
+    getAllCouponInStore();
+    getFavoriteCoupon();
+    update();
+  }
+
+  deleteFavavrite(int couponId) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String token = preferences.getString('token');
+    dynamic response =
+        await ApiHelper.apiHelper.deleteFavorite(token, couponId);
+    print(response);
+    getCouponsByCategory(selectCategoryName);
+    getAllCouponInStore();
+    getFavoriteCoupon();
+    update();
+  }
+
+  getFavoriteCoupon() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String token = sharedPreferences.getString('token');
+
+    try {
+      List<dynamic> favorite = await ApiHelper.apiHelper
+          .getFavoriteCoupons(Get.locale.toString(), token);
+      if (favorite != null) {
+        allfavorite = favorite.map((e) => CouponModel.fromJson(e)).toList();
+        print(favorite);
+        update();
+      } else {
+        Get.snackbar("Error".tr, "No internet connection".tr);
+      }
+    } on Exception catch (e) {
+      Get.snackbar("Error".tr, "No internet connection".tr);
       print(e);
     }
   }

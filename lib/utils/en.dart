@@ -1,7 +1,7 @@
 const Map<String, String> en = {
   "Search": "Search",
   "Sign In": "Sign In ",
-  "Connect with us": "Connect with us",
+  "Contact us": "Contact us",
   "Rate Us": "Rate Us",
   "Privacy policy": "Privacy policy",
   "Terms & Conditions": "Terms & Conditions",
@@ -53,5 +53,14 @@ const Map<String, String> en = {
   "logout": "Logout",
   "Sorry": "Sorry",
   "Content": "You can only add your coupon when you log in.",
-  "Copy": "نسخ"
+  "Copy": "Copy",
+  "My Account": "My Account",
+  "Edit Account": "Edit Account",
+  "verifiy": "Verifiy your account through your email link",
+  "Error": "Error",
+  "No internet connection": "No internet connection",
+  "Username is not Empty": "Username is not Empty",
+  'Eamil is not vaild': "Eamil is not vaild",
+  "favourites": "There are no coupons for favourites",
+  "About us": "About us",
 };
