@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/components/avatar/gf_avatar.dart';
 import 'package:getwidget/getwidget.dart';
@@ -22,14 +23,11 @@ class _AllStoresState extends State<AllStores> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: Image.asset(
-          'assets/images/Logo.png',
-          width: MediaQuery.of(context).size.width / 3.5,
-          height: MediaQuery.of(context).size.height / 12,
-          color: Colors.white,
+        title: Text(
+          "Stores".tr,
+          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -57,13 +55,18 @@ class _AllStoresState extends State<AllStores> {
                         },
                         child: Column(
                           children: [
-                            GFAvatar(
-                              foregroundColor: Colors.transparent,
-                              backgroundColor: Colors.white,
-                              size: MediaQuery.of(context).size.width / 4,
-                              child: Image(
-                                image:
-                                    NetworkImage(c.allStores[position].image),
+                            Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: Color(0xFFD1D8E5))),
+                              child: GFAvatar(
+                                foregroundColor: Colors.transparent,
+                                backgroundColor: Colors.white,
+                                size: MediaQuery.of(context).size.width / 4,
+                                child: Image(
+                                  image:
+                                      NetworkImage(c.allStores[position].image),
+                                ),
                               ),
                             ),
                             Expanded(
@@ -74,7 +77,7 @@ class _AllStoresState extends State<AllStores> {
                                     c.allStores[position].name,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 16.sp,
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),

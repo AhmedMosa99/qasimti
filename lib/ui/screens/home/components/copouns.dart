@@ -9,11 +9,9 @@ class Copouns extends StatefulWidget {
 }
 
 class _CopounsState extends State<Copouns> {
-  var controller;
   @override
   void initState() {
-    var controller = Get.put(ApiController());
-    controller.getCouponsByCategory(controller.selectCategoryName);
+    // controller.getCouponsByCategory(controller.selectCategoryName);
     super.initState();
   }
 
@@ -22,13 +20,11 @@ class _CopounsState extends State<Copouns> {
     return GetBuilder<ApiController>(
       builder: (controller) {
         return controller.allCoupons.isEmpty
-            ? Center(
-                child: Container(
-                height: MediaQuery.of(context).size.height,
-              ))
+            ? Center(child: Container())
             : Container(
-                height: MediaQuery.of(context).size.height,
                 child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
                     itemCount: controller.allCoupons.length,
                     itemBuilder: (context, index) {
                       return ItemCoupon(controller.allCoupons[index]);

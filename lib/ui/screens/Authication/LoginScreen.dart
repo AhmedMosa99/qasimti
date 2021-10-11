@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/components/button/gf_button.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:qasimati/controller/AuthController.dart';
+import 'package:qasimati/ui/screens/Authication/forgetPassword.dart';
 import 'package:qasimati/ui/screens/Authication/signUpScreen.dart';
+import 'package:qasimati/ui/screens/home/home_screen.dart';
+import 'package:qasimati/ui/widgets/CustomButton.dart';
+import 'package:qasimati/ui/widgets/CustomTextFeild.dart';
 
 // ignore: must_be_immutable
 class Login extends StatelessWidget {
@@ -14,13 +17,23 @@ class Login extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Colors.white,
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.arrow_forward_ios),
+            onPressed: () {
+              Get.offAll(HomeScreen());
+            },
+          ),
+        ],
         title: Text(
           "Login".tr,
           style: TextStyle(
-              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+              fontSize: 16.sp,
+              fontWeight: FontWeight.bold,
+              color: Colors.white),
         ),
         leading: GestureDetector(
             onTap: () {
@@ -33,7 +46,7 @@ class Login extends StatelessWidget {
             )),
       ),
       body: Container(
-        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 15),
+        margin: EdgeInsets.symmetric(vertical: 10),
         child: ListView(
           children: [
             GetBuilder<AuthController>(builder: (_) {
@@ -41,104 +54,74 @@ class Login extends StatelessWidget {
                 key: controller.loginKey,
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   child: Container(
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: Offset(0, 3),
+
+                        // changes position of shadow
                         ),
-                      ], // changes position of shadow
-                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TextFormField(
-                          validator: (v) {
-                            return controller.validateEmail(v);
-                          },
-                          onSaved: (value) {
-                            controller.emailController.text = value;
-                          },
-                          decoration: InputDecoration(
-                            labelText: "Email".tr,
-                            labelStyle: TextStyle(fontSize: 16),
-                            prefixIcon: Icon(Icons.email),
+                        Center(
+                          child: Image.asset(
+                            'assets/images/Logo.png',
+                            width: 200.w,
                           ),
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 10.h,
                         ),
-                        TextFormField(
-                          validator: (v) {
-                            return controller.validatePassword(v);
-                          },
-                          onSaved: (value) {
-                            controller.passwordCotroller.text = value;
-                          },
-                          decoration: InputDecoration(
-                            labelText: "password".tr,
-                            labelStyle: TextStyle(fontSize: 16),
-                            prefixIcon: Icon(Icons.lock_outline),
-                          ),
-                        ),
+                        CustomTextFeild('Email'.tr, controller.emailController,
+                            'example@mail.com'),
                         SizedBox(
-                          height: 10,
+                          height: 10.h,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height / 12,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50)),
-                            child: GFButton(
-                              shape: GFButtonShape.pills,
-                              color: Theme.of(context).primaryColor,
+                        CustomTextFeild('password'.tr,
+                            controller.passwordCotroller, "********", true),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        Align(
+                            alignment: Get.locale.toString() == "ar"
+                                ? Alignment.bottomLeft
+                                : Alignment.bottomRight,
+                            child: TextButton(
                               child: Text(
-                                "Sign In".tr,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500, fontSize: 16),
+                                "Forgot your password?".tr,
+                                style: TextStyle(color: Colors.black),
                               ),
                               onPressed: () {
-                                controller.checkLogin();
+                                Get.to(ForgetPassword());
                               },
-                            ),
-                          ),
-                        ),
+                            )),
                         SizedBox(
-                          height: 15,
+                          height: 10.h,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              child: Text("New User ? ".tr),
-                            ),
-                            GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => SignUp()));
-                                },
-                                child: Container(
-                                  child: Text(
-                                    "Sign Up".tr,
-                                    style: TextStyle(
-                                        color: Theme.of(context).primaryColor),
-                                  ),
-                                )),
-                          ],
-                        ),
+                        Container(
+                            width: 350.w,
+                            height: 60.h,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30)),
+                            child: CustomButton("Sign In".tr, () {
+                              controller.checkLogin();
+                            }, Theme.of(context).primaryColor, Colors.white)),
                         SizedBox(
-                          height: 15,
+                          height: 10.h,
+                        ),
+                        Container(
+                            width: 350.w,
+                            height: 60.h,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30)),
+                            child: CustomButton("Sign Up".tr, () {
+                              Get.offAll(SignUp());
+                              controller.emailController.clear();
+                              controller.passwordCotroller.clear();
+                            }, Colors.white, Colors.black)),
+                        SizedBox(
+                          height: 10.h,
                         ),
                       ],
                     ),

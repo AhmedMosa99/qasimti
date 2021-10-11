@@ -13,16 +13,19 @@ class ApiHelper {
 
   getAllCountry(String lang) async {
     try {
-      Response response = await dio.get(
-        '$baseUrl/$lang/countries',
-        options: Options(
-          followRedirects: false,
-          validateStatus: (status) {
-            return status < 500;
-          },
-        ),
-      );
+      Response response = await dio.get('$baseUrl/$lang/countries',
+          options: Options(
+            followRedirects: false,
+            validateStatus: (status) {
+              return status <= 500;
+            },
+            headers: {'Connection': "keep-alive", 'device': "w"},
+          ));
       if (response.statusCode == 200) {
+        if (response.data['data'] == null) {
+          return response.data;
+        }
+
         return response.data['data'];
       } else {
         print("not enternet");
@@ -39,8 +42,9 @@ class ApiHelper {
         options: Options(
           followRedirects: false,
           validateStatus: (status) {
-            return status < 500;
+            return status <= 500;
           },
+          headers: {'Connection': "keep-alive", 'device': "w"},
         ),
       );
       if (response.statusCode == 200) {
@@ -60,16 +64,14 @@ class ApiHelper {
       } else {
         Response response = await dio.get('$baseUrl/stores/$country-$lang',
             options: Options(
-              headers: {'device': "w"},
               followRedirects: false,
               validateStatus: (status) {
-                return status < 500;
+                return status <= 500;
               },
+              headers: {'Connection': "keep-alive", 'device': "w"},
             ));
         if (response.statusCode == 200) {
           return response.data['data'];
-        } else {
-          return [];
         }
       }
     } on Exception catch (e) {
@@ -82,17 +84,15 @@ class ApiHelper {
       Response response = await dio.get(
         '$baseUrl/stores/$store/coupons/$country-$lang?user_id=$id',
         options: Options(
-          headers: {'device': "w", 'Connection': "keep-alive"},
           followRedirects: false,
           validateStatus: (status) {
-            return status < 500;
+            return status <= 500;
           },
+          headers: {'device': "w", 'Connection': "keep-alive"},
         ),
       );
       if (response.statusCode == 200) {
         return response.data['coupons'];
-      } else {
-        return [];
       }
     } on Exception catch (e) {
       print(e);
@@ -104,11 +104,11 @@ class ApiHelper {
       Response response = await dio.get(
         '$baseUrl/$lang/categories',
         options: Options(
-          headers: {'Accept': 'application/json', 'Connection': "keep-alive"},
           followRedirects: false,
           validateStatus: (status) {
-            return status < 500;
+            return status <= 500;
           },
+          headers: {'Accept': 'application/json', 'Connection': "keep-alive"},
         ),
       );
       if (response.statusCode == 200) {
@@ -125,14 +125,14 @@ class ApiHelper {
       Response response = await dio.get(
           '$baseUrl/categories/$category/coupons/$country-$lang?user_id=$id',
           options: Options(
+            followRedirects: false,
+            validateStatus: (status) {
+              return status <= 500;
+            },
             headers: {
               'device': "w",
               'Accept': 'application/json',
               'Connection': "keep-alive"
-            },
-            followRedirects: false,
-            validateStatus: (status) {
-              return status < 500;
             },
           ));
       if (response.statusCode == 200) {
@@ -141,6 +141,7 @@ class ApiHelper {
         return [];
       }
     } on Exception catch (e) {
+      print("a00");
       print(e);
     }
   }
@@ -150,16 +151,17 @@ class ApiHelper {
       Response response =
           await dio.get("$baseUrl/coupons/$country-$lang?user_id=$id",
               options: Options(
+                followRedirects: false,
+                validateStatus: (status) {
+                  return status <= 500;
+                },
                 headers: {
                   'device': "w",
                   'Accept': 'application/json',
                   'Connection': "keep-alive"
                 },
-                followRedirects: false,
-                validateStatus: (status) {
-                  return status < 500;
-                },
               ));
+
       if (response.statusCode == 200) {
         return response.data['data'];
       } else {
@@ -186,12 +188,13 @@ class ApiHelper {
       Response response = await dio.post('$baseUrl/register',
           data: formData,
           options: Options(
-            responseType: ResponseType.json,
             followRedirects: false,
             validateStatus: (status) {
-              return status < 500;
+              return status <= 500;
             },
+            responseType: ResponseType.json,
             headers: {
+              'Connection': "keep-alive",
               'Content-Type': 'multipart/form',
             },
           ));
@@ -213,9 +216,10 @@ class ApiHelper {
           options: Options(
             followRedirects: false,
             validateStatus: (status) {
-              return status < 500;
+              return status <= 500;
             },
             headers: {
+              'Connection': "keep-alive",
               'Content-Type': 'multipart/form',
               'Accept': 'application/json',
             },
@@ -282,20 +286,21 @@ class ApiHelper {
     }
   }
 
-  vaildCoupon(String type, int id) async {
+  vaildCoupon(String type, int id, String lang) async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String token = pref.get('token');
       var data = {
         'coupon_id': id,
         'type_vote': type,
+        'lang': lang,
       };
       Response response = await dio.post('$baseUrl/coupons/vote',
           data: data,
           options: Options(
             followRedirects: false,
             validateStatus: (status) {
-              return status < 500;
+              return status <= 500;
             },
             headers: {
               'Connection': "keep-alive",
@@ -317,7 +322,7 @@ class ApiHelper {
               options: Options(
                 followRedirects: false,
                 validateStatus: (status) {
-                  return status < 500;
+                  return status <= 500;
                 },
                 headers: {'device': "w", 'Connection': "keep-alive"},
               ));
@@ -334,12 +339,17 @@ class ApiHelper {
     try {
       Response response = await dio.get(
         '$baseUrl/user',
-        options: Options(headers: {
-          'Connection': "keep-alive",
-          'Content-Type': 'multipart/form',
-          'Accept': 'application/json',
-          'Authorization': "Bearer $token"
-        }),
+        options: Options(
+            followRedirects: false,
+            validateStatus: (status) {
+              return status <= 500;
+            },
+            headers: {
+              'Connection': "keep-alive",
+              'Content-Type': 'multipart/form',
+              'Accept': 'application/json',
+              'Authorization': "Bearer $token"
+            }),
       );
       return response;
     } on Exception catch (e) {
@@ -349,12 +359,11 @@ class ApiHelper {
 
   update(String name, File url, String password, String token) async {
     String path = url == null ? "" : url.path.split('/').last;
-
     try {
       var formData = FormData.fromMap({
         'name': name,
         'new_password': password,
-        'url': url == null
+        'image': url == null
             ? File
             : MultipartFile.fromFileSync(url.path, filename: path)
       });
@@ -362,11 +371,11 @@ class ApiHelper {
       Response response = await dio.post('$baseUrl/edit/profile',
           data: formData,
           options: Options(
-            responseType: ResponseType.json,
             followRedirects: false,
             validateStatus: (status) {
-              return status < 500;
+              return status <= 500;
             },
+            responseType: ResponseType.json,
             headers: {
               'Connection': "keep-alive",
               'Content-Type': 'multipart/form',
@@ -387,11 +396,11 @@ class ApiHelper {
       Response response = await dio.post('$baseUrl/user/add/favorite/coupon',
           data: {'coupon_id': id},
           options: Options(
-            responseType: ResponseType.json,
             followRedirects: false,
             validateStatus: (status) {
-              return status < 500;
+              return status <= 500;
             },
+            responseType: ResponseType.json,
             headers: {
               'Connection': "keep-alive",
               'Content-Type': 'multipart/form',
@@ -411,6 +420,10 @@ class ApiHelper {
       Response response =
           await dio.delete('$baseUrl/user/remove/favorite/coupon/$couponId',
               options: Options(
+                followRedirects: false,
+                validateStatus: (status) {
+                  return status <= 500;
+                },
                 headers: {
                   'Connection': "keep-alive",
                   'Content-Type': 'multipart/form',
@@ -432,6 +445,10 @@ class ApiHelper {
     try {
       Response response = await dio.get('$baseUrl/user/$lang/favorite/coupon',
           options: Options(
+            followRedirects: false,
+            validateStatus: (status) {
+              return status <= 500;
+            },
             headers: {
               'Connection': "keep-alive",
               'Content-Type': 'multipart/form',
@@ -441,6 +458,29 @@ class ApiHelper {
           ));
 
       return response.data['data'];
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  verifiyEmail(String token) async {
+    try {
+      Response response =
+          await dio.post('$baseUrl/email/verification-notification',
+              options: Options(
+                followRedirects: false,
+                validateStatus: (status) {
+                  return status <= 500;
+                },
+                headers: {
+                  'Connection': "keep-alive",
+                  'Content-Type': 'multipart/form',
+                  'Accept': 'application/json',
+                  'Authorization': "Bearer $token"
+                },
+              ));
+      print(response);
+      return response;
     } on Exception catch (e) {
       print(e);
     }

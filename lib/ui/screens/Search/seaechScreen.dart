@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:qasimati/controller/ApiController.dart';
 import 'package:qasimati/ui/widgets/ItemCoupon.dart';
@@ -57,7 +58,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   fillColor: Colors.white,
                                   filled: true,
                                   hintText: 'Search'.tr,
-                                  hintStyle: TextStyle(fontSize: 18),
+                                  hintStyle: TextStyle(fontSize: 18.sp),
                                   border: OutlineInputBorder(
                                       borderSide: BorderSide.none,
                                       borderRadius: BorderRadius.circular(30)),

@@ -30,7 +30,7 @@ class _AboutUsState extends State<AboutUs> {
           WebView(
             key: _key,
             initialUrl:
-                "https://sad-albattani-37dce1.netlify.app/about-us?lang=${Get.locale.toString()}&webview=1",
+                "https://qasimati.com/about-us?lang=${Get.locale.toString()}&webview=1",
             javascriptMode: JavascriptMode.unrestricted,
             onPageFinished: (finish) {
               setState(() {

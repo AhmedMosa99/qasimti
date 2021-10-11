@@ -31,7 +31,7 @@ class _ContactUsState extends State<ContactUs> {
           WebView(
             key: _key,
             initialUrl:
-                "https://sad-albattani-37dce1.netlify.app/contact-us?lang=${Get.locale.toString()}&webview=1",
+                "https://qasimati.com/contact-us?lang=${Get.locale.toString()}&webview=1",
             javascriptMode: JavascriptMode.unrestricted,
             onPageFinished: (finish) {
               setState(() {

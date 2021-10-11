@@ -23,7 +23,7 @@ class _QuestionsState extends State<Questions> {
       ),
       body: WebView(
         initialUrl:
-            "https://sad-albattani-37dce1.netlify.app/fqa?lang=${Get.locale.toString()}&webview=1",
+            "https://qasimati.com/fqa?lang=${Get.locale.toString()}&webview=1",
         javascriptMode: JavascriptMode.unrestricted,
       ),
     );

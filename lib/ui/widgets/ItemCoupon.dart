@@ -1,103 +1,119 @@
-import 'package:fdottedline/fdottedline.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/getwidget.dart';
+import 'package:qasimati/controller/ApiController.dart';
 import 'package:qasimati/models/coupon.dart';
-import 'package:qasimati/ui/screens/Authication/LoginScreen.dart';
 import 'package:qasimati/ui/screens/webView/webView.dart';
 import 'package:qasimati/ui/widgets/dialogDetilesCoupon.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
-class ItemCoupon extends StatelessWidget {
+// ignore: must_be_immutable
+class ItemCoupon extends StatefulWidget {
   CouponModel couponModel;
+
   ItemCoupon(this.couponModel);
-  void launchURL() async => await canLaunch(couponModel.store.link)
-      ? await launch(couponModel.store.link)
-      : throw  Get.to((OfferPage(couponModel.store.link)));
+
+  @override
+  State<ItemCoupon> createState() => _ItemCouponState();
+}
+
+class _ItemCouponState extends State<ItemCoupon> {
+  var controller;
+
+  @override
+  void initState() {
+    controller = Get.find<ApiController>();
+    super.initState();
+  }
+
+  void launchURL() async => await canLaunch(widget.couponModel.store.link)
+      ? await launch(widget.couponModel.store.link)
+      : throw Get.to((OfferPage(widget.couponModel.store.link)));
 
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (couponModel.type == 'coupon') {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return Container(
-                  height: MediaQuery.of(context).size.height / 2,
-                  child: DetialsCopuon(
-                    couponModel: couponModel,
-                  ),
-                );
-              });
-        } else {
-          print(couponModel.store.link);
-          if (couponModel.link != null) {
-            launchURL();
-          }
-        }
-      },
-      child: Container(
-        child: GFListTile(
-          color: Colors.white,
-          avatar: Row(
-            children: [
-              couponModel.store.image == null
-                  ? GFLoader
-                  : Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          border: Border.all(color: Colors.red)),
-                      width: MediaQuery.of(context).size.width / 5,
-                      height: MediaQuery.of(context).size.width / 5,
-
-                      //  backgroundColor: Colors.grey.withOpacity(.2),
-                      child: Image(
-                        image: NetworkImage(
-                          couponModel.store.image,
-                        ),
-                      ),
+    return Container(
+      margin: EdgeInsets.only(bottom: 5, top: 5, right: 20, left: 20),
+      height: MediaQuery.of(context).size.height / 7,
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          fit: BoxFit.contain,
+          image: AssetImage(
+            Get.locale.toString() == "ar"
+                ? 'assets/images/background.png'
+                : "assets/images/backgroundRight.png",
+          ),
+        ),
+      ),
+      child: GestureDetector(
+        onTap: () {
+          if (widget.couponModel.type == 'coupon') {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return Container(
+                    height: MediaQuery.of(context).size.height / 2,
+                    child: DetialsCoupon(
+                      couponModel: widget.couponModel,
                     ),
-              SizedBox(
-                width: 5,
-              ),
-              FDottedLine(
-                color: Colors.grey,
-                height: MediaQuery.of(context).size.height / 10,
-                strokeWidth: 3.0,
-                dottedLength: 10.0,
-                space: 2.0,
-              ),
-            ],
-          ),
-          title: Row(
-            children: [
-              SizedBox(
-                width: 10,
-              ),
-              Container(
-                  child: Expanded(
-                child: Text(
-                  couponModel.store.name ?? "",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                  );
+                });
+          } else {
+            if (widget.couponModel.link != null) {
+              launchURL();
+            }
+          }
+        },
+        child: Stack(
+          children: [
+            Align(
+              alignment: Get.locale.toString() == "en"
+                  ? Alignment.centerLeft
+                  : Alignment.centerRight,
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 15.w),
+                child: Image.network(
+                  widget.couponModel.store.image,
+                  width: MediaQuery.of(context).size.width / 5,
                 ),
-              )),
-            ],
-          ),
-          icon: couponModel.tag.name == null
-              ? Container()
-              : Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: Colors.white,
-                    border: Border.all(color: Colors.red),
-                  ),
-                  child: Text(
-                    couponModel.tag.name ?? "",
-                    style: TextStyle(color: Colors.black),
-                  )),
-          subTitle: Text(couponModel.mainTitle ?? ""),
+              ),
+            ),
+            widget.couponModel.tag.name != null
+                ? Align(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      margin: EdgeInsets.only(top: 10.h),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor.withOpacity(.3),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(widget.couponModel.tag.name),
+                    ),
+                  )
+                : Container(),
+            Positioned(
+              top: MediaQuery.of(context).size.width / 9,
+              right: Get.locale.toString() == "ar"
+                  ? MediaQuery.of(context).size.width / 3
+                  : MediaQuery.of(context).size.width / 9,
+              left: Get.locale.toString() == "en"
+                  ? MediaQuery.of(context).size.width / 3
+                  : MediaQuery.of(context).size.width / 10,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 0),
+                child: Text(
+                  widget.couponModel.mainTitle,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 14.sp),
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );

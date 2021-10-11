@@ -16,4 +16,12 @@ class LocalStorage {
   Future<String> get countrySelected async {
     return await GetStorage().read("country");
   }
+
+  void saveToggle(int language) async {
+    await GetStorage().write("intLang", language);
+  }
+
+  Future<int> get toggleSelected async {
+    return await GetStorage().read("intLang");
+  }
 }

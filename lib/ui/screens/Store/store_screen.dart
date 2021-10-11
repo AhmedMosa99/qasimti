@@ -26,7 +26,6 @@ class _StoreScreenState extends State<StoreScreen> {
   Widget build(BuildContext context) {
     return GetBuilder<ApiController>(builder: (controller) {
       return Scaffold(
-        backgroundColor: Colors.grey[300],
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
           title: Image.asset(

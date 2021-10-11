@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/components/image/gf_image_overlay.dart';
@@ -11,12 +12,9 @@ class Sliders extends StatefulWidget {
 
 class _SlidersState extends State<Sliders> {
   var controller = Get.put(ApiController());
+  final scrollController = ScrollController();
   @override
   void initState() {
-    setState(() {
-      controller.getSliders();
-      controller.getStores();
-    });
     super.initState();
   }
 
@@ -25,28 +23,45 @@ class _SlidersState extends State<Sliders> {
     return GetBuilder<ApiController>(
       builder: (controller) {
         return controller.allsliders.isEmpty
-            ? Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 6,
-              )
+            ? Container()
             : Container(
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(30)),
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 6,
-                child: controller.allStores == null
+                height: MediaQuery.of(context).size.height / 4,
+                child: controller.allsliders == null
                     ? Center(child: CircularProgressIndicator())
-                    : ListView.builder(
-                        itemCount: controller.allsliders.length,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: GFImageOverlay(
-                              width: MediaQuery.of(context).size.width / 1.08,
-                              image: NetworkImage(
-                                  controller.allsliders[index].image),
-                            ),
-                          );
-                        }),
+                    : Container(
+                        child: CarouselSlider.builder(
+                          itemCount: controller.allsliders.length,
+                          itemBuilder: (BuildContext context, int index,
+                              int pageViewIndex) {
+                            return Padding(
+                              padding: const EdgeInsets.all(0),
+                              child: GFImageOverlay(
+                                colorFilter: new ColorFilter.mode(
+                                    Colors.black.withOpacity(.1),
+                                    BlendMode.color),
+                                borderRadius: BorderRadius.circular(20),
+                                width: MediaQuery.of(context).size.width,
+                                image: NetworkImage(
+                                    controller.allsliders[index].image),
+                              ),
+                            );
+                          },
+                          options: CarouselOptions(
+                            autoPlayInterval: Duration(seconds: 7),
+                            autoPlayAnimationDuration:
+                                Duration(milliseconds: 800),
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            enlargeCenterPage: true,
+                            autoPlay: true,
+                            viewportFraction: 0.9,
+                            aspectRatio: 2.0,
+                            initialPage: 0,
+                          ),
+                        ),
+                      ),
               );
       },
     );

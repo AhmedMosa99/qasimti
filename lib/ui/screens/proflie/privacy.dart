@@ -32,7 +32,7 @@ class _PrivacyState extends State<Privacy> {
           WebView(
             key: _key,
             initialUrl:
-                "https://sad-albattani-37dce1.netlify.app/privacy-policy?lang=${Get.locale.toString()}&webview=1",
+                "https://qasimati.com/privacy-policy?lang=${Get.locale.toString()}&webview=1",
             javascriptMode: JavascriptMode.unrestricted,
             onPageFinished: (finish) {
               setState(() {

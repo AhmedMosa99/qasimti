@@ -1,10 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:qasimati/data/ApiHelper.dart';
 import 'package:qasimati/ui/screens/home/home_screen.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends GetxController {
@@ -17,12 +15,12 @@ class AuthController extends GetxController {
       nameEdit,
       passwordEdit,
       emialEdit;
-
   String name;
   String token;
   String imageUrl = "";
   File imageFile;
   File imageEdit;
+  String verify = "A";
 
   @override
   void onInit() {
@@ -35,13 +33,14 @@ class AuthController extends GetxController {
     loginKey = GlobalKey<FormState>();
     singupFromKey = GlobalKey<FormState>();
     updateForm = GlobalKey<FormState>();
+    getUser();
+    getToken();
     super.onInit();
   }
 
   @override
   void onReady() {
     super.onReady();
-    print(imageFile);
   }
 
   String validateName(String value) {
@@ -60,7 +59,7 @@ class AuthController extends GetxController {
 
   String validatePassword(String value) {
     if (value.length <= 6) {
-      return "password must be of 6";
+      return "Password must be greater than 6".tr;
     }
     return null;
   }
@@ -71,31 +70,34 @@ class AuthController extends GetxController {
         loginKey.currentState.save();
         dynamic response = await ApiHelper.apiHelper
             .login(passwordCotroller.text, emailController.text);
-        print(response.data);
+
         if (response.data['status'] == 404) {
-          Get.snackbar("خطأ ", " غير موجود");
+          Get.snackbar("Wrong".tr, "Not Found".tr);
         } else if (response.data['status'] == 401) {
-          Get.snackbar("خطأ ", "كلمة المرور خاطئة");
+          Get.snackbar("Wrong".tr, "wrong password".tr);
         } else if (response.data['data']['status'] == 200) {
-          saveToken(response.data['data']['access_token'],
-              response.data['data']['name'], response.data['data']['id']);
+          saveToken(
+              response.data['data']['access_token'],
+              response.data['data']['name'],
+              response.data['data']['id'],
+              response.data['data']['verified_at'] ?? "A");
           Get.offAll(HomeScreen());
-          Get.snackbar("تم ", "ت  م تسجيل  الدخول بنجاح");
+          Get.snackbar("Done".tr, "You are logged in successfully".tr);
+          emailController.text = '';
+          passwordCotroller.text = '';
         }
       }
-      emailController.text = '';
-      passwordCotroller.text = '';
     } on Exception catch (e) {
       print(e);
     }
   }
 
-  saveToken(String token, String name, int id) async {
+  saveToken(String token, String name, int id, String verify) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     await pref.setString("token", token);
     await pref.setString("name", name);
     await pref.setInt('id', id);
-
+    await pref.setString("verify", verify ?? "A");
     update();
   }
 
@@ -108,6 +110,7 @@ class AuthController extends GetxController {
     SharedPreferences pref = await SharedPreferences.getInstance();
     token = pref.get('token');
     name = pref.get('name');
+    verify = pref.get('verify');
     update();
   }
 
@@ -116,6 +119,8 @@ class AuthController extends GetxController {
     await pref.remove('token');
     await pref.remove('name');
     await pref.remove("id");
+    name = null;
+    token = null;
     update();
   }
 
@@ -123,24 +128,25 @@ class AuthController extends GetxController {
     try {
       if (singupFromKey.currentState.validate()) {
         singupFromKey.currentState.save();
-
         dynamic response = await ApiHelper.apiHelper.register(
             name: nameController.text,
             url: imageFile,
             password: passwordCotroller.text,
             email: emailController.text);
-        print(response.data);
         if (response.statusCode == 201) {
           saveToken(response.data['data']['access_token'],
-              response.data['data']['name'], response.data['data']['id']);
+              response.data['data']['name'], response.data['data']['id'], "A");
+          token = response.data['data']['access_token'];
+          verifiyEmail();
+
           Get.offAll(HomeScreen());
-          Get.snackbar("تم ", "تسم تسجيل حسابك بنجاح");
+          Get.snackbar("Done".tr, "successfully registered".tr);
           emailController.clear();
           passwordCotroller.clear();
           imageFile = null;
           nameController.clear();
         } else {
-          Get.snackbar(" خطأ ", "تم تسجيل بهذا الايميل مسبقا");
+          Get.snackbar("Wrong".tr, "This email has already been registered".tr);
         }
       } else {
         print('');
@@ -155,33 +161,53 @@ class AuthController extends GetxController {
     dynamic response = await ApiHelper.apiHelper.getUserByToken(token);
     if (response != null) {
       if (response.statusCode == 200) {
+        print(response.data['data']['image']);
         nameEdit.text = response.data['data']['name'];
         emialEdit.text = response.data['data']['email'];
-        print(response.data['data']['image']);
         imageUrl = response.data['data']['image'];
-        print(response.data);
+        verify = response.data['data']['email_verified_at'] ?? "A";
+
+        saveToken(
+            token,
+            response.data['data']['name'],
+            response.data['data']['id'],
+            response.data['data']['email_verified_at'] ?? "A");
+
         update();
       }
     }
   }
 
-  updata() async {
+  upData() async {
     try {
       dynamic response = await ApiHelper.apiHelper
           .update(nameEdit.text, imageEdit, passwordEdit.text, token);
-      print(response.data);
+
       if (response.statusCode == 200) {
-        Get.snackbar("تم ", "تسم تعديل حسابك بنجاح");
-        saveName(response.data['name']);
-        updata();
+        Get.snackbar(
+            "Done".tr, "Your account has been successfully modified".tr);
+        saveName(response.data['data']['name']);
+        update();
         Get.offAll(HomeScreen());
+        nameController.clear();
+        passwordEdit.clear();
       } else {
-        Get.snackbar("خطأ", "تحقق من الإدخال");
+        Get.snackbar("Wrong".tr, "Check input fields".tr);
       }
+      print(response);
     } on Exception catch (e) {
       print(e);
     }
     update();
+  }
+
+  verifiyEmail() async {
+    getToken();
+    dynamic response = await ApiHelper.apiHelper.verifiyEmail(token);
+    print(response);
+    // if (response.statusCode == 422) {
+    //   getUser();
+    // }
   }
 
   @override

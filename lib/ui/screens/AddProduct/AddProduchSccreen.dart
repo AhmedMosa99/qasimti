@@ -3,6 +3,7 @@ import 'package:dashed_container/dashed_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import "package:flutter_datetime_picker/flutter_datetime_picker.dart";
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:intl/intl.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
@@ -34,6 +35,7 @@ class _AddCoubonState extends State<AddCoubon> {
   void initState() {
     country = controller1.allcountries;
     controller.type.text = dropdownValue;
+
     super.initState();
   }
 
@@ -52,8 +54,8 @@ class _AddCoubonState extends State<AddCoubon> {
                     title: Center(
                         child: Text(
                       "Add a discount code".tr,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 18.sp, fontWeight: FontWeight.bold),
                     )),
                     leading: GestureDetector(
                         onTap: () {
@@ -88,7 +90,8 @@ class _AddCoubonState extends State<AddCoubon> {
                             padding: const EdgeInsets.all(8.0),
                             child: Text("Store details".tr,
                                 style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold)),
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.bold)),
                           ),
                           TextFormField(
                             controller: controller.storeName,
@@ -102,7 +105,7 @@ class _AddCoubonState extends State<AddCoubon> {
                                 InputDecoration(labelText: "Store name".tr),
                           ),
                           TextFormField(
-                            controller: controller.linkStore,
+                            controller: controller.storeLink,
                             onSaved: (s) {
                               controller.storeLink.text = s;
                             },
@@ -113,7 +116,7 @@ class _AddCoubonState extends State<AddCoubon> {
                                 InputDecoration(labelText: " Store Link".tr),
                           ),
                           SizedBox(
-                            height: 30,
+                            height: 30.h,
                           ),
                           GestureDetector(
                             onTap: () async {
@@ -124,7 +127,7 @@ class _AddCoubonState extends State<AddCoubon> {
                               borderRadius: 10.0,
                               dashedLength: 3.0,
                               blankLength: 5.0,
-                              strokeWidth: 2.0,
+                              strokeWidth: 2.0.w,
                               child: Container(
                                 height: MediaQuery.of(context).size.height / 14,
                                 decoration: BoxDecoration(
@@ -142,14 +145,14 @@ class _AddCoubonState extends State<AddCoubon> {
                                       color: Theme.of(context).primaryColor,
                                     ),
                                     SizedBox(
-                                      width: 10,
+                                      width: 10.w,
                                     ),
                                     Text(
                                         controller.fileImage != null
                                             ? "Done".tr
                                             : "Upload Logo".tr,
                                         style: TextStyle(
-                                            fontSize: 16,
+                                            fontSize: 16.sp,
                                             fontWeight: FontWeight.bold)),
                                   ],
                                 ),
@@ -161,7 +164,7 @@ class _AddCoubonState extends State<AddCoubon> {
                             child: Center(
                                 child: Text(
                               "Jpg".tr,
-                              style: TextStyle(fontSize: 12),
+                              style: TextStyle(fontSize: 12.sp),
                             )),
                           ),
                           MultiSelectDialogFormField(
@@ -171,7 +174,8 @@ class _AddCoubonState extends State<AddCoubon> {
                             title: Text("Countries".tr),
                             key: key,
                             items: country
-                                .map((e) => MultiSelectItem(e.name, e.name))
+                                .map((e) =>
+                                    MultiSelectItem(e.id.toString(), e.name))
                                 .toList(),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -215,7 +219,8 @@ class _AddCoubonState extends State<AddCoubon> {
                             padding: const EdgeInsets.all(8.0),
                             child: Text("Discount Details".tr,
                                 style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold)),
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.bold)),
                           ),
                           Row(
                             children: [
@@ -242,11 +247,15 @@ class _AddCoubonState extends State<AddCoubon> {
                                       },
                                       items: [
                                         DropdownMenuItem(
-                                          child: Text("copuon".tr),
+                                          child: Text("copuon".tr,
+                                              style:
+                                                  TextStyle(fontSize: 14.sp)),
                                           value: 'coupon',
                                         ),
                                         DropdownMenuItem(
-                                          child: Text("offer".tr),
+                                          child: Text("offer".tr,
+                                              style:
+                                                  TextStyle(fontSize: 14.sp)),
                                           value: 'offer',
                                         ),
                                       ],
@@ -265,8 +274,8 @@ class _AddCoubonState extends State<AddCoubon> {
                                   onSaved: (s) {
                                     controller.code.text = s;
                                   },
-                                  decoration:
-                                      InputDecoration(labelText: "Link offer"),
+                                  decoration: InputDecoration(
+                                      labelText: "Link offer".tr),
                                 )
                               : TextFormField(
                                   controller: controller.link,
@@ -375,9 +384,7 @@ class _AddCoubonState extends State<AddCoubon> {
                             decoration: InputDecoration(
                                 labelText: " Descreotion(optional)".tr),
                           ),
-                          SizedBox(
-                            height: 30,
-                          ),
+                          SizedBox(height: 30.h),
                         ],
                       ),
                     ),
@@ -404,33 +411,33 @@ class _AddCoubonState extends State<AddCoubon> {
                           Text(
                             'Addition Terms'.tr,
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
+                                fontWeight: FontWeight.bold, fontSize: 15.sp),
                           ),
                           SizedBox(
-                            height: 10,
+                            height: 10.h,
                           ),
                           Text(
                             'e-shop'.tr,
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                             ),
                           ),
                           SizedBox(
-                            height: 10,
+                            height: 10.h,
                           ),
                           Text(
-                            'valid'.tr,
+                            'Valid'.tr,
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                             ),
                           ),
                           SizedBox(
-                            height: 10,
+                            height: 10.h,
                           ),
                           Text(
                             'frequent'.tr,
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                             ),
                           ),
                         ],
@@ -438,7 +445,7 @@ class _AddCoubonState extends State<AddCoubon> {
                     ),
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 15.h,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(15.0),

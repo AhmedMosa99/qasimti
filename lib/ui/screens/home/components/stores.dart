@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:qasimati/controller/ApiController.dart';
 import 'package:qasimati/ui/screens/Store/store_screen.dart';
 
@@ -17,38 +17,60 @@ class _StoresComponetState extends State<StoresComponet> {
     return GetBuilder<ApiController>(
       builder: (controller) {
         return controller.allStores.isEmpty
-            ? Container(
-                height: MediaQuery.of(context).size.height / 9,
-              )
+            ? Container()
             : Container(
-                height: MediaQuery.of(context).size.height / 9,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: controller.allStores.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          controller.selectedStore =
-                              controller.allStores[index].name;
+                height: MediaQuery.of(context).size.height / 7,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: 10.h),
+                      child: Text(
+                        "Stores".tr,
+                        style: TextStyle(
+                            fontSize: 14.sp, fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: controller.allStores.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  controller.selectedStore =
+                                      controller.allStores[index].name;
 
-                          controller.getAllCouponInStore();
-                          Get.to(StoreScreen());
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: GFAvatar(
-                            shape: GFAvatarShape.square,
-                            foregroundColor: Colors.transparent,
-                            backgroundColor: Colors.white,
-                            size: MediaQuery.of(context).size.width / 5,
-                            child: Image(
-                              image: NetworkImage(
-                                  controller.allStores[index].image),
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
+                                  controller.getAllCouponInStore();
+                                  Get.to(StoreScreen());
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(
+                                      left: Get.locale.toString() == "ar"
+                                          ? 10.w
+                                          : 0,
+                                      right: Get.locale.toString() == "en"
+                                          ? 10.w
+                                          : 0),
+                                  decoration: BoxDecoration(
+                                    border:
+                                        Border.all(color: Color(0xFFD1D8E5)),
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  child: Image.network(
+                                    controller.allStores[index].image,
+                                    width: 100.w,
+                                    height: 60.h,
+                                  ),
+                                ),
+                              );
+                            }),
+                      ),
+                    ),
+                  ],
+                ),
               );
       },
     );

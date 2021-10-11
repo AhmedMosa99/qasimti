@@ -33,7 +33,7 @@ class AddController extends GetxController {
     image = await picker.pickImage(
       source: ImageSource.gallery,
     );
-    fileImage = File(image.path);
+    fileImage = File(image.path ?? "");
     update();
   }
 
@@ -84,7 +84,6 @@ class AddController extends GetxController {
       int id = preferences.get('id');
       addKey.currentState.save();
       var selectedCountryJson = jsonEncode(selectedCountry);
-
       Future<dynamic> response = ApiHelper.apiHelper.addCoupon(
         nameStore: storeName.text,
         linkstore: storeLink.text,
@@ -97,11 +96,11 @@ class AddController extends GetxController {
         id: id,
         type: type.text,
       );
-      print(response);
+
       response.then((value) {
         if (value['status'] == 200) {
           Get.snackbar(
-            "Done ",
+            "Done",
             "Your request has been submitted successfully",
           );
           Timer(Duration(seconds: 2), () {
@@ -116,6 +115,7 @@ class AddController extends GetxController {
           linkStore.clear();
           dateinputEnter.clear();
           dateinputEnd.clear();
+          link.clear();
           fileImage = null;
         } else {
           Get.snackbar(

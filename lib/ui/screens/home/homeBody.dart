@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:qasimati/ui/screens/home/components/categories.dart';
 import 'package:qasimati/ui/screens/home/components/copouns.dart';
 import 'package:qasimati/ui/screens/home/components/slider.dart';
@@ -18,20 +20,25 @@ class _HomeBodyState extends State<HomeBody> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
+      child: ListView(
         children: [
-          Sliders(),
-          StoresComponet(),
-          SizedBox(
-            height: 5,
+          Container(
+              margin: EdgeInsets.only(top: 15.h),
+              child: Sliders()),
+          Container(
+              margin: EdgeInsets.only(
+                  top: 12.h,
+                  left: Get.locale.toString() == "en" ? 20.w : 0,
+                  right: Get.locale.toString() == "ar" ? 20.w : 0),
+              child: StoresComponet()),
+          Container(
+            margin: EdgeInsets.only(
+                top: 12.h,
+                left: Get.locale.toString() == "en" ? 20.w : 0,
+                right: Get.locale.toString() == "ar" ? 20.w : 0),
+            child: Categorylist(),
           ),
-          Categorylist(),
-          SizedBox(
-            height: 10,
-          ),
-          Expanded(
-            child: Copouns(),
-          ),
+          Copouns(),
         ],
       ),
     );

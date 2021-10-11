@@ -36,18 +36,18 @@ class CouponModel {
   });
 
   CouponModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'] ?? "";
-    type = json['type'] ?? "";
-    storeId = json['store_id'] ?? "";
-    mainTitle = json['main_title'] ?? "";
+    id = json['id'] ;
+    type = json['type'] ;
+    storeId = json['store_id'] ;
+    mainTitle = json['main_title'] ;
     link = json['link'] ?? "";
-    description = json['description'] ?? "";
-    startDate = json['start_date'] ?? "";
-    endDate = json['end_date'] ?? "";
-    tagId = json['tag_id'] ?? 0;
-    code = json['code'] ?? "";
-    enable = json['enable'] ?? "";
-    isFavaiort = json['is_favaiort'] ?? "";
+    description = json['description'] ;
+    startDate = json['start_date']  ;
+    endDate = json['end_date'] ;
+    tagId = json['tag_id'] ;
+    code = json['code'];
+    enable = json['enable'];
+    isFavaiort = json['is_favaiort'] ;
     store = json['store'] != null ? new StoreModel.fromJson(json['store']) : "";
     tag = json['tag'] != null ? new Tag.fromJson(json['tag']) : "";
   }

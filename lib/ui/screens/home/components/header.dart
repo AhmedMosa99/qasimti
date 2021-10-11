@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:qasimati/controller/ApiController.dart';
-
-import 'package:qasimati/controller/appLanguage.dart';
 import 'package:qasimati/ui/screens/Search/seaechScreen.dart';
 
 class Header extends StatefulWidget implements PreferredSizeWidget {
@@ -20,7 +20,7 @@ class Header extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _HeaderState extends State<Header> {
-  var controller = Get.put(ApiController());
+  var controller = Get.find<ApiController>();
   String dropdown;
 
   @override
@@ -32,13 +32,14 @@ class _HeaderState extends State<Header> {
           shadowColor: Theme.of(context).primaryColor,
           centerTitle: true,
           leading: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: 20),
             child: GestureDetector(
               onTap: () {
                 Get.to(SearchScreen());
               },
               child: Icon(
-                Icons.search,
+                Icons.search_rounded,
+                size: MediaQuery.of(context).size.width / 13,
               ),
             ),
           ),
@@ -50,102 +51,48 @@ class _HeaderState extends State<Header> {
           ),
           actions: [
             Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.w),
               child: DropdownButtonHideUnderline(
                 child: GFDropdown(
-                  elevation: 0,
-                  padding: EdgeInsets.zero,
-                  dropdownColor: Theme.of(context).primaryColor,
+                  elevation: 12,
+                  dropdownColor: Colors.white,
                   dropdownButtonColor: Theme.of(context).primaryColor,
                   iconEnabledColor: Colors.white,
                   iconDisabledColor: Colors.white,
                   value: controller.dropdownValue,
                   icon: Visibility(
                       visible: controller.dropdownValue == null,
-                      child: Icon(Icons.arrow_downward)),
+                      child: FaIcon(Icons.public,size: MediaQuery.of(context).size.width / 13),),
                   onChanged: (newValue) {
                     setState(() {
                       dropdown = newValue;
-                      controller.dropdownValue = dropdown;
-                      print(controller1.dropdownValue);
                       controller1.dropdownValue = newValue;
-                      controller1.selectCountry = newValue;
                       controller1.saveCountry();
                       controller1.getSliders();
                       controller1.getStores();
                       controller1.getCategories();
+                      controller.getAllCouponInStore();
+                      controller.getCouponsByCategory(controller.selectCategoryName);
+
                     });
                   },
                   items: controller1.allcountries
                       .map((value) => DropdownMenuItem(
                             value: value.shortcut,
-                            child: Row(
-                              children: [
-                                Image(
-                                  width: MediaQuery.of(context).size.width / 10,
-                                  height:
-                                      MediaQuery.of(context).size.height / 20,
-                                  image: NetworkImage(value.image),
+                            child: Container(
+                              decoration: BoxDecoration(),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child: Image.network(
+                                  value.image,
+                                  width: MediaQuery.of(context).size.width / 9,
                                 ),
-                                // Text(
-                                //   value.shortcut,
-                                //   style: TextStyle(color: Colors.white),
-                                // ),
-                              ],
+                              ),
                             ),
                           ))
                       .toList(),
                 ),
               ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 25,
-            ),
-            Container(
-              child: GetBuilder<AppLanguage>(
-                  init: AppLanguage(),
-                  builder: (controller) {
-                    return Container(
-                      child: DropdownButtonHideUnderline(
-                        child: GFDropdown(
-                          padding: EdgeInsets.zero,
-                          dropdownColor: Theme.of(context).primaryColor,
-                          dropdownButtonColor: Theme.of(context).primaryColor,
-                          value: Get.locale.toString(),
-                          focusColor: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.circular(20),
-                          elevation: 0,
-                          icon: Visibility(
-                              visible: Get.locale.toString() == null,
-                              child: Icon(Icons.arrow_downward)),
-                          onChanged: (newValue) {
-                            controller.changeLanguage(newValue);
-                            Get.updateLocale(Locale(newValue));
-                            controller1.getCategories();
-                            controller1.getCouponsByCategory(
-                                controller1.selectCategoryName);
-                            controller1.getStores();
-                            controller1.getAllCouponInStore();
-                          },
-                          items: [
-                            DropdownMenuItem(
-                              child: Text(
-                                "English",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              value: 'en',
-                            ),
-                            DropdownMenuItem(
-                              child: Text(
-                                "العربية",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              value: 'ar',
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
             ),
           ],
           backgroundColor: Theme.of(context).primaryColor,

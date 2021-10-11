@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:qasimati/ui/screens/Store/allStores.dart';
 import 'package:qasimati/ui/screens/home/components/header.dart';
 import 'package:qasimati/ui/screens/home/homeBody.dart';
@@ -13,10 +15,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 1;
+  int _currentIndex = 0;
   final List<Widget> children = [
-    AllStores(),
     HomeBody(),
+    AllStores(),
     ProfileScreen(),
   ];
   void onTabTapped(int index) {
@@ -33,8 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
-      appBar: _currentIndex == 1 ? Header() : null,
+      appBar: _currentIndex == 0 ? Header() : null,
       extendBody: true,
       body: children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -46,24 +47,24 @@ class _HomeScreenState extends State<HomeScreen> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.store,
-              size: 30,
-            ),
-            label: 'Stores'.tr,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              size: 30,
+              Icons.home_rounded,
+              size: 30.w,
             ),
             label: 'Home'.tr,
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.menu,
+              Icons.store,
+              size: 30.w,
+            ),
+            label: 'Stores'.tr,
+          ),
+          BottomNavigationBarItem(
+            icon: FaIcon(
+              Icons.person_outline,
               size: 30,
             ),
-            label: 'Menu'.tr,
+            label: 'Profile'.tr,
           ),
         ],
       ),

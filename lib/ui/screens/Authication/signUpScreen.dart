@@ -1,54 +1,38 @@
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/getwidget.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:qasimati/controller/AuthController.dart';
+import 'package:qasimati/ui/screens/Authication/LoginScreen.dart';
+import 'package:qasimati/ui/screens/home/home_screen.dart';
+import 'package:qasimati/ui/widgets/CustomButton.dart';
+import 'package:qasimati/ui/widgets/CustomTextFeild.dart';
 
-class SignUp extends StatefulWidget {
-  @override
-  _SignUpState createState() => _SignUpState();
-}
-
-class _SignUpState extends State<SignUp> {
-  AuthController controller;
-  File _image;
-  imgFromGallery() async {
-    try {
-      ImagePicker picker = ImagePicker();
-      XFile image = await picker.pickImage(source: ImageSource.gallery);
-
-      setState(() {
-        _image = File(image.path);
-
-        controller.imageFile = _image;
-        print("${controller.imageFile}");
-      });
-    } on Exception catch (e) {
-      print(e);
-    }
-  }
-
-  @override
-  void initState() {
-    controller = Get.find<AuthController>();
-
-    super.initState();
-  }
-
+// ignore: must_be_immutable
+class SignUp extends StatelessWidget {
+  var controller = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Colors.white,
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.arrow_forward_ios),
+            onPressed: () {
+              Get.offAll(HomeScreen());
+            },
+          ),
+        ],
         title: Text(
-          "Sign Up",
+          "Sign Up".tr,
           style: TextStyle(
-              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+              fontSize: 16.sp,
+              fontWeight: FontWeight.bold,
+              color: Colors.white),
         ),
         leading: GestureDetector(
             onTap: () {
@@ -61,147 +45,76 @@ class _SignUpState extends State<SignUp> {
             )),
       ),
       body: Container(
-        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 15),
+        margin: EdgeInsets.symmetric(vertical: 10),
         child: ListView(
           children: [
-            GetBuilder<AuthController>(
-              builder: (controller) {
-                return Form(
-                  key: controller.singupFromKey,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
+            GetBuilder<AuthController>(builder: (_) {
+              return Form(
+                key: controller.singupFromKey,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+
+                        // changes position of shadow
+                        ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Image.asset(
+                            'assets/images/Logo.png',
+                            width: 200.w,
                           ),
-                        ], // changes position of shadow
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              imgFromGallery();
-                            },
-                            child: Center(
-                              child: GFAvatar(
-                                radius: 50,
-                                backgroundColor: Theme.of(context).primaryColor,
-                                child: _image != null
-                                    ? ClipRRect(
-                                        borderRadius: BorderRadius.circular(50),
-                                        child: Image.file(
-                                          _image,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              3,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      )
-                                    : Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors.grey[200],
-                                            borderRadius:
-                                                BorderRadius.circular(50)),
-                                        width: 100,
-                                        height: 100,
-                                        child: Icon(
-                                          Icons.camera_alt,
-                                          color: Colors.grey[800],
-                                        ),
-                                      ),
-                              ),
-                            ),
-                          ),
-                          TextFormField(
-                            controller: controller.nameController,
-                            validator: (v) {
-                              return controller.validateName(v);
-                            },
-                            onSaved: (s) {
-                              controller.nameController.text = s;
-                            },
-                            decoration: InputDecoration(
-                              labelText: "UserName".tr,
-                              prefixIcon: Icon(Icons.person),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TextFormField(
-                            validator: (v) {
-                              return controller.validateEmail(v);
-                            },
-                            onSaved: (s) {
-                              controller.emailController.text = s;
-                            },
-                            decoration: InputDecoration(
-                              labelText: "Email".tr,
-                              prefixIcon: Icon(Icons.email),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TextFormField(
-                            controller: controller.passwordCotroller,
-                            validator: (v) {
-                              return controller.validatePassword(v);
-                            },
-                            onSaved: (s) {
-                              controller.passwordCotroller.text = s;
-                            },
-                            decoration: InputDecoration(
-                              labelText: "password".tr,
-                              prefixIcon: Icon(Icons.lock_outline),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height / 12,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: GFButton(
-                                shape: GFButtonShape.pills,
-                                color: Theme.of(context).primaryColor,
-                                child: Text(
-                                  "Sign Up".tr,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 16),
-                                ),
-                                onPressed: () {
-                                  controller.checkSignUp();
-                                },
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                        ],
-                      ),
+                        ),
+                        CustomTextFeild(
+                            'Name'.tr, controller.nameController, 'Name'.tr),
+                        SizedBox(
+                          height: 15.h,
+                        ),
+                        CustomTextFeild('Email'.tr, controller.emailController,
+                            'example@mail.com'),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        CustomTextFeild('password'.tr,
+                            controller.passwordCotroller, "********", true),
+                        SizedBox(
+                          height: 15.h,
+                        ),
+                        Container(
+                            width: 350.w,
+                            height: 60.h,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30)),
+                            child: CustomButton("Sign Up".tr, () {
+                              controller.checkSignUp();
+                            }, Theme.of(context).primaryColor, Colors.white)),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        Container(
+                            width: 350.w,
+                            height: 60.h,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30)),
+                            child: CustomButton("Sign In".tr, () {
+                              Get.offAll(Login());
+                              controller.emailController.clear();
+                              controller.passwordCotroller.clear();
+                              controller.nameController.clear();
+                            }, Colors.white, Colors.black)),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                      ],
                     ),
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            }),
           ],
         ),
       ),
