@@ -79,7 +79,7 @@ class AddController extends GetxController {
   }
 
   checkAdd() async {
-    if (addKey.currentState.validate()) {
+    if (addKey.currentState.validate() && fileImage != null) {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       int id = preferences.get('id');
       addKey.currentState.save();
@@ -100,8 +100,8 @@ class AddController extends GetxController {
       response.then((value) {
         if (value['status'] == 200) {
           Get.snackbar(
-            "Done",
-            "Your request has been submitted successfully",
+            "Done".tr,
+            "Your request has been submitted successfully".tr,
           );
           Timer(Duration(seconds: 2), () {
             Get.offAll(HomeScreen());
@@ -117,17 +117,12 @@ class AddController extends GetxController {
           dateinputEnd.clear();
           link.clear();
           fileImage = null;
-        } else {
-          Get.snackbar(
-            "check all ",
-            "This is the Getx default SnackBar",
-          );
         }
       });
     } else {
       Get.snackbar(
-        "check all ",
-        "This is the Getx default SnackBar",
+        "Sorry".tr,
+        "Check all entries".tr,
       );
     }
   }

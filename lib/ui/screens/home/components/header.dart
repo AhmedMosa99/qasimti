@@ -61,8 +61,10 @@ class _HeaderState extends State<Header> {
                   iconDisabledColor: Colors.white,
                   value: controller.dropdownValue,
                   icon: Visibility(
-                      visible: controller.dropdownValue == null,
-                      child: FaIcon(Icons.public,size: MediaQuery.of(context).size.width / 13),),
+                    visible: controller.dropdownValue == null,
+                    child: FaIcon(Icons.public,
+                        size: MediaQuery.of(context).size.width / 13),
+                  ),
                   onChanged: (newValue) {
                     setState(() {
                       dropdown = newValue;
@@ -72,8 +74,8 @@ class _HeaderState extends State<Header> {
                       controller1.getStores();
                       controller1.getCategories();
                       controller.getAllCouponInStore();
-                      controller.getCouponsByCategory(controller.selectCategoryName);
-
+                      controller
+                          .getCouponsByCategory(controller.selectCategoryName);
                     });
                   },
                   items: controller1.allcountries
@@ -81,12 +83,9 @@ class _HeaderState extends State<Header> {
                             value: value.shortcut,
                             child: Container(
                               decoration: BoxDecoration(),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(50),
-                                child: Image.network(
-                                  value.image,
-                                  width: MediaQuery.of(context).size.width / 9,
-                                ),
+                              child: Image.network(
+                                value.image,
+                                width: MediaQuery.of(context).size.width / 9,
                               ),
                             ),
                           ))

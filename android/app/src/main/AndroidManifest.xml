@@ -2,7 +2,7 @@
     package="com.example.qasimati">
          <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="qasimati"
+        android:label="قسيمتي"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

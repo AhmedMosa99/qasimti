@@ -39,11 +39,14 @@ class _CategorylistState extends State<Categorylist> {
                     ),
                   ),
                   Container(
-                    child: Row(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height / 23,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
                       children: [
                         GestureDetector(
                           onTap: () {
-                            c.selectCategory = 0;
+                            c.selectCategory = -1;
                             c.getCouponsByCategory(c.selectCategoryName);
                             c.update();
                           },
@@ -53,7 +56,7 @@ class _CategorylistState extends State<Categorylist> {
                             decoration: BoxDecoration(
                                 border: Border.all(color: Color(0xFFD1D8E5)),
                                 borderRadius: BorderRadius.circular(20),
-                                color: c.selectCategory == 0
+                                color: c.selectCategory == -1
                                     ? Theme.of(context)
                                         .primaryColor
                                         .withOpacity(.8)
@@ -61,7 +64,7 @@ class _CategorylistState extends State<Categorylist> {
                             child: Text(
                               "All".tr,
                               style: TextStyle(
-                                color: c.selectCategory == 0
+                                color: c.selectCategory == -1
                                     ? Colors.white
                                     : Colors.black.withOpacity(.5),
                                 fontWeight: FontWeight.bold,
@@ -70,16 +73,16 @@ class _CategorylistState extends State<Categorylist> {
                             ),
                           ),
                         ),
-                        Expanded(
-                          child: Container(
-                            height: MediaQuery.of(context).size.height / 23,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: c.allCategories.length - 1,
-                              itemBuilder: (context, index) =>
-                                  buildCategory(index + 1, context),
-                            ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.zero,
+                          scrollDirection: Axis.horizontal,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: c.allCategories.length,
+                          itemBuilder: (context, index) => Row(
+                            children: [
+                              buildCategory(index, context),
+                            ],
                           ),
                         ),
                       ],
@@ -91,58 +94,69 @@ class _CategorylistState extends State<Categorylist> {
     );
   }
 
-  Container buildCategory(int index, BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(
-          left: Get.locale.toString() == "ar" ? 5.w : 5.w,
-          right: Get.locale.toString() == "en" ? 5.w : 5.w),
-      child: GetBuilder<ApiController>(
-        builder: (controller) {
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                controller.selectCategory = index;
-                controller.selectCategoryName =
-                    controller.allCategories[index].name;
-                controller
-                    .getCouponsByCategory(controller.allCategories[index].name);
-              });
-            },
-            child: controller.allCategories == null
-                ? CircularProgressIndicator()
-                : Container(
-                    padding: const EdgeInsets.all(3),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xFFD1D8E5)),
-                        borderRadius: BorderRadius.circular(20),
-                        color: index == controller.selectCategory
-                            ? Theme.of(context).primaryColor.withOpacity(.8)
-                            : Colors.white),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        controller.allCategories[index].image != null
-                            ? Image.network(
-                                controller.allCategories[index].image,
-                              )
-                            : Container(),
-                        SizedBox(
-                          width: 10,
+  buildCategory(int index, BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          margin: EdgeInsets.only(
+              left: Get.locale.toString() == "ar" ? 5.w : 5.w,
+              right: Get.locale.toString() == "en" ? 5.w : 5.w),
+          child: GetBuilder<ApiController>(
+            builder: (controller) {
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    controller.selectCategory = index;
+                    controller.selectCategoryName =
+                        controller.allCategories[index].name;
+                    controller.getCouponsByCategory(
+                        controller.allCategories[index].name);
+                  });
+                },
+                child: controller.allCategories == null
+                    ? CircularProgressIndicator()
+                    : Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 0),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Color(0xFFD1D8E5)),
+                            borderRadius: BorderRadius.circular(20),
+                            color: index == controller.selectCategory
+                                ? Theme.of(context).primaryColor.withOpacity(.8)
+                                : Colors.white),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            controller.allCategories[index].image != null
+                                ? Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 3),
+                                    child: Image.network(
+                                      controller.allCategories[index].image,
+                                      color: index==controller.selectCategory?Colors.white:Colors.black,
+                                    ),
+                                  )
+                                : Container(),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            Text(
+                              controller.allCategories[index].name ?? "",
+                              style: TextStyle(
+                                fontSize:14.sp,
+                                  color: index == controller.selectCategory
+                                      ? Colors.white
+                                      : Colors.black.withOpacity(.5),
+                                  fontWeight: FontWeight.bold),
+                            )
+                          ],
                         ),
-                        Text(
-                          controller.allCategories[index].name ?? "",
-                          style: TextStyle(
-                              color: index == controller.selectCategory
-                                  ? Colors.white
-                                  : Colors.black.withOpacity(.5),
-                              fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
-                  ),
-          );
-        },
-      ),
+                      ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

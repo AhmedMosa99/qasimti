@@ -46,50 +46,54 @@ class ForgetPassword extends StatelessWidget {
         margin: EdgeInsets.symmetric(vertical: 10),
         child: ListView(
           children: [
-            GetBuilder<AuthController>(builder: (_) {
-              return Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
+            GetBuilder<AuthController>(builder: (controller) {
+              return Form(
+                key: controller.forgetKey,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
 
-                      // changes position of shadow
-                      ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Image.asset(
-                          'assets/images/Logo.png',
-                          width: 200.w,
+                        // changes position of shadow
                         ),
-                      ),
-                      SizedBox(
-                        height: 30.h,
-                      ),
-                      Text(
-                        "Please".tr,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16.sp),
-                      ),
-                      SizedBox(
-                        height: 30.h,
-                      ),
-                      CustomTextFeild('Email'.tr, controller.emailController,
-                          'example@mail.com'),
-                      SizedBox(
-                        height: 30.h,
-                      ),
-                      Container(
-                          width: 350.w,
-                          height: 60.h,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30)),
-                          child: CustomButton("Send".tr, () {
-                            controller.checkLogin();
-                          }, Theme.of(context).primaryColor, Colors.white)),
-                    ],
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Image.asset(
+                            'assets/images/Logo.png',
+                            width: 200.w,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30.h,
+                        ),
+                        Text(
+                          "Please".tr,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16.sp),
+                        ),
+                        SizedBox(
+                          height: 30.h,
+                        ),
+                        CustomTextFeild('Email'.tr, controller.emailController,
+                            'example@mail.com'),
+                        SizedBox(
+                          height: 30.h,
+                        ),
+                        Container(
+                            width: 350.w,
+                            height: 46.h,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30)),
+                            child: CustomButton("Send".tr, () {
+                              controller.forgetPassword();
+                              // Get.off(Login());
+                            }, Theme.of(context).primaryColor, Colors.white)),
+                      ],
+                    ),
                   ),
                 ),
               );

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
 import 'package:getwidget/components/avatar/gf_avatar.dart';
@@ -72,15 +73,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   child: Column(
                                     children: [
                                       GFAvatar(
-                                        backgroundColor: Theme.of(context)
-                                            .primaryColor
-                                            .withOpacity(.2),
-                                        foregroundColor:
-                                            Theme.of(context).primaryColor,
-                                        size: 70.w,
-                                        child: Image.asset(
-                                            'assets/images/AddUser.png'),
-                                      ),
+                                          backgroundColor: Theme.of(context)
+                                              .primaryColor
+                                              .withOpacity(.1),
+                                          foregroundColor:
+                                              Theme.of(context).primaryColor,
+                                          size: 70.w,
+                                          child: SvgPicture.asset(
+                                            'assets/images/Add User.svg',
+                                            width: 24.w,
+                                            height: 24.h,
+                                          )),
                                       Text(
                                         "Sign Up".tr,
                                         style: TextStyle(
@@ -102,15 +105,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   child: Column(
                                     children: [
                                       GFAvatar(
-                                        backgroundColor: Theme.of(context)
-                                            .primaryColor
-                                            .withOpacity(.2),
-                                        foregroundColor:
-                                            Theme.of(context).primaryColor,
-                                        size: 70.w,
-                                        child: Image.asset(
-                                            'assets/images/Light-Profile.png'),
-                                      ),
+                                          backgroundColor: Theme.of(context)
+                                              .primaryColor
+                                              .withOpacity(.1),
+                                          foregroundColor:
+                                              Theme.of(context).primaryColor,
+                                          size: 70.w,
+                                          child: SvgPicture.asset(
+                                            'assets/images/Profile.svg',
+                                            width: 24.w,
+                                            height: 24.h,
+                                          )),
                                       Text(
                                         "Sign In".tr,
                                         style: TextStyle(
@@ -135,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 GFAvatar(
                                   backgroundColor: Theme.of(context)
                                       .primaryColor
-                                      .withOpacity(.2),
+                                      .withOpacity(.1),
                                   foregroundColor:
                                       Theme.of(context).primaryColor,
                                   size: 70.w,
@@ -238,10 +243,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   borderRadius: BorderRadius.circular(15.w),
                                   color: Theme.of(context)
                                       .primaryColor
-                                      .withOpacity(.2)),
-                              child: Image.asset(
-                                "assets/images/Stroke 7.png",
-                                width: 50.w,
+                                      .withOpacity(.1)),
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                child: SvgPicture.asset(
+                                  "assets/images/Iconly-Light-Ticket.svg",
+                                  width: 24.w,
+                                  height: 24.h,
+                                  color: Color(0xff8A5EA4),
+                                ),
                               ),
                             ),
                             title: Text(
@@ -264,15 +274,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   borderRadius: BorderRadius.circular(15.w),
                                   color: Theme.of(context)
                                       .primaryColor
-                                      .withOpacity(.2)),
+                                      .withOpacity(.1)),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: FaIcon(
                                   Icons.language,
-                                  size: 30.w,
-                                  color: Theme.of(context)
-                                      .primaryColor
-                                      .withOpacity(.7),
+                                  size: 28.w,
+                                  color: Color(0xff8A5EA4),
                                 ),
                               ),
                             ),
@@ -334,7 +342,75 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Divider(),
                         GestureDetector(
                           onTap: () {
-                            Get.to(Favorite());
+                            if (controller.name == null) {
+                              Get.defaultDialog(
+                                title: "Sorry".tr,
+                                titleStyle: TextStyle(color: Colors.black87),
+                                content: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "You can add coupons to your favourite when you log in"
+                                            .tr,
+                                        style: TextStyle(
+                                            fontSize: 16.sp,
+                                            color: Colors.black54),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width /
+                                          19,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          decoration: BoxDecoration(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(15.w)),
+                                          child: TextButton(
+                                              onPressed: () {
+                                                Get.off(Login());
+                                              },
+                                              child: Text(
+                                                "Sign In".tr,
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              )),
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          decoration: BoxDecoration(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
+                                          child: TextButton(
+                                              onPressed: () {
+                                                Get.off(SignUp());
+                                              },
+                                              child: Text(
+                                                "Sign Up".tr,
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              )),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            } else {
+                              Get.to(Favourite());
+                            }
                           },
                           child: Container(
                               child: ListTile(
@@ -343,20 +419,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   borderRadius: BorderRadius.circular(15.w),
                                   color: Theme.of(context)
                                       .primaryColor
-                                      .withOpacity(.2)),
+                                      .withOpacity(.1)),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: FaIcon(
                                   Icons.favorite_outline,
-                                  color: Theme.of(context)
-                                      .primaryColor
-                                      .withOpacity(.7),
-                                  size: 30.w,
+                                  color: Color(0xff8A5EA4),
+                                  size: 28.w,
                                 ),
                               ),
                             ),
                             title: Text(
-                              "Favorite".tr,
+                              "Favourite".tr,
                               style: TextStyle(
                                   fontSize: 16.sp,
                                   color: Colors.black,
@@ -409,15 +483,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   borderRadius: BorderRadius.circular(15.w),
                                   color: Theme.of(context)
                                       .primaryColor
-                                      .withOpacity(.2)),
+                                      .withOpacity(.1)),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: FaIcon(
-                                  Icons.info_rounded,
-                                  color: Theme.of(context)
-                                      .primaryColor
-                                      .withOpacity(.7),
-                                  size: 30.w,
+                                  Icons.info_outline_rounded,
+                                  color: Color(0xff8A5EA4),
+                                  size: 28.w,
                                 ),
                               ),
                             ),
@@ -443,15 +515,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   borderRadius: BorderRadius.circular(15.w),
                                   color: Theme.of(context)
                                       .primaryColor
-                                      .withOpacity(.2)),
+                                      .withOpacity(.1)),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: FaIcon(
                                   Icons.email_outlined,
-                                  color: Theme.of(context)
-                                      .primaryColor
-                                      .withOpacity(.7),
-                                  size: 30.w,
+                                  color: Color(0xff8A5EA4),
+                                  size: 28.w,
                                 ),
                               ),
                             ),
@@ -478,15 +548,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   borderRadius: BorderRadius.circular(15.w),
                                   color: Theme.of(context)
                                       .primaryColor
-                                      .withOpacity(.2)),
+                                      .withOpacity(.1)),
                               child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.asset(
-                                    "assets/images/question.png",
-                                    color: Theme.of(context)
-                                        .primaryColor
-                                        .withOpacity(.8),
-                                  )),
+                                padding: const EdgeInsets.all(8.0),
+                                child: FaIcon(
+                                  Icons.question_answer_outlined,
+                                  color: Color(0xff8A5EA4),
+                                  size: 28.w,
+                                ),
+                              ),
                             ),
                             title: Text(
                               "Common questions".tr,
@@ -510,14 +580,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   borderRadius: BorderRadius.circular(15.w),
                                   color: Theme.of(context)
                                       .primaryColor
-                                      .withOpacity(.2)),
+                                      .withOpacity(.1)),
                               child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.asset(
-                                    "assets/images/Iconly-Light-Paper.png",
-                                    color: Theme.of(context)
-                                        .primaryColor
-                                        .withOpacity(.8),
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: SvgPicture.asset(
+                                    "assets/images/Paper.svg",
+                                    color: Color(0xff8A5EA4),
+                                    width: 24.w,
+                                    height: 24.h,
                                   )),
                             ),
                             title: Text(
@@ -542,15 +612,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   borderRadius: BorderRadius.circular(15.w),
                                   color: Theme.of(context)
                                       .primaryColor
-                                      .withOpacity(.2)),
+                                      .withOpacity(.1)),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: FaIcon(
-                                  Icons.privacy_tip,
-                                  color: Theme.of(context)
-                                      .primaryColor
-                                      .withOpacity(.7),
-                                  size: 30.w,
+                                  Icons.privacy_tip_outlined,
+                                  color: Color(0xff8A5EA4),
+                                  size: 28.w,
                                 ),
                               ),
                             ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+
 import 'package:qasimati/controller/ApiController.dart';
 import 'package:qasimati/models/coupon.dart';
 import 'package:qasimati/ui/screens/webView/webView.dart';
@@ -29,21 +30,24 @@ class _ItemCouponState extends State<ItemCoupon> {
   }
 
   void launchURL() async => await canLaunch(widget.couponModel.store.link)
-      ? await launch(widget.couponModel.store.link)
-      : throw Get.to((OfferPage(widget.couponModel.store.link)));
+      ? await launch(widget.couponModel.link)
+      : throw Get.to((OfferPage(widget.couponModel.link)));
 
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 5, top: 5, right: 20, left: 20),
-      height: MediaQuery.of(context).size.height / 7,
+     margin: EdgeInsets.only(top: 16.h,right: 24.w,left: 24.w),
+    height: 98.h,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
         image: DecorationImage(
-          fit: BoxFit.contain,
+
+fit: BoxFit.fill,
           image: AssetImage(
             Get.locale.toString() == "ar"
                 ? 'assets/images/background.png'
                 : "assets/images/backgroundRight.png",
+
           ),
         ),
       ),
@@ -66,56 +70,57 @@ class _ItemCouponState extends State<ItemCoupon> {
             }
           }
         },
-        child: Stack(
-          children: [
-            Align(
-              alignment: Get.locale.toString() == "en"
-                  ? Alignment.centerLeft
-                  : Alignment.centerRight,
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 15.w),
-                child: Image.network(
-                  widget.couponModel.store.image,
-                  width: MediaQuery.of(context).size.width / 5,
-                ),
-              ),
-            ),
-            widget.couponModel.tag.name != null
-                ? Align(
-                    alignment: Alignment.topCenter,
-                    child: Container(
-                      margin: EdgeInsets.only(top: 10.h),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor.withOpacity(.3),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(widget.couponModel.tag.name),
-                    ),
-                  )
-                : Container(),
-            Positioned(
-              top: MediaQuery.of(context).size.width / 9,
-              right: Get.locale.toString() == "ar"
-                  ? MediaQuery.of(context).size.width / 3
-                  : MediaQuery.of(context).size.width / 9,
-              left: Get.locale.toString() == "en"
-                  ? MediaQuery.of(context).size.width / 3
-                  : MediaQuery.of(context).size.width / 10,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 0),
-                child: Text(
-                  widget.couponModel.mainTitle,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 14.sp),
-                ),
-              ),
-            )
-          ],
+        child:  Stack(
+      children: [
+      Align(
+      alignment: Get.locale.toString() == "en"
+          ? Alignment.centerLeft
+          : Alignment.centerRight,
+      child: Container(
+        // width: MediaQuery.of(context).size.width/2,
+       margin: EdgeInsets.only(right:MediaQuery.of(context).size.width*.03),
+        child: Image.network(
+          widget.couponModel.store.image,
+          width: MediaQuery.of(context).size.width / 5,
         ),
       ),
+    ),
+    widget.couponModel.tag.name != null
+    ? Align(
+    alignment: Alignment.topCenter,
+    child: Container(
+    margin: EdgeInsets.only(top: 8.h),
+    padding:
+    EdgeInsets.symmetric(horizontal: 8.w,),
+    decoration: BoxDecoration(
+    color: Theme.of(context).primaryColor.withOpacity(.3),
+    borderRadius: BorderRadius.circular(20),
+    ),
+    child: Text(widget.couponModel.tag.name,style: TextStyle(fontSize: 14.sp),),
+    ),
+    )
+        : Container(),
+    Positioned(
+    top: MediaQuery.of(context).size.width / 11,
+    right: Get.locale.toString() == "ar"
+    ? MediaQuery.of(context).size.width / 3
+        : MediaQuery.of(context).size.width / 9,
+    left: Get.locale.toString() == "en"
+    ? MediaQuery.of(context).size.width / 3
+        : MediaQuery.of(context).size.width / 10,
+    child: Container(
+    padding: EdgeInsets.symmetric(horizontal: 0),
+    child: Text(
+    widget.couponModel.mainTitle,
+    maxLines: 2,
+    overflow: TextOverflow.ellipsis,
+    style: TextStyle(fontSize: 14.sp),
+    ),
+    ),
+    )
+    ],
+    ),
+    ),
     );
   }
 }

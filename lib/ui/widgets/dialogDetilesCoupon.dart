@@ -27,9 +27,9 @@ class _DetialsCouponState extends State<DetialsCoupon>
   ApiController controller;
 
   void launchURL() async {
-    await canLaunch(widget.couponModel.store.link)
-        ? await launch(widget.couponModel.store.link)
-        : throw Get.to((OfferPage(widget.couponModel.store.link)));
+    await canLaunch(widget.couponModel.link)
+        ? await launch(widget.couponModel.link)
+        : throw Get.to((OfferPage(widget.couponModel.link)));
   }
 
   String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -131,7 +131,7 @@ class _DetialsCouponState extends State<DetialsCoupon>
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-                  width: MediaQuery.of(context).size.width / 3.5,
+                  width: 160.w,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
@@ -141,24 +141,24 @@ class _DetialsCouponState extends State<DetialsCoupon>
                       launchURL();
                     },
                     child: Container(
-                      padding: EdgeInsets.all(10),
+                      height: 50.h,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: Theme.of(context).primaryColor),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          Text(
+                            "Visit".tr,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          SizedBox(
+                            width: 5.h,
+                          ),
                           Icon(
                             Icons.link_outlined,
                             color: Colors.white,
                           ),
-                          SizedBox(
-                            width: 10.h,
-                          ),
-                          Expanded(
-                              child: Text(
-                            "Visit".tr,
-                            style: TextStyle(color: Colors.white),
-                          )),
                         ],
                       ),
                     ),
@@ -187,6 +187,7 @@ class _DetialsCouponState extends State<DetialsCoupon>
                           fontSize: 20.sp, fontWeight: FontWeight.w500),
                     ),
                     Text(widget.couponModel.mainTitle,
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16.sp,
                           color: Colors.grey,
@@ -227,30 +228,25 @@ class _DetialsCouponState extends State<DetialsCoupon>
                 SizedBox(
                   height: 10.h,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Last Valid use:".tr,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 14.sp),
-                      ),
-                      SizedBox(
-                        width: 5.w,
-                      ),
-                      Expanded(
-                        child: Text(
-                          widget.couponModel.enable,
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              color: Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      )
-                    ],
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Last Valid use:".tr,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 14.sp),
+                    ),
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    Text(
+                      widget.couponModel.enable,
+                      style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold),
+                    )
+                  ],
                 ),
                 SizedBox(
                   height: 10.h,
@@ -259,24 +255,103 @@ class _DetialsCouponState extends State<DetialsCoupon>
                   onTap: () {
                     FlutterClipboard.copy(widget.couponModel.code)
                         .then((value) => print(widget.couponModel.code));
+                    controller.toggle();
                   },
-                  child: DashedContainer(
-                    borderRadius: 20.w,
-                    dashColor: Theme.of(context).primaryColor,
-                    child: Container(
-                      height: 50.h,
-                      width: MediaQuery.of(context).size.width / 1.5,
-                      decoration: BoxDecoration(
-                          color: Color(0xffF5F3FF).withOpacity(.7),
-                          borderRadius: BorderRadius.circular(20.w)),
-                      child: Center(
-                        child: Text(widget.couponModel.code,
-                            style: TextStyle(
-                                fontSize: 18.sp,
-                                color: Theme.of(context).primaryColor)),
-                      ),
-                    ),
-                  ),
+                  child: controller.iscopy == false
+                      ? DashedContainer(
+                          borderRadius: 20.w,
+                          dashColor: Theme.of(context).primaryColor,
+                          child: Container(
+                            height: 50.h,
+                            width: MediaQuery.of(context).size.width / 2,
+                            decoration: BoxDecoration(
+                                color: Color(0xffF5F3FF).withOpacity(.7),
+                                borderRadius: BorderRadius.circular(20.w)),
+                            child: Row(
+                              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    child: Center(
+                                      child: Text(widget.couponModel.code,
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              color: Theme.of(context)
+                                                  .primaryColor)),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).primaryColor,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Get.locale.toString() == 'ar'
+                                            ? Radius.circular(20)
+                                            : Radius.zero,
+                                        bottomLeft:
+                                            Get.locale.toString() == 'ar'
+                                                ? Radius.circular(20)
+                                                : Radius.zero,
+                                        topRight: Get.locale.toString() == 'en'
+                                            ? Radius.circular(20)
+                                            : Radius.zero,
+                                        bottomRight:
+                                            Get.locale.toString() == 'en'
+                                                ? Radius.circular(20)
+                                                : Radius.zero,
+                                      ),
+                                    ),
+                                    height: 50.h,
+                                    child: Center(
+                                        child: Text(
+                                      "Copy Code".tr,
+                                      style: TextStyle(
+                                          fontSize: 16.sp, color: Colors.white),
+                                    )),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : DashedContainer(
+                          borderRadius: 20.w,
+                          dashColor: Theme.of(context).primaryColor,
+                          child: Container(
+                            height: 50.h,
+                            width: MediaQuery.of(context).size.width / 2,
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: BorderRadius.circular(20.w)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColor,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  height: 50.h,
+                                  child: Center(
+                                      child: Text(
+                                    "COPIED".tr,
+                                    style: TextStyle(
+                                        fontSize: 16.sp, color: Colors.white),
+                                  )),
+                                ),
+                                Container(
+                                  width: MediaQuery.of(context).size.width / 6,
+                                  child: Center(
+                                    child:
+                                        Icon(Icons.done, color: Colors.white),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                 ),
                 SizedBox(
                   height: 10.h,

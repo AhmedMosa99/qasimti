@@ -362,7 +362,7 @@ class ApiHelper {
     try {
       var formData = FormData.fromMap({
         'name': name,
-        'new_password': password,
+        'password': password,
         'image': url == null
             ? File
             : MultipartFile.fromFileSync(url.path, filename: path)
@@ -480,6 +480,60 @@ class ApiHelper {
                 },
               ));
       print(response);
+      return response;
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  forgetPassword(String lang, String email) async {
+    try {
+      var data = {
+        'email': email,
+        'lang': lang,
+      };
+      Response response = await dio.post('$baseUrl/forgot-password',
+          data: data,
+          options: Options(
+            followRedirects: false,
+            validateStatus: (status) {
+              return status <= 500;
+            },
+            headers: {
+              'Connection': "keep-alive",
+              'Content-Type': 'multipart/form',
+              'Accept': 'application/json',
+            },
+          ));
+      return response;
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  contactUs(String name, String email, String body, String title) async {
+    try {
+      var data = {
+        'name': name,
+        "email": email,
+        "body": body,
+        "title": "title",
+      };
+      Response response = await dio.post(
+        '$baseUrl/page/contact',
+        data: data,
+        options: Options(
+          followRedirects: false,
+          validateStatus: (status) {
+            return status <= 500;
+          },
+          headers: {
+            'Connection': "keep-alive",
+            'Content-Type': 'multipart/form',
+            'Accept': 'application/json',
+          },
+        ),
+      );
       return response;
     } on Exception catch (e) {
       print(e);

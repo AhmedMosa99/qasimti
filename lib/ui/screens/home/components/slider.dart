@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/components/image/gf_image_overlay.dart';
 import 'package:qasimati/controller/ApiController.dart';
+import 'package:qasimati/ui/screens/webView/webView.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
 class Sliders extends StatefulWidget {
@@ -13,6 +15,8 @@ class Sliders extends StatefulWidget {
 class _SlidersState extends State<Sliders> {
   var controller = Get.put(ApiController());
   final scrollController = ScrollController();
+  void launchURL() async {}
+
   @override
   void initState() {
     super.initState();
@@ -36,16 +40,26 @@ class _SlidersState extends State<Sliders> {
                           itemCount: controller.allsliders.length,
                           itemBuilder: (BuildContext context, int index,
                               int pageViewIndex) {
-                            return Padding(
-                              padding: const EdgeInsets.all(0),
-                              child: GFImageOverlay(
-                                colorFilter: new ColorFilter.mode(
-                                    Colors.black.withOpacity(.1),
-                                    BlendMode.color),
-                                borderRadius: BorderRadius.circular(20),
-                                width: MediaQuery.of(context).size.width,
-                                image: NetworkImage(
-                                    controller.allsliders[index].image),
+                            return GestureDetector(
+                              onTap: () async {
+                                await canLaunch(
+                                        controller.allsliders[index].link)
+                                    ? await launch(
+                                        controller.allsliders[index].link)
+                                    : throw Get.to((OfferPage(
+                                        controller.allsliders[index].link)));
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(0),
+                                child: GFImageOverlay(
+                                  colorFilter: new ColorFilter.mode(
+                                      Colors.black.withOpacity(.1),
+                                      BlendMode.color),
+                                  borderRadius: BorderRadius.circular(20),
+                                  width: MediaQuery.of(context).size.width,
+                                  image: NetworkImage(
+                                      controller.allsliders[index].image),
+                                ),
                               ),
                             );
                           },

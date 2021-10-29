@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:qasimati/controller/AddController.dart';
 import 'package:qasimati/controller/ApiController.dart';
 import 'package:qasimati/models/country.dart';
+import 'package:qasimati/ui/widgets/CustomButton.dart';
 
 class AddCoubon extends StatefulWidget {
   @override
@@ -448,21 +449,12 @@ class _AddCoubonState extends State<AddCoubon> {
                     height: 15.h,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(15.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height / 12,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50)),
-                      child: GFButton(
-                        shape: GFButtonShape.pills,
-                        color: Theme.of(context).primaryColor,
-                        child: Text("Add".tr),
-                        onPressed: () {
-                          print(controller.storeName.text);
-                          controller.checkAdd();
-                        },
-                      ),
+                      height: 46.h,
+                      child: CustomButton("Add".tr, () {
+                        controller.checkAdd();
+                      }, Theme.of(context).primaryColor, Colors.white),
                     ),
                   ),
                 ],

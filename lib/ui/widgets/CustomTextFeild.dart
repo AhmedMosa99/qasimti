@@ -33,9 +33,10 @@ class _CustomTextFeildState extends State<CustomTextFeild> {
           height: 10.h,
         ),
         Container(
-          height: 60.h,
-          width: 500,
+          height: widget.label == "SubjectDes".tr ? 150.h : 46.h,
+          width: 500.w,
           child: TextFormField(
+            maxLines: widget.label == "SubjectDes".tr ? 4 : 1,
             validator: (String v) {
               if (widget.hint == "example@mail.com") {
                 if (!GetUtils.isEmail(v)) {
@@ -73,7 +74,12 @@ class _CustomTextFeildState extends State<CustomTextFeild> {
               filled: true,
               fillColor: Colors.grey.shade100,
               hintText: widget.hint,
+              contentPadding: EdgeInsets.only(
+                  top: 10.h, right: 10.w, left: 10.w, bottom: 10.h),
               border: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xFFD1D8E5),
+                ),
                 borderRadius: BorderRadius.circular(16),
               ),
             ),

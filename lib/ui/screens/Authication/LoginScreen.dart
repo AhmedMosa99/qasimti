@@ -101,7 +101,7 @@ class Login extends StatelessWidget {
                         ),
                         Container(
                             width: 350.w,
-                            height: 60.h,
+                            height: 46.h,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(30)),
                             child: CustomButton("Sign In".tr, () {
@@ -112,7 +112,7 @@ class Login extends StatelessWidget {
                         ),
                         Container(
                             width: 350.w,
-                            height: 60.h,
+                            height: 46.h,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(30)),
                             child: CustomButton("Sign Up".tr, () {
@@ -121,7 +121,7 @@ class Login extends StatelessWidget {
                               controller.passwordCotroller.clear();
                             }, Colors.white, Colors.black)),
                         SizedBox(
-                          height: 10.h,
+                          height: 15.h,
                         ),
                       ],
                     ),

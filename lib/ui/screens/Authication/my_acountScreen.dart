@@ -101,7 +101,7 @@ class _MyAccountState extends State<MyAccount> {
               ),
               ListTile(
                 onTap: () {
-                  Get.to(Favorite());
+                  Get.to(Favourite());
                 },
                 leading: Container(
                   margin: EdgeInsets.only(
@@ -113,7 +113,7 @@ class _MyAccountState extends State<MyAccount> {
                     size: 30,
                   ),
                 ),
-                title: Text('Favorite'.tr,
+                title: Text('Favourite'.tr,
                     style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                 contentPadding: EdgeInsets.symmetric(vertical: 0),

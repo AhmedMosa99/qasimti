@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qasimati/data/ApiHelper.dart';
@@ -19,11 +21,21 @@ class ApiController extends GetxController {
   List<CouponModel> allCouponStore = [];
   List<CouponModel> allstoreSearch = [];
   List<CouponModel> allfavorite = [];
+  var timer;
 
   String selectCategoryName;
   String selectedStore;
-  int selectCategory = 0;
+  int selectCategory = -1;
   String dropdownValue;
+  bool iscopy = false;
+  toggle() {
+    iscopy = true;
+    Future.delayed(Duration(seconds: 3), () {
+      iscopy = false;
+      update();
+    });
+    update();
+  }
 
   @override
   void onInit() {
@@ -47,6 +59,12 @@ class ApiController extends GetxController {
     getAllCountries();
     // getAllCouponInStore();
     getCouponsByCategory(selectCategoryName);
+    Timer.periodic(Duration(seconds: 60), (value) {
+      if (dropdownValue == null) {
+        Get.snackbar("مرحبا", "اختر الدولة التي تريد قسميتها",
+            duration: Duration(seconds: 10));
+      }
+    });
     update();
   }
 
@@ -129,28 +147,28 @@ class ApiController extends GetxController {
     int id = sharedPreferences.getInt('id');
 
     try {
-      if (selectCategory == 0) {
+      if (selectCategory == -1) {
         selectCategoryName = 'all';
       }
-      if (dropdownValue==null) {
+      if (dropdownValue == null) {
         print("a");
         List<dynamic> coupons = await ApiHelper.apiHelper
             .getAllCoupon('all', Get.locale.toString(), id);
-          allCoupons = coupons.map((e) => CouponModel.fromJson(e)).toList();
+        allCoupons = coupons.map((e) => CouponModel.fromJson(e)).toList();
         update();
       } else {
-       if(selectCategoryName=="all"){
-         List<dynamic> coupons = await ApiHelper.apiHelper.getAllCoupon(
-              dropdownValue, Get.locale.toString(), id);
-         allCoupons = coupons.map((e) => CouponModel.fromJson(e)).toList();
-         update();
-       }
+        if (selectCategoryName == "all") {
+          List<dynamic> coupons = await ApiHelper.apiHelper
+              .getAllCoupon(dropdownValue, Get.locale.toString(), id);
+          allCoupons = coupons.map((e) => CouponModel.fromJson(e)).toList();
+          update();
+        }
         List<dynamic> coupons = await ApiHelper.apiHelper.getCouponsByCategory(
             selectCategoryName, dropdownValue, Get.locale.toString(), id);
-       if(coupons!=null) {
-         allCoupons = coupons.map((e) => CouponModel.fromJson(e)).toList();
-         update();
-       }
+        if (coupons != null) {
+          allCoupons = coupons.map((e) => CouponModel.fromJson(e)).toList();
+          update();
+        }
       }
     } on Exception catch (e) {
       // Get.snackbar("Error".tr, "No internet connection".tr);
@@ -158,6 +176,7 @@ class ApiController extends GetxController {
     }
     update();
   }
+
   getAllCouponInStore() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     int id = sharedPreferences.getInt('id');
@@ -264,7 +283,7 @@ class ApiController extends GetxController {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "Content".tr,
+                "You can add coupons to your favourite when you log in".tr,
                 style: TextStyle(fontSize: 18, color: Colors.grey),
                 textAlign: TextAlign.center,
               ),
@@ -349,5 +368,12 @@ class ApiController extends GetxController {
       Get.snackbar("Error".tr, "No internet connection".tr);
       print(e);
     }
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+
+    super.dispose();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:qasimati/controller/ApiController.dart';
 import 'package:qasimati/ui/screens/home/components/categories.dart';
 import 'package:qasimati/ui/screens/home/components/copouns.dart';
 import 'package:qasimati/ui/screens/home/components/slider.dart';
@@ -12,6 +13,7 @@ class HomeBody extends StatefulWidget {
 }
 
 class _HomeBodyState extends State<HomeBody> {
+  ApiController controller;
   @override
   void initState() {
     super.initState();
@@ -22,9 +24,7 @@ class _HomeBodyState extends State<HomeBody> {
     return Container(
       child: ListView(
         children: [
-          Container(
-              margin: EdgeInsets.only(top: 15.h),
-              child: Sliders()),
+          Container(margin: EdgeInsets.only(top: 15.h), child: Sliders()),
           Container(
               margin: EdgeInsets.only(
                   top: 12.h,
@@ -38,7 +38,8 @@ class _HomeBodyState extends State<HomeBody> {
                 right: Get.locale.toString() == "ar" ? 20.w : 0),
             child: Categorylist(),
           ),
-          Copouns(),
+          Container(
+              child: Copouns()),
         ],
       ),
     );

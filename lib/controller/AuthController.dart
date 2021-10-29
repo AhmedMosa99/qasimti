@@ -9,12 +9,17 @@ class AuthController extends GetxController {
   GlobalKey<FormState> loginKey;
   GlobalKey<FormState> singupFromKey;
   GlobalKey<FormState> updateForm;
+  GlobalKey<FormState> contactForm;
+  GlobalKey<FormState> forgetKey;
   TextEditingController emailController,
       passwordCotroller,
       nameController,
       nameEdit,
       passwordEdit,
-      emialEdit;
+      emialEdit,
+      subjectController,
+      bodyController;
+
   String name;
   String token;
   String imageUrl = "";
@@ -33,6 +38,10 @@ class AuthController extends GetxController {
     loginKey = GlobalKey<FormState>();
     singupFromKey = GlobalKey<FormState>();
     updateForm = GlobalKey<FormState>();
+    subjectController = TextEditingController();
+    contactForm = GlobalKey<FormState>();
+    bodyController = TextEditingController();
+    forgetKey = GlobalKey<FormState>();
     getUser();
     getToken();
     super.onInit();
@@ -161,7 +170,6 @@ class AuthController extends GetxController {
     dynamic response = await ApiHelper.apiHelper.getUserByToken(token);
     if (response != null) {
       if (response.statusCode == 200) {
-        print(response.data['data']['image']);
         nameEdit.text = response.data['data']['name'];
         emialEdit.text = response.data['data']['email'];
         imageUrl = response.data['data']['image'];
@@ -178,11 +186,12 @@ class AuthController extends GetxController {
     }
   }
 
-  upData() async {
+  upDate() async {
     try {
       dynamic response = await ApiHelper.apiHelper
           .update(nameEdit.text, imageEdit, passwordEdit.text, token);
-
+      print(passwordEdit.text);
+      print(response);
       if (response.statusCode == 200) {
         Get.snackbar(
             "Done".tr, "Your account has been successfully modified".tr);
@@ -194,7 +203,6 @@ class AuthController extends GetxController {
       } else {
         Get.snackbar("Wrong".tr, "Check input fields".tr);
       }
-      print(response);
     } on Exception catch (e) {
       print(e);
     }
@@ -208,6 +216,46 @@ class AuthController extends GetxController {
     // if (response.statusCode == 422) {
     //   getUser();
     // }
+  }
+
+  forgetPassword() async {
+    if (forgetKey.currentState.validate()) {
+      forgetKey.currentState.save();
+      dynamic response = await ApiHelper.apiHelper
+          .forgetPassword(Get.locale.toString(), emailController.text);
+
+      if (response.data['status'] == 200) {
+        Get.snackbar('Done'.tr, response.data['message']);
+        emailController.clear();
+      } else if (response.data['status'] == 422) {
+        Get.snackbar('Error'.tr, response.data['message']);
+      }
+    }
+  }
+
+  contactUs() async {
+    if (contactForm.currentState.validate()) {
+      contactForm.currentState.save();
+
+      dynamic response = await ApiHelper.apiHelper.contactUs(
+          nameController.text,
+          emailController.text,
+          bodyController.text,
+          subjectController.text);
+
+      if (response.statusCode == 200) {
+        Get.snackbar('Done'.tr, 'Message sent successfully.'.tr);
+        emailController.clear();
+        bodyController.clear();
+        subjectController.clear();
+        nameController.clear();
+        Get.offAll(HomeScreen());
+      } else {
+        Get.snackbar('Error'.tr, 'Check input fields'.tr);
+      }
+    } else {
+      Get.snackbar('Error'.tr, 'Check input fields'.tr);
+    }
   }
 
   @override

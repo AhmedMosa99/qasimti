@@ -31,12 +31,12 @@ class _SearchScreenState extends State<SearchScreen> {
               child: Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(5.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Container(
                       alignment: Alignment.center,
                       child: Image.asset(
                         'assets/images/Logo.png',
-                        width: MediaQuery.of(context).size.width / 5,
+                        width: MediaQuery.of(context).size.width / 4.8,
                         height: MediaQuery.of(context).size.height / 10,
                         color: Colors.white,
                       ),
@@ -80,9 +80,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
+            // SizedBox(
+            //   height: 20.h,
+            // ),
             Expanded(
               child: Container(
                 child: GetBuilder<ApiController>(

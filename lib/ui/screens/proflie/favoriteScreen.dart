@@ -8,12 +8,12 @@ import 'package:qasimati/ui/widgets/CustomButton.dart';
 
 import 'package:qasimati/ui/widgets/ItemCoupon.dart';
 
-class Favorite extends StatefulWidget {
+class Favourite extends StatefulWidget {
   @override
-  _FavoriteState createState() => _FavoriteState();
+  _FavouriteState createState() => _FavouriteState();
 }
 
-class _FavoriteState extends State<Favorite> {
+class _FavouriteState extends State<Favourite> {
   ApiController controller;
   AuthController controller1;
 
@@ -33,13 +33,12 @@ class _FavoriteState extends State<Favorite> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
           title: Text(
-            "Favorite".tr,
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+            "Favourite".tr,
+            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
         body: Container(
-          margin: EdgeInsets.only(top: 30.h),
           height: MediaQuery.of(context).size.height,
           child: controller.allfavorite.isEmpty
               ? Center(
@@ -62,7 +61,7 @@ class _FavoriteState extends State<Favorite> {
                       ),
                       Container(
                           width: 350.w,
-                          height: 60.h,
+                          height: 46.h,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30)),
                           child: CustomButton("Go Home".tr, () {
@@ -71,12 +70,15 @@ class _FavoriteState extends State<Favorite> {
                     ],
                   ),
                 )
-              : ListView.builder(
-                  itemCount: controller.allfavorite.length,
-                  padding: EdgeInsets.only(top: 2),
-                  itemBuilder: (context, index) {
-                    return ItemCoupon(controller.allfavorite[index]);
-                  }),
+              : Container(
+          //  margin: EdgeInsets.symmetric(vertical: 16.h,horizontal: 24.w),
+                child: ListView.builder(
+                    itemCount: controller.allfavorite.length,
+                    padding: EdgeInsets.only(top: 2),
+                    itemBuilder: (context, index) {
+                      return ItemCoupon(controller.allfavorite[index]);
+                    }),
+              ),
         ),
       );
     });

@@ -6,7 +6,7 @@ const Map<String, String> en = {
   "Privacy policy": "Privacy policy",
   "Terms & Conditions": "Terms & Conditions",
   "Common questions": "Common questions",
-  "Favorite": "Favorite",
+  "Favourite": "Favourite",
   "Add a discount code": "Add a discount code",
   "Store details": "Store details",
   "Store name": "Store name",
@@ -56,7 +56,6 @@ const Map<String, String> en = {
   "logout": "Logout",
   "Sorry": "Sorry",
   "Content": "You can only add your coupon when you log in.",
-  "Copy": "Copy",
   "My Account": "My Account",
   "Edit Account": "Edit Account",
   "verifiy": "Verifiy your account through your email link",
@@ -68,9 +67,9 @@ const Map<String, String> en = {
   "About us": "About us",
   "Categories": "Categories",
   "All": "All",
-  "Visit": "Visit",
+  "Visit": "Visit Website",
   "Does": "Does this coupon valid",
-  "Profile": "Profile",
+  "Profile": "More",
   "Language": "Language",
   "Name": "Name",
   "Update": "Update",
@@ -94,4 +93,16 @@ const Map<String, String> en = {
   "Send": "Send",
   "Please":
       "Please add your registered email to us to be able to send a password recovery link",
+  "You can add coupons to your favourite when you log in":
+      "You can add coupons to your favourite when you log in",
+  "Store already exists": "Store already exists",
+  "Check all entries": "Check all entries",
+  "Your request has been submitted successfully":
+      "Your request has been submitted successfully",
+  "Subject": "Subject",
+  "Copy Code": "Copy Code",
+  "COPIED": "COPIED",
+  "SEND": "SEND",
+  "SubjectDes": "Message",
+  "Message sent successfully.": "Message sent successfully."
 };

@@ -180,9 +180,9 @@ class _EditScreenState extends State<EditScreen> {
                           TextFormField(
                             obscureText: true,
                             controller: controller.passwordEdit,
-                            validator: (v) {
-                              return controller.validatePassword(v);
-                            },
+                            // validator: (v) {
+                            //   return controller.passwordEdit.validatePassword(v);
+                            // },
                             onSaved: (s) {
                               controller.passwordEdit.text = s;
                             },
@@ -211,7 +211,7 @@ class _EditScreenState extends State<EditScreen> {
                                       fontSize: 16.sp),
                                 ),
                                 onPressed: () {
-                                  controller.upData();
+                                  controller.upDate();
                                 },
                               ),
                             ),

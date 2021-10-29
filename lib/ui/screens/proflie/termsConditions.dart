@@ -23,7 +23,7 @@ class _TermsConditionsState extends State<TermsConditions> {
       ),
       body: WebView(
         initialUrl:
-            "https://qasimati.com/terms-conditionslang=${Get.locale.toString()}&webview=1",
+            "https://qasimati.com/terms-conditions?lang=${Get.locale.toString()}&webview=1",
         javascriptMode: JavascriptMode.unrestricted,
       ),
     );
