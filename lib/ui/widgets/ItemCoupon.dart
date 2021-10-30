@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import 'package:qasimati/controller/ApiController.dart';
 import 'package:qasimati/models/coupon.dart';
 import 'package:qasimati/ui/screens/webView/webView.dart';
@@ -78,7 +77,9 @@ fit: BoxFit.fill,
           : Alignment.centerRight,
       child: Container(
         // width: MediaQuery.of(context).size.width/2,
-       margin: EdgeInsets.only(right:MediaQuery.of(context).size.width*.03),
+       margin: EdgeInsets.only(right:Get.locale.toString()=="ar"?MediaQuery.of(context).size.width*.03:0,
+           left:Get.locale.toString()=="en"?MediaQuery.of(context).size.width*.03:0
+       ),
         child: Image.network(
           widget.couponModel.store.image,
           width: MediaQuery.of(context).size.width / 5,
@@ -89,11 +90,14 @@ fit: BoxFit.fill,
     ? Align(
     alignment: Alignment.topCenter,
     child: Container(
-    margin: EdgeInsets.only(top: 8.h),
+
+    margin: EdgeInsets.only(top: 10.h,right:Get.locale.toString()=="en" ?18.w:0,
+      left: Get.locale.toString()=="ar" ?18.w:0,
+    ),
     padding:
-    EdgeInsets.symmetric(horizontal: 8.w,),
+    EdgeInsets.symmetric(horizontal: 5.w,),
     decoration: BoxDecoration(
-    color: Theme.of(context).primaryColor.withOpacity(.3),
+    color: Theme.of(context).primaryColor.withOpacity(.2),
     borderRadius: BorderRadius.circular(20),
     ),
     child: Text(widget.couponModel.tag.name,style: TextStyle(fontSize: 14.sp),),
@@ -101,7 +105,7 @@ fit: BoxFit.fill,
     )
         : Container(),
     Positioned(
-    top: MediaQuery.of(context).size.width / 11,
+    top:widget.couponModel.tag.name==null? MediaQuery.of(context).size.width / 12:MediaQuery.of(context).size.width / 11.5,
     right: Get.locale.toString() == "ar"
     ? MediaQuery.of(context).size.width / 3
         : MediaQuery.of(context).size.width / 9,

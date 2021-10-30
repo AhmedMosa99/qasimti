@@ -245,7 +245,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       .primaryColor
                                       .withOpacity(.1)),
                               child: Container(
-                                padding: EdgeInsets.all(10),
+                                padding: EdgeInsets.all(12),
                                 child: SvgPicture.asset(
                                   "assets/images/Iconly-Light-Ticket.svg",
                                   width: 24.w,
@@ -278,7 +278,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: FaIcon(
-                                  Icons.language,
+                                  Icons.language_outlined,
                                   size: 28.w,
                                   color: Color(0xff8A5EA4),
                                 ),
@@ -440,38 +440,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           )),
                         ),
                         Divider(),
-                        // GestureDetector(
-                        //   onTap: () {},
-                        //   child: Container(
-                        //       child: ListTile(
-                        //     leading: Container(
-                        //       decoration: BoxDecoration(
-                        //           borderRadius: BorderRadius.circular(15.w),
-                        //           color: Theme.of(context)
-                        //               .primaryColor
-                        //               .withOpacity(.2)),
-                        //       child: Padding(
-                        //         padding: const EdgeInsets.all(8.0),
-                        //         child: FaIcon(
-                        //           Icons.star_rate_outlined,
-                        //           color: Theme.of(context)
-                        //               .primaryColor
-                        //               .withOpacity(.7),
-                        //           size: 30.w,
-                        //         ),
-                        //       ),
-                        //     ),
-                        //     title: Text(
-                        //       "Rate Us".tr,
-                        //       style: TextStyle(
-                        //           fontSize: 16.sp,
-                        //           color: Colors.black,
-                        //           fontWeight: FontWeight.bold),
-                        //     ),
-                        //     trailing: Icon(Icons.arrow_forward_ios),
-                        //   )),
-                        // ),
-                        // Divider(),
+
                         GestureDetector(
                           onTap: () {
                             Get.to(AboutUs());
@@ -487,7 +456,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: FaIcon(
-                                  Icons.info_outline_rounded,
+                                  Icons.home_outlined,
                                   color: Color(0xff8A5EA4),
                                   size: 28.w,
                                 ),
@@ -552,7 +521,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: FaIcon(
-                                  Icons.question_answer_outlined,
+                                  Icons.info_outline_rounded,
                                   color: Color(0xff8A5EA4),
                                   size: 28.w,
                                 ),
@@ -582,7 +551,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       .primaryColor
                                       .withOpacity(.1)),
                               child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
+                                  padding: const EdgeInsets.all(12.0),
                                   child: SvgPicture.asset(
                                     "assets/images/Paper.svg",
                                     color: Color(0xff8A5EA4),
@@ -613,13 +582,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   color: Theme.of(context)
                                       .primaryColor
                                       .withOpacity(.1)),
+
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: FaIcon(
-                                  Icons.privacy_tip_outlined,
+                                padding: const EdgeInsets.all(12.0),
+                                child: SvgPicture.asset(
+                                  "assets/images/Group 14455.svg",
                                   color: Color(0xff8A5EA4),
-                                  size: 28.w,
-                                ),
+                                  width: 24.w,
+                                  height: 24.h,
+                                )
                               ),
                             ),
                             title: Text(

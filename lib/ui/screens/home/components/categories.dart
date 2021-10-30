@@ -130,8 +130,9 @@ class _CategorylistState extends State<Categorylist> {
                             controller.allCategories[index].image != null
                                 ? Padding(
                                     padding:
-                                        const EdgeInsets.symmetric(vertical: 3),
+                                        const EdgeInsets.symmetric(vertical: 5),
                                     child: Image.network(
+
                                       controller.allCategories[index].image,
                                       color: index==controller.selectCategory?Colors.white:Colors.black,
                                     ),

@@ -39,6 +39,7 @@ class _HomeBodyState extends State<HomeBody> {
             child: Categorylist(),
           ),
           Container(
+            margin: EdgeInsets.only(bottom: 16.h),
               child: Copouns()),
         ],
       ),
