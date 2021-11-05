@@ -70,10 +70,28 @@ class ApiHelper {
               },
               headers: {'Connection': "keep-alive", 'device': "w"},
             ));
+        //   print(response);
         if (response.statusCode == 200) {
           return response.data['data'];
         }
       }
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  getBestStores(String country, String lang) async {
+    try {
+      Response response =
+          await dio.get('$baseUrl/stores/feature/$country-$lang',
+              options: Options(
+                followRedirects: false,
+                validateStatus: (status) {
+                  return status <= 500;
+                },
+                headers: {'Connection': "keep-alive", 'device': "w"},
+              ));
+      return response.data['data'];
     } on Exception catch (e) {
       print(e);
     }

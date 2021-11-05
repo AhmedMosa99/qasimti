@@ -26,20 +26,18 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Column(
           children: [
             Container(
+              padding: const EdgeInsets.symmetric(horizontal: 18),
               color: Theme.of(context).primaryColor,
               height: MediaQuery.of(context).size.height / 12,
               child: Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Image.asset(
-                        'assets/images/Logo.png',
-                        width: MediaQuery.of(context).size.width / 4.8,
-                        height: MediaQuery.of(context).size.height / 10,
-                        color: Colors.white,
-                      ),
+                  Container(
+                    alignment: Alignment.center,
+                    child: Image.asset(
+                      'assets/images/Logo.png',
+                      width: MediaQuery.of(context).size.width / 4.8,
+                      height: MediaQuery.of(context).size.height / 10,
+                      color: Colors.white,
                     ),
                   ),
                   GetBuilder<ApiController>(

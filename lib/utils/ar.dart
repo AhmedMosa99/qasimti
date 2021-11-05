@@ -101,5 +101,6 @@ const Map<String, String> ar = {
   "Copy Code": "نسخ الكود",
   "SEND": "إرسال",
   "SubjectDes": "تفاصيل الرسالة",
-  "Message sent successfully.": "تم ارسال الرسالة بنجاح."
+  "Message sent successfully.": "تم ارسال الرسالة بنجاح.",
+  "Best Stores": "المتاجر المميزة"
 };

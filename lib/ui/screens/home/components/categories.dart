@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/components/loader/gf_loader.dart';
 import 'package:getwidget/types/gf_loader_type.dart';
@@ -131,10 +132,13 @@ class _CategorylistState extends State<Categorylist> {
                                 ? Padding(
                                     padding:
                                         const EdgeInsets.symmetric(vertical: 5),
-                                    child: Image.network(
-
+                                    child: SvgPicture.network(
                                       controller.allCategories[index].image,
-                                      color: index==controller.selectCategory?Colors.white:Colors.black,
+                                      color: index == controller.selectCategory
+                                          ? Colors.white
+                                          : Colors.black,
+                                      width: 24.w,
+                                      height: 24.h,
                                     ),
                                   )
                                 : Container(),
@@ -144,7 +148,7 @@ class _CategorylistState extends State<Categorylist> {
                             Text(
                               controller.allCategories[index].name ?? "",
                               style: TextStyle(
-                                fontSize:14.sp,
+                                  fontSize: 14.sp,
                                   color: index == controller.selectCategory
                                       ? Colors.white
                                       : Colors.black.withOpacity(.5),

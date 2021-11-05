@@ -104,5 +104,6 @@ const Map<String, String> en = {
   "COPIED": "COPIED",
   "SEND": "SEND",
   "SubjectDes": "Message",
-  "Message sent successfully.": "Message sent successfully."
+  "Message sent successfully.": "Message sent successfully.",
+  "Best Stores": "Best Stores",
 };

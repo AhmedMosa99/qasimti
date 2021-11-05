@@ -245,7 +245,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       .primaryColor
                                       .withOpacity(.1)),
                               child: Container(
-                                padding: EdgeInsets.all(12),
+                                padding: EdgeInsets.all(10),
                                 child: SvgPicture.asset(
                                   "assets/images/Iconly-Light-Ticket.svg",
                                   width: 24.w,
@@ -276,10 +276,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       .primaryColor
                                       .withOpacity(.1)),
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: FaIcon(
-                                  Icons.language_outlined,
-                                  size: 28.w,
+                                padding: const EdgeInsets.all(10.0),
+                                child: SvgPicture.asset(
+                                  "assets/images/global.svg",
+                                  width: 24.w,
+                                  height: 24.h,
                                   color: Color(0xff8A5EA4),
                                 ),
                               ),
@@ -421,11 +422,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       .primaryColor
                                       .withOpacity(.1)),
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: FaIcon(
-                                  Icons.favorite_outline,
+                                padding: const EdgeInsets.all(10.0),
+                                child: SvgPicture.asset(
+                                  "assets/images/Star.svg",
                                   color: Color(0xff8A5EA4),
-                                  size: 28.w,
+                                  width: 24.w,
+                                  height: 24.h,
                                 ),
                               ),
                             ),
@@ -440,7 +442,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           )),
                         ),
                         Divider(),
-
                         GestureDetector(
                           onTap: () {
                             Get.to(AboutUs());
@@ -454,11 +455,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       .primaryColor
                                       .withOpacity(.1)),
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: FaIcon(
-                                  Icons.home_outlined,
+                                padding: const EdgeInsets.all(10.0),
+                                child: SvgPicture.asset(
+                                  "assets/images/Home-icon.svg",
                                   color: Color(0xff8A5EA4),
-                                  size: 28.w,
+                                  width: 24.w,
+                                  height: 24.h,
                                 ),
                               ),
                             ),
@@ -486,11 +488,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       .primaryColor
                                       .withOpacity(.1)),
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: FaIcon(
-                                  Icons.email_outlined,
+                                padding: const EdgeInsets.all(10.0),
+                                child: SvgPicture.asset(
+                                  "assets/images/Iconly-Light-Message.svg",
                                   color: Color(0xff8A5EA4),
-                                  size: 28.w,
+                                  width: 24.w,
+                                  height: 24.h,
                                 ),
                               ),
                             ),
@@ -505,7 +508,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           )),
                         ),
                         Divider(),
-
                         GestureDetector(
                           onTap: () {
                             Get.to(Questions());
@@ -519,13 +521,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       .primaryColor
                                       .withOpacity(.1)),
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: FaIcon(
-                                  Icons.info_outline_rounded,
-                                  color: Color(0xff8A5EA4),
-                                  size: 28.w,
-                                ),
-                              ),
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: SvgPicture.asset(
+                                    "assets/images/Iconly-Light-Info Circle.svg",
+                                    color: Color(0xff8A5EA4),
+                                    width: 24.w,
+                                    height: 24.h,
+                                  )),
                             ),
                             title: Text(
                               "Common questions".tr,
@@ -582,16 +584,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   color: Theme.of(context)
                                       .primaryColor
                                       .withOpacity(.1)),
-
                               child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: SvgPicture.asset(
-                                  "assets/images/Group 14455.svg",
-                                  color: Color(0xff8A5EA4),
-                                  width: 24.w,
-                                  height: 24.h,
-                                )
-                              ),
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: SvgPicture.asset(
+                                    "assets/images/Group 14455.svg",
+                                    color: Color(0xff8A5EA4),
+                                    width: 24.w,
+                                    height: 24.h,
+                                  )),
                             ),
                             title: Text(
                               "Privacy policy".tr,

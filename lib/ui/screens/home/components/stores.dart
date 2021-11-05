@@ -16,7 +16,7 @@ class _StoresComponetState extends State<StoresComponet> {
   Widget build(BuildContext context) {
     return GetBuilder<ApiController>(
       builder: (controller) {
-        return controller.allStores.isEmpty
+        return controller.allBestStores.isEmpty
             ? Container()
             : Container(
                 height: MediaQuery.of(context).size.height / 7,
@@ -26,7 +26,7 @@ class _StoresComponetState extends State<StoresComponet> {
                     Container(
                       margin: EdgeInsets.only(bottom: 10.h),
                       child: Text(
-                        "Stores".tr,
+                        "Best Stores".tr,
                         style: TextStyle(
                             fontSize: 14.sp, fontWeight: FontWeight.w700),
                       ),
@@ -35,12 +35,12 @@ class _StoresComponetState extends State<StoresComponet> {
                       child: Container(
                         child: ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemCount: controller.allStores.length,
+                            itemCount: controller.allBestStores.length,
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () {
                                   controller.selectedStore =
-                                      controller.allStores[index].name;
+                                      controller.allBestStores[index].name;
 
                                   controller.getAllCouponInStore();
                                   Get.to(StoreScreen());
@@ -60,7 +60,7 @@ class _StoresComponetState extends State<StoresComponet> {
                                     borderRadius: BorderRadius.circular(30),
                                   ),
                                   child: Image.network(
-                                    controller.allStores[index].image,
+                                    controller.allBestStores[index].image,
                                     width: 100.w,
                                     height: 60.h,
                                   ),

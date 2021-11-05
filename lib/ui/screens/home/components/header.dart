@@ -73,6 +73,7 @@ class _HeaderState extends State<Header> {
                       controller1.getSliders();
                       controller1.getStores();
                       controller1.getCategories();
+                      controller1.getBestStores();
                       controller.getAllCouponInStore();
                       controller
                           .getCouponsByCategory(controller.selectCategoryName);

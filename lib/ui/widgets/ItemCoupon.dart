@@ -34,19 +34,17 @@ class _ItemCouponState extends State<ItemCoupon> {
 
   Widget build(BuildContext context) {
     return Container(
-     margin: EdgeInsets.only(top: 16.h,right: 24.w,left: 24.w),
-    height: 98.h,
+      margin: EdgeInsets.only(top: 16.h, right: 24.w, left: 24.w),
+      height: 98.h,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         image: DecorationImage(
-
-fit: BoxFit.fill,
+          fit: BoxFit.fill,
           image: AssetImage(
             Get.locale.toString() == "ar"
                 ? 'assets/images/background.png'
                 : "assets/images/backgroundRight.png",
-
           ),
         ),
       ),
@@ -69,62 +67,94 @@ fit: BoxFit.fill,
             }
           }
         },
-        child:  Stack(
-      children: [
-      Align(
-      alignment: Get.locale.toString() == "en"
-          ? Alignment.centerLeft
-          : Alignment.centerRight,
-      child: Container(
-        // width: MediaQuery.of(context).size.width/2,
-       margin: EdgeInsets.only(right:Get.locale.toString()=="ar"?MediaQuery.of(context).size.width*.03:0,
-           left:Get.locale.toString()=="en"?MediaQuery.of(context).size.width*.03:0
-       ),
-        child: Image.network(
-          widget.couponModel.store.image,
-          width: MediaQuery.of(context).size.width / 5,
+        child: Stack(
+          children: [
+            Align(
+              alignment: Get.locale.toString() == "en"
+                  ? Alignment.centerLeft
+                  : Alignment.centerRight,
+              child: Container(
+                // width: MediaQuery.of(context).size.width/2,
+                margin: EdgeInsets.only(
+                    right: Get.locale.toString() == "ar"
+                        ? MediaQuery.of(context).size.width * .03
+                        : 0,
+                    left: Get.locale.toString() == "en"
+                        ? MediaQuery.of(context).size.width * .03
+                        : 0),
+                child: Image.network(
+                  widget.couponModel.store.image,
+                  width: MediaQuery.of(context).size.width / 5,
+                ),
+              ),
+            ),
+            Positioned(
+              top: 10.h,
+              right: Get.locale.toString() == "ar"
+                  ? MediaQuery.of(context).size.width / 3.2
+                  : MediaQuery.of(context).size.width / 9,
+              left: Get.locale.toString() == "en"
+                  ? MediaQuery.of(context).size.width / 3.2
+                  : MediaQuery.of(context).size.width / 10,
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 8.w,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  widget.couponModel.store.name,
+                  style:
+                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            widget.couponModel.tag.name != null
+                ? Align(
+                    alignment: Get.locale.toString() == "ar"
+                        ? Alignment.topLeft
+                        : Alignment.topRight,
+                    child: Container(
+                      height: 24.h,
+                      margin: EdgeInsets.only(
+                        top: 10.h,
+                        right: Get.locale.toString() == "en" ? 10.w : 0,
+                        left: Get.locale.toString() == "ar" ? 10.w : 0,
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.w,
+                      ),
+                      child: Text(
+                        widget.couponModel.tag.name,
+                        style: TextStyle(fontSize: 14.sp),
+                      ),
+                    ),
+                  )
+                : Container(),
+            Positioned(
+              top: widget.couponModel.tag.name == null
+                  ? MediaQuery.of(context).size.width / 12
+                  : MediaQuery.of(context).size.width / 11.5,
+              right: Get.locale.toString() == "ar"
+                  ? MediaQuery.of(context).size.width / 3
+                  : MediaQuery.of(context).size.width / 9,
+              left: Get.locale.toString() == "en"
+                  ? MediaQuery.of(context).size.width / 3
+                  : MediaQuery.of(context).size.width / 10,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 0),
+                child: Text(
+                  widget.couponModel.mainTitle,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 14.sp),
+                ),
+              ),
+            )
+          ],
         ),
       ),
-    ),
-    widget.couponModel.tag.name != null
-    ? Align(
-    alignment: Alignment.topCenter,
-    child: Container(
-
-    margin: EdgeInsets.only(top: 10.h,right:Get.locale.toString()=="en" ?18.w:0,
-      left: Get.locale.toString()=="ar" ?18.w:0,
-    ),
-    padding:
-    EdgeInsets.symmetric(horizontal: 5.w,),
-    decoration: BoxDecoration(
-    color: Theme.of(context).primaryColor.withOpacity(.2),
-    borderRadius: BorderRadius.circular(20),
-    ),
-    child: Text(widget.couponModel.tag.name,style: TextStyle(fontSize: 14.sp),),
-    ),
-    )
-        : Container(),
-    Positioned(
-    top:widget.couponModel.tag.name==null? MediaQuery.of(context).size.width / 12:MediaQuery.of(context).size.width / 11.5,
-    right: Get.locale.toString() == "ar"
-    ? MediaQuery.of(context).size.width / 3
-        : MediaQuery.of(context).size.width / 9,
-    left: Get.locale.toString() == "en"
-    ? MediaQuery.of(context).size.width / 3
-        : MediaQuery.of(context).size.width / 10,
-    child: Container(
-    padding: EdgeInsets.symmetric(horizontal: 0),
-    child: Text(
-    widget.couponModel.mainTitle,
-    maxLines: 2,
-    overflow: TextOverflow.ellipsis,
-    style: TextStyle(fontSize: 14.sp),
-    ),
-    ),
-    )
-    ],
-    ),
-    ),
     );
   }
 }

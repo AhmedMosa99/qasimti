@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiController extends GetxController {
   List<StoreModel> allStores = [];
+  List<StoreModel> allBestStores = [];
   List<Country> allcountries = [];
   List<SliderModel> allsliders = [];
   List<CategoryModel> allCategories = [];
@@ -40,7 +41,7 @@ class ApiController extends GetxController {
   @override
   void onInit() {
     getCountry();
-
+    // print(allBestStores);
     super.onInit();
   }
 
@@ -57,6 +58,7 @@ class ApiController extends GetxController {
     getStores();
     getCategories();
     getAllCountries();
+    getBestStores();
     // getAllCouponInStore();
     getCouponsByCategory(selectCategoryName);
     Timer.periodic(Duration(seconds: 60), (value) {
@@ -118,6 +120,29 @@ class ApiController extends GetxController {
             .getStores(dropdownValue, Get.locale.toString());
         if (stores != null) {
           allStores = stores.map((e) => StoreModel.fromJson(e)).toList();
+          update();
+        }
+      }
+    } on Exception catch (e) {
+      // Get.snackbar("Error".tr, "No internet connection".tr);
+      print(e);
+    }
+  }
+
+  getBestStores() async {
+    try {
+      if (dropdownValue == null) {
+        List<dynamic> stores = await ApiHelper.apiHelper
+            .getBestStores('all', Get.locale.toString());
+        if (stores != null) {
+          allBestStores = stores.map((e) => StoreModel.fromJson(e)).toList();
+          update();
+        }
+      } else {
+        List<dynamic> stores = await ApiHelper.apiHelper
+            .getBestStores(dropdownValue, Get.locale.toString());
+        if (stores != null) {
+          allBestStores = stores.map((e) => StoreModel.fromJson(e)).toList();
           update();
         }
       }
