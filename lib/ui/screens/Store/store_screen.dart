@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/components/loader/gf_loader.dart';
 import 'package:qasimati/controller/ApiController.dart';
@@ -43,7 +42,6 @@ class _StoreScreenState extends State<StoreScreen> {
               ? GFLoader()
               : ListView.builder(
                   itemCount: controller.allCouponStore.length,
-
                   itemBuilder: (context, index) {
                     return ItemCoupon(controller.allCouponStore[index]);
                   }),

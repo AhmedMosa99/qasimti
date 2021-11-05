@@ -106,4 +106,6 @@ const Map<String, String> en = {
   "SubjectDes": "Message",
   "Message sent successfully.": "Message sent successfully.",
   "Best Stores": "Best Stores",
+  "Welcome": "Welcome",
+  "Chose": "Choose the country you want coupons for",
 };

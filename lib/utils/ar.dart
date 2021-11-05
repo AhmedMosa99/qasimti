@@ -102,5 +102,7 @@ const Map<String, String> ar = {
   "SEND": "إرسال",
   "SubjectDes": "تفاصيل الرسالة",
   "Message sent successfully.": "تم ارسال الرسالة بنجاح.",
-  "Best Stores": "المتاجر المميزة"
+  "Best Stores": "المتاجر المميزة",
+  "Welcome": "مرحبا",
+  "Chose": "اختر الدولة التي تريد قسميتها",
 };

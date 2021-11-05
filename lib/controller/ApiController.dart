@@ -22,7 +22,6 @@ class ApiController extends GetxController {
   List<CouponModel> allCouponStore = [];
   List<CouponModel> allstoreSearch = [];
   List<CouponModel> allfavorite = [];
-  var timer;
 
   String selectCategoryName;
   String selectedStore;
@@ -63,8 +62,7 @@ class ApiController extends GetxController {
     getCouponsByCategory(selectCategoryName);
     Timer.periodic(Duration(seconds: 60), (value) {
       if (dropdownValue == null) {
-        Get.snackbar("مرحبا", "اختر الدولة التي تريد قسميتها",
-            duration: Duration(seconds: 10));
+        Get.snackbar("Welcome".tr, "Chose".tr, duration: Duration(seconds: 10));
       }
     });
     update();
@@ -397,8 +395,6 @@ class ApiController extends GetxController {
 
   @override
   void dispose() {
-    timer.cancel();
-
     super.dispose();
   }
 }
