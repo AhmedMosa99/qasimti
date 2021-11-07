@@ -602,6 +602,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             trailing: Icon(Icons.arrow_forward_ios),
                           )),
                         ),
+                        SizedBox(height: 10.h,)
                       ],
                     ),
                   ),
