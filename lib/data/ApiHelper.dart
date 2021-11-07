@@ -333,20 +333,23 @@ class ApiHelper {
     }
   }
 
-  search(String country, String lang, String store) async {
+  search(String country, String lang, String query) async {
     try {
       Response response =
-          await dio.get('$baseUrl/stores/$store/coupons/$country-$lang',
+          await dio.get('$baseUrl/search/coupon/byStore/$country-$lang/$query',
               options: Options(
                 followRedirects: false,
                 validateStatus: (status) {
                   return status <= 500;
                 },
-                headers: {'device': "w", 'Connection': "keep-alive"},
+                headers: {'device': "w", 'Connection': "keep-alive",
+
+
+                },
               ));
-      print(response.data);
+
       if (response.statusCode == 200) {
-        return response.data['coupons'];
+        return response.data['data'];
       }
     } on Exception catch (e) {
       print(e);

@@ -108,4 +108,5 @@ const Map<String, String> en = {
   "Best Stores": "Best Stores",
   "Welcome": "Welcome",
   "Chose": "Choose the country you want coupons for",
+  "No result":"There are no search results"
 };

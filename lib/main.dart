@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:qasimati/controller/bindings.dart';
-import 'package:qasimati/splashScreen.dart';
+import 'package:qasimati/utils/splashScreen.dart';
 import 'package:qasimati/translation.dart';
 import 'package:get_storage/get_storage.dart';
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/components/shimmer/gf_shimmer.dart';
 import 'package:qasimati/controller/ApiController.dart';
 import 'package:qasimati/ui/widgets/ItemCoupon.dart';
 
@@ -12,6 +13,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   ApiController controller;
   TextEditingController textController = TextEditingController();
+  String dropdownValue = 'One';
   @override
   void initState() {
     super.initState();
@@ -26,7 +28,7 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 18),
+              padding: const EdgeInsets.symmetric(horizontal: 18 ),
               color: Theme.of(context).primaryColor,
               height: MediaQuery.of(context).size.height / 12,
               child: Row(
@@ -83,12 +85,13 @@ class _SearchScreenState extends State<SearchScreen> {
             // ),
             Expanded(
               child: Container(
+                padding: EdgeInsets.only(top: 10.h,bottom: 10.h),
                 child: GetBuilder<ApiController>(
                   builder: (controller) {
                     return controller.allstoreSearch.isEmpty
                         ? Center(
-                            child: Container(
-                            height: MediaQuery.of(context).size.height,
+                            child: GFShimmer(
+                            child: Text("No result".tr,style: TextStyle(fontSize: 18.sp,fontWeight: FontWeight.bold),),
                           ))
                         : Container(
                             height: MediaQuery.of(context).size.height,

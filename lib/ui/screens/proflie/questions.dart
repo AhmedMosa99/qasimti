@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class Questions extends StatefulWidget {
@@ -8,6 +9,9 @@ class Questions extends StatefulWidget {
 }
 
 class _QuestionsState extends State<Questions> {
+  String title, url;
+  bool isLoading = true;
+  final _key = UniqueKey();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,11 +25,30 @@ class _QuestionsState extends State<Questions> {
         ),
         centerTitle: true,
       ),
-      body: WebView(
-        initialUrl:
-            "https://qasimati.com/fqa?lang=${Get.locale.toString()}&webview=1",
-        javascriptMode: JavascriptMode.unrestricted,
+      body: Stack(
+        children: <Widget>[
+          WebView(
+            key: _key,
+            initialUrl:
+           "https://qasimati.com/fqa?lang=${Get.locale.toString()}&webview=1",
+            javascriptMode: JavascriptMode.unrestricted,
+            onPageFinished: (finish) {
+              setState(() {
+                isLoading = false;
+              });
+            },
+          ),
+          isLoading
+              ? Center(
+            child: GFLoader(
+              type: GFLoaderType.ios,
+            ),
+          )
+              : Stack(),
+        ],
       ),
     );
   }
 }
+
+

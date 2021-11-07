@@ -105,4 +105,5 @@ const Map<String, String> ar = {
   "Best Stores": "المتاجر المميزة",
   "Welcome": "مرحبا",
   "Chose": "اختر الدولة التي تريد قسميتها",
+  "No result":"لا يوجد نتائج بحث"
 };

@@ -17,14 +17,7 @@ class ContactUs extends StatelessWidget {
         backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Colors.white,
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.arrow_forward_ios),
-            onPressed: () {
-              Get.back();
-            },
-          ),
-        ],
+
         title: Text(
           "Contact us".tr,
           style: TextStyle(
@@ -38,7 +31,7 @@ class ContactUs extends StatelessWidget {
             },
             child: Icon(
               Icons.arrow_back_ios,
-              color: Theme.of(context).primaryColor,
+              color: Colors.white,
               size: 24,
             )),
       ),

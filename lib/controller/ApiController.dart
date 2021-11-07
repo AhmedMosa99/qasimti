@@ -39,6 +39,9 @@ class ApiController extends GetxController {
 
   @override
   void onInit() {
+    if(dropdownValue!=null){
+
+    }
     getCountry();
     // print(allBestStores);
     super.onInit();
@@ -60,11 +63,6 @@ class ApiController extends GetxController {
     getBestStores();
     // getAllCouponInStore();
     getCouponsByCategory(selectCategoryName);
-    Timer.periodic(Duration(seconds: 60), (value) {
-      if (dropdownValue == null) {
-        Get.snackbar("Welcome".tr, "Chose".tr, duration: Duration(seconds: 10));
-      }
-    });
     update();
   }
 
@@ -261,32 +259,18 @@ class ApiController extends GetxController {
   searchStore(String query) async {
     allstoreSearch = [];
     try {
-      if (dropdownValue == null) {
-        List<dynamic> storeSearch = await ApiHelper.apiHelper
-            .search('all', Get.locale.toString(), query);
-
-        if (storeSearch != null) {
-          allstoreSearch =
-              storeSearch.map((e) => CouponModel.fromJson(e)).toList();
-          update();
-        } else {
-          print('error');
-        }
-      } else {
         List<dynamic> storeSearch = await ApiHelper.apiHelper
             .search(dropdownValue, Get.locale.toString(), query);
-
         if (storeSearch != null) {
           allstoreSearch =
               storeSearch.map((e) => CouponModel.fromJson(e)).toList();
-
           update();
         } else {
           // print(storeSearch);
-          // Get.snackbar("Error".tr, "No internet connection".tr);
-          print('error');
+
+
         }
-      }
+
     } on Exception catch (e) {
       // Get.snackbar("Error".tr, "No internet connection".tr);
       print(e);

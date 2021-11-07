@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qasimati/ui/screens/home/home_screen.dart';
+import 'package:qasimati/utils/ChosseCountry.dart';
 import 'package:splashscreen/splashscreen.dart';
 
 class SplashScreens extends StatelessWidget {
@@ -7,7 +7,7 @@ class SplashScreens extends StatelessWidget {
   Widget build(BuildContext context) {
     return new SplashScreen(
         seconds: 3,
-        navigateAfterSeconds: new HomeScreen(),
+        navigateAfterSeconds: new ChoseCountry(),
         image: new Image.asset(
           'assets/images/Logo.png',
           color: Colors.white,
