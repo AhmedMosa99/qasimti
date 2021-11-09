@@ -33,11 +33,11 @@ class _HeaderState extends State<Header> {
           centerTitle: true,
           leading: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
-            child: GestureDetector(
-              onTap: () {
+            child: IconButton(
+              onPressed: () {
                 Get.to(SearchScreen());
               },
-              child: Icon(
+              icon: Icon(
                 Icons.search_rounded,
                 size: MediaQuery.of(context).size.width / 13,
               ),

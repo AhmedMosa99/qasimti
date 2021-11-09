@@ -4,6 +4,7 @@ import 'package:fdottedline/fdottedline.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
@@ -76,13 +77,13 @@ class _DetialsCouponState extends State<DetialsCoupon>
                     Container(
                       alignment: Alignment.topRight,
                       child: GestureDetector(
-                        child: Icon(
-                          isFavaiort == false ? Icons.star_outline : Icons.star,
-                          color: isFavaiort
-                              ? Theme.of(context).primaryColor
-                              : Colors.black,
-                          size: 30,
-                        ),
+                        child:
+                          SvgPicture.asset(
+                          !  isFavaiort? "assets/images/Star.svg":"assets/images/Group 14465.svg",
+                            width: 24.w,
+                            height: 24.h,
+
+                          ),
                         onTap: () {
                           isFavaiort = !isFavaiort;
                           if (isFavaiort == true) {

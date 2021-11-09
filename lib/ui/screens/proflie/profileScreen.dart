@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
 import 'package:getwidget/components/avatar/gf_avatar.dart';
 import 'package:getwidget/getwidget.dart';
@@ -48,7 +49,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: GFAppBar(
-        title: Text("Profile".tr),
+        title: Text(
+          "Profile".tr,
+          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
       ),
       body: GetBuilder<AuthController>(
@@ -77,7 +81,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               .withOpacity(.1),
                                           foregroundColor:
                                               Theme.of(context).primaryColor,
-                                          size: 70.w,
+                                          size: 55.w,
                                           child: SvgPicture.asset(
                                             'assets/images/Add User.svg',
                                             width: 24.w,
@@ -109,11 +113,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               .withOpacity(.1),
                                           foregroundColor:
                                               Theme.of(context).primaryColor,
-                                          size: 70.w,
+                                          size: 55.w,
                                           child: SvgPicture.asset(
-                                            'assets/images/Profile.svg',
+                                            'assets/images/Iconly-Light-Profile.svg',
                                             width: 24.w,
                                             height: 24.h,
+                                            fit: BoxFit.cover,
                                           )),
                                       Text(
                                         "Sign In".tr,
@@ -142,9 +147,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       .withOpacity(.1),
                                   foregroundColor:
                                       Theme.of(context).primaryColor,
-                                  size: 70.w,
-                                  child: Image.asset(
-                                      'assets/images/Light-Profile.png'),
+                                  size: 55.w,
+                                  child: SvgPicture.asset(
+                                    'assets/images/Profile.svg',
+                                    width: 24.w,
+                                    height: 24.h,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                                 Text(
                                   controller.name,
@@ -295,8 +304,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 SizedBox(
                                   width: Get.locale.toString() == "en"
-                                      ? 10.w
-                                      : 30.w,
+                                      ? 40.w
+                                      : 80.w,
                                 ),
                                 ToggleSwitch(
                                   changeOnTap: false,
@@ -521,11 +530,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       .withOpacity(.1)),
                               child: Padding(
                                   padding: const EdgeInsets.all(10.0),
-                                  child: SvgPicture.asset(
-                                    "assets/images/Iconly-Light-Info Circle.svg",
+                                  child: FaIcon(
+                                    Icons.info_outline,
                                     color: Color(0xff8A5EA4),
-                                    width: 24.w,
-                                    height: 24.h,
                                   )),
                             ),
                             title: Text(
@@ -602,7 +609,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             trailing: Icon(Icons.arrow_forward_ios),
                           )),
                         ),
-                        SizedBox(height: 10.h,)
+                        SizedBox(
+                          height: 20.h,
+                        )
                       ],
                     ),
                   ),

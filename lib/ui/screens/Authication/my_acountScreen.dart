@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:qasimati/controller/AuthController.dart';
@@ -82,15 +83,16 @@ class _MyAccountState extends State<MyAccount> {
                   margin: EdgeInsets.only(
                       left: MediaQuery.of(context).size.width / 28,
                       right: MediaQuery.of(context).size.width / 24),
-                  child: Icon(
-                    Icons.person_outline,
-                    color: Theme.of(context).primaryColor,
-                    size: 30,
+                  child: SvgPicture.asset(
+                    'assets/images/Profile.svg',
+                    width: 24.w,
+                    height: 30.h,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 title: Text('Edit Account'.tr,
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                    style: TextStyle(
+                        fontSize: 18.sp, fontWeight: FontWeight.w600)),
                 contentPadding: EdgeInsets.only(top: 10),
                 subtitle: Divider(
                   height: 10.h,
@@ -107,10 +109,11 @@ class _MyAccountState extends State<MyAccount> {
                   margin: EdgeInsets.only(
                       left: MediaQuery.of(context).size.width / 28,
                       right: MediaQuery.of(context).size.width / 24),
-                  child: Icon(
-                    Icons.favorite_border,
-                    color: Theme.of(context).primaryColor,
-                    size: 30,
+                  child: SvgPicture.asset(
+                    "assets/images/Star.svg",
+                    color: Color(0xff8A5EA4),
+                    width: 24.w,
+                    height: 30.h,
                   ),
                 ),
                 title: Text('Favourite'.tr,
@@ -133,10 +136,11 @@ class _MyAccountState extends State<MyAccount> {
                   margin: EdgeInsets.only(
                       left: MediaQuery.of(context).size.width / 28,
                       right: MediaQuery.of(context).size.width / 24),
-                  child: Icon(
-                    Icons.logout,
-                    color: Theme.of(context).primaryColor,
-                    size: 30,
+                  child: SvgPicture.asset(
+                    "assets/images/Iconly-Light-Logout.svg",
+                    color: Color(0xff8A5EA4),
+                    width: 24.w,
+                    height: 30.h,
                   ),
                 ),
                 title: Text('Log Out'.tr,
