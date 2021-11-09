@@ -77,13 +77,13 @@ class _DetialsCouponState extends State<DetialsCoupon>
                     Container(
                       alignment: Alignment.topRight,
                       child: GestureDetector(
-                        child:
-                          SvgPicture.asset(
-                          !  isFavaiort? "assets/images/Star.svg":"assets/images/Group 14465.svg",
+                        child: SvgPicture.asset(
+                            !isFavaiort
+                                ? "assets/images/Star.svg"
+                                : "assets/images/Group 14465.svg",
                             width: 24.w,
                             height: 24.h,
-
-                          ),
+                            color: Theme.of(context).primaryColor),
                         onTap: () {
                           isFavaiort = !isFavaiort;
                           if (isFavaiort == true) {
