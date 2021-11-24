@@ -99,17 +99,14 @@ class _DetialsCouponState extends State<DetialsCoupon>
                     ),
                     Center(
                       child: Container(
+                        width: 100.w,
+                        height: 100,
                         margin: EdgeInsets.only(
                           top: MediaQuery.of(context).size.width / 25,
                         ),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            border: Border.all(
-                                color: Colors.black.withOpacity(.3))),
-                        padding: EdgeInsets.symmetric(
-                            vertical: MediaQuery.of(context).size.width / 18,
-                            horizontal: MediaQuery.of(context).size.width / 30),
-                        width: MediaQuery.of(context).size.width / 3,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Color(0xFFD1D8E5))),
                         child: Image(
                           image: NetworkImage(
                             widget.couponModel.store.image,
@@ -233,7 +230,7 @@ class _DetialsCouponState extends State<DetialsCoupon>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Last Valid use:".tr,
+                      "Last Valid use".tr,
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 14.sp),
                     ),

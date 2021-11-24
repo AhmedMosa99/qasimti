@@ -71,22 +71,13 @@ class SignUp extends StatelessWidget {
                         ),
                         CustomTextFeild(
                             'Name'.tr, controller.nameController, 'Name'.tr),
-                        SizedBox(
-                          height: 15.h,
-                        ),
                         CustomTextFeild(
                           'Email'.tr,
                           controller.emailController,
                           'example@mail.com',
                         ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
                         CustomTextFeild('password'.tr,
                             controller.passwordCotroller, "********", true),
-                        SizedBox(
-                          height: 15.h,
-                        ),
                         Container(
                             width: 350.w,
                             height: 46.h,
@@ -109,9 +100,6 @@ class SignUp extends StatelessWidget {
                               controller.passwordCotroller.clear();
                               controller.nameController.clear();
                             }, Colors.white, Colors.black)),
-                        SizedBox(
-                          height: 10.h,
-                        ),
                       ],
                     ),
                   ),

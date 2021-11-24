@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:qasimati/controller/AuthController.dart';
+import 'package:qasimati/ui/screens/webView/webView.dart';
 import 'package:qasimati/ui/widgets/CustomButton.dart';
 import 'package:qasimati/ui/widgets/CustomTextFeild.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
 class ContactUs extends StatelessWidget {
@@ -17,7 +20,6 @@ class ContactUs extends StatelessWidget {
         backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Colors.white,
         centerTitle: true,
-
         title: Text(
           "Contact us".tr,
           style: TextStyle(
@@ -56,26 +58,14 @@ class ContactUs extends StatelessWidget {
                       children: [
                         CustomTextFeild(
                             'Name'.tr, controller.nameController, 'Name'.tr),
-                        SizedBox(
-                          height: 10.h,
-                        ),
                         CustomTextFeild('Email'.tr, controller.emailController,
                             'example@mail.com'),
-                        SizedBox(
-                          height: 10.h,
-                        ),
                         Container(
                           child: CustomTextFeild('Subject'.tr,
                               controller.subjectController, 'Subject'.tr),
                         ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
                         CustomTextFeild('SubjectDes'.tr,
                             controller.bodyController, 'SubjectDes'.tr),
-                        SizedBox(
-                          height: 10.h,
-                        ),
                         Container(
                             width: 360.w,
                             height: 46.h,
@@ -100,6 +90,75 @@ class ContactUs extends StatelessWidget {
                             }, Colors.white, Colors.black)),
                         SizedBox(
                           height: 10.h,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              onPressed: () async {
+                                await canLaunch(controller.social.facebook)
+                                    ? await launch(controller.social.facebook)
+                                    : throw Get.to((OfferPage(
+                                        controller.social.facebook)));
+                              },
+                              icon: SvgPicture.asset(
+                                "assets/images/icons8-facebook.svg",
+                                width: 35.w,
+                                height: 35.h,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 15.w,
+                            ),
+                            IconButton(
+                              onPressed: () async {
+                                await canLaunch(controller.social.instagram)
+                                    ? await launch(controller.social.instagram)
+                                    : throw Get.to((OfferPage(
+                                        controller.social.instagram)));
+                              },
+                              icon: SvgPicture.asset(
+                                "assets/images/icons8-instagram.svg",
+                                width: 35.w,
+                                height: 35.h,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 15.w,
+                            ),
+                            IconButton(
+                              onPressed: () async {
+                                await canLaunch(controller.social.twitter)
+                                    ? await launch(controller.social.twitter)
+                                    : throw Get.to(
+                                        (OfferPage(controller.social.twitter)));
+                              },
+                              icon: SvgPicture.asset(
+                                "assets/images/icons8-twitter.svg",
+                                width: 35.w,
+                                height: 35.h,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 15.w,
+                            ),
+                            IconButton(
+                              onPressed: () async {
+                                await canLaunch(controller.social.telegram)
+                                    ? await launch(controller.social.telegram)
+                                    : throw Get.to((OfferPage(
+                                        controller.social.telegram)));
+                              },
+                              icon: SvgPicture.asset(
+                                "assets/images/icons8-telegram.svg",
+                                width: 35.w,
+                                height: 30.h,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 15.w,
+                            ),
+                          ],
                         ),
                       ],
                     ),

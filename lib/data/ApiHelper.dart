@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -342,9 +341,9 @@ class ApiHelper {
                 validateStatus: (status) {
                   return status <= 500;
                 },
-                headers: {'device': "w", 'Connection': "keep-alive",
-
-
+                headers: {
+                  'device': "w",
+                  'Connection': "keep-alive",
                 },
               ));
 
@@ -556,6 +555,108 @@ class ApiHelper {
         ),
       );
       return response;
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  terms(String lang) async {
+    Response response = await dio.get(
+      '$baseUrl/page/$lang/terms',
+      options: Options(
+        followRedirects: false,
+        validateStatus: (status) {
+          return status <= 500;
+        },
+        headers: {
+          'Connection': "keep-alive",
+          'Content-Type': 'multipart/form',
+          'Accept': 'application/json',
+        },
+      ),
+    );
+    return response.data['value'];
+  }
+
+  whoAreWe(String lang) async {
+    Response response = await dio.get(
+      '$baseUrl/page/$lang/whoAreWe',
+      options: Options(
+        followRedirects: false,
+        validateStatus: (status) {
+          return status <= 500;
+        },
+        headers: {
+          'Connection': "keep-alive",
+          'Content-Type': 'multipart/form',
+          'Accept': 'application/json',
+        },
+      ),
+    );
+    return response.data['value'];
+  }
+
+  privacyPolicy(String lang) async {
+    try {
+      Response response = await dio.get(
+        '$baseUrl/page/$lang/policies',
+        options: Options(
+          followRedirects: false,
+          validateStatus: (status) {
+            return status <= 500;
+          },
+          headers: {
+            'Connection': "keep-alive",
+            'Content-Type': 'multipart/form',
+            'Accept': 'application/json',
+          },
+        ),
+      );
+      return response.data['value'];
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  commonQestions(String lang) async {
+    try {
+      Response response = await dio.get(
+        '$baseUrl/$lang/questions',
+        options: Options(
+          followRedirects: false,
+          validateStatus: (status) {
+            return status <= 500;
+          },
+          headers: {
+            'Connection': "keep-alive",
+            'Content-Type': 'multipart/form',
+            'Accept': 'application/json',
+          },
+        ),
+      );
+      return response.data['questions'];
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  social() async {
+    try {
+      Response response = await dio.get(
+        '$baseUrl/social',
+        options: Options(
+          followRedirects: false,
+          validateStatus: (status) {
+            return status <= 500;
+          },
+          headers: {
+            'Connection': "keep-alive",
+            'Content-Type': 'multipart/form',
+            'Accept': 'application/json',
+          },
+        ),
+      );
+      return response.data['social'];
     } on Exception catch (e) {
       print(e);
     }

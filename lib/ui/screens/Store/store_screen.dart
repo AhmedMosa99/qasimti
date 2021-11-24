@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/components/loader/gf_loader.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:qasimati/controller/ApiController.dart';
 import 'package:qasimati/controller/appLanguage.dart';
 
@@ -27,6 +28,15 @@ class _StoreScreenState extends State<StoreScreen> {
     return GetBuilder<ApiController>(builder: (controller) {
       return Scaffold(
         appBar: AppBar(
+          leading: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+                size: 24,
+              )),
           backgroundColor: Theme.of(context).primaryColor,
           title: Image.asset(
             'assets/images/Logo.png',
@@ -39,7 +49,9 @@ class _StoreScreenState extends State<StoreScreen> {
         body: Container(
           height: MediaQuery.of(context).size.height,
           child: controller.allCouponStore.isEmpty
-              ? GFLoader()
+              ? GFLoader(
+                  type: GFLoaderType.ios,
+                )
               : ListView.builder(
                   itemCount: controller.allCouponStore.length,
                   itemBuilder: (context, index) {

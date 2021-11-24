@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qasimati/controller/AuthController.dart';
+import 'package:qasimati/ui/widgets/CustomButton.dart';
 
 class EditScreen extends StatefulWidget {
   @override
@@ -175,7 +176,7 @@ class _EditScreenState extends State<EditScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 20.h,
                           ),
                           TextFormField(
                             obscureText: true,
@@ -192,33 +193,22 @@ class _EditScreenState extends State<EditScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 20.h,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(15.0),
+                          Center(
                             child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height / 12,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: GFButton(
-                                shape: GFButtonShape.pills,
-                                color: Theme.of(context).primaryColor,
-                                child: Text(
-                                  "Update".tr,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 16.sp),
-                                ),
-                                onPressed: () {
+                                width: 350.w,
+                                height: 50.h,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30)),
+                                child: CustomButton("Update".tr, () {
                                   controller.upDate();
-                                },
-                              ),
-                            ),
+                                }, Theme.of(context).primaryColor,
+                                    Colors.white)),
                           ),
                           SizedBox(
-                            height: 15,
-                          ),
+                            height: 20.h,
+                          )
                         ],
                       ),
                     ),

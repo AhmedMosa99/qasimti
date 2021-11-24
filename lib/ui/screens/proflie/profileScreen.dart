@@ -333,6 +333,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       controller2.getAllCouponInStore();
                                       controller2.getCouponsByCategory(
                                           controller2.selectCategoryName);
+                                      controller2.termsCondtions();
+                                      controller2.policy();
+                                      controller2.whoArewe();
+                                      controller2.commnQuestion();
+                                      controller2.getAllCountries();
                                     } else if (index == 0) {
                                       controller1.inial = 0;
                                       controller1.changeLanguage("ar");
@@ -341,6 +346,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       controller2.getAllCouponInStore();
                                       controller2.getCouponsByCategory(
                                           controller2.selectCategoryName);
+                                      controller2.termsCondtions();
+                                      controller2.policy();
+                                      controller2.whoArewe();
+                                      controller2.commnQuestion();
+                                      controller2.getAllCountries();
                                     }
                                   },
                                 ),

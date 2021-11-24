@@ -33,9 +33,10 @@ class _CustomTextFeildState extends State<CustomTextFeild> {
           height: 10.h,
         ),
         Container(
-          height: widget.label == "SubjectDes".tr ? 150.h : 46.h,
+          height: widget.label == "SubjectDes".tr ? 150.h : 75.h,
           width: 500.w,
           child: TextFormField(
+            textAlignVertical: TextAlignVertical.center,
             maxLines: widget.label == "SubjectDes".tr ? 4 : 1,
             validator: (String v) {
               if (widget.hint == "example@mail.com") {
@@ -56,10 +57,14 @@ class _CustomTextFeildState extends State<CustomTextFeild> {
             obscureText: widget.isPassword ? isObscure : false,
             controller: widget.controller,
             decoration: InputDecoration(
-              errorMaxLines: 1,
+              floatingLabelBehavior: FloatingLabelBehavior.never,
+              helperText: "",
+              contentPadding: EdgeInsets.all(10),
+              suffixStyle: TextStyle(),
               suffix: Visibility(
                 visible: widget.isPassword,
                 child: IconButton(
+                  alignment: Alignment.center,
                   icon: isObscure
                       ? Icon(
                           Icons.visibility_off,
@@ -73,9 +78,14 @@ class _CustomTextFeildState extends State<CustomTextFeild> {
               ),
               filled: true,
               fillColor: Colors.grey.shade100,
-              hintText: widget.hint,
-              contentPadding: EdgeInsets.only(
-                  top: 10.h, right: 10.w, left: 10.w, bottom: 10.h),
+              label: Text(
+                widget.hint,
+                textAlign: TextAlign.center,
+              ),
+              alignLabelWithHint: true,
+
+              // contentPadding: EdgeInsets.only(
+              //     top: 10.h, right: 10.w, left: 10.w, bottom: 10.h),
               border: OutlineInputBorder(
                 borderSide: BorderSide(
                   color: Color(0xFFD1D8E5),

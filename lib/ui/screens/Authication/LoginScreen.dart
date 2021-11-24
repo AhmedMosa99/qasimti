@@ -53,10 +53,11 @@ class Login extends StatelessWidget {
               return Form(
                 key: controller.loginKey,
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                  ),
                   child: Container(
-                    padding: EdgeInsets.all(10),
+                    padding: EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
 
                         // changes position of shadow
@@ -70,34 +71,23 @@ class Login extends StatelessWidget {
                             width: 200.w,
                           ),
                         ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
                         CustomTextFeild('Email'.tr, controller.emailController,
                             'example@mail.com'),
-                        SizedBox(
-                          height: 10.h,
-                        ),
                         CustomTextFeild('password'.tr,
                             controller.passwordCotroller, "********", true),
-                        SizedBox(
-                          height: 10.h,
-                        ),
                         Align(
-                            alignment: Get.locale.toString() == "ar"
-                                ? Alignment.bottomLeft
-                                : Alignment.bottomRight,
-                            child: TextButton(
-                              child: Text(
-                                "Forgot your password?".tr,
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              onPressed: () {
-                                Get.to(ForgetPassword());
-                              },
-                            )),
-                        SizedBox(
-                          height: 10.h,
+                          alignment: Get.locale.toString() == "ar"
+                              ? Alignment.centerLeft
+                              : Alignment.centerRight,
+                          child: TextButton(
+                            child: Text(
+                              "Forgot your password?".tr,
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            onPressed: () {
+                              Get.to(ForgetPassword());
+                            },
+                          ),
                         ),
                         Container(
                             width: 350.w,

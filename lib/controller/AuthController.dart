@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:qasimati/data/ApiHelper.dart';
+import 'package:qasimati/models/social.dart';
 import 'package:qasimati/ui/screens/home/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,6 +27,7 @@ class AuthController extends GetxController {
   File imageFile;
   File imageEdit;
   String verify = "A";
+  Social social;
 
   @override
   void onInit() {
@@ -44,6 +46,7 @@ class AuthController extends GetxController {
     forgetKey = GlobalKey<FormState>();
     getUser();
     getToken();
+    socials();
     super.onInit();
   }
 
@@ -256,6 +259,11 @@ class AuthController extends GetxController {
     } else {
       Get.snackbar('Error'.tr, 'Check input fields'.tr);
     }
+  }
+
+  socials() async {
+    Map<String, dynamic> socal = await ApiHelper.apiHelper.social();
+    social = Social.fromJson(socal);
   }
 
   @override

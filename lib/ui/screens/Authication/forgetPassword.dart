@@ -81,7 +81,7 @@ class ForgetPassword extends StatelessWidget {
                         CustomTextFeild('Email'.tr, controller.emailController,
                             'example@mail.com'),
                         SizedBox(
-                          height: 30.h,
+                          height: 15.h,
                         ),
                         Container(
                             width: 350.w,

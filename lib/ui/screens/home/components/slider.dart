@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/components/image/gf_image_overlay.dart';
 import 'package:qasimati/controller/ApiController.dart';
@@ -51,15 +52,26 @@ class _SlidersState extends State<Sliders> {
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(0),
-                                child: GFImageOverlay(
-                                  colorFilter: new ColorFilter.mode(
-                                      Colors.black.withOpacity(.1),
-                                      BlendMode.color),
-                                  borderRadius: BorderRadius.circular(20),
-                                  width: MediaQuery.of(context).size.width,
-                                  image: NetworkImage(
-                                      controller.allsliders[index].image),
-                                ),
+                                child: controller.allsliders[index].image
+                                            .split('.')
+                                            .last ==
+                                        "svg"
+                                    ? ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: SvgPicture.network(
+                                          controller.allsliders[index].image,
+                                          fit: BoxFit.fill,
+                                        ),
+                                      )
+                                    : GFImageOverlay(
+                                        colorFilter: new ColorFilter.mode(
+                                            Colors.black.withOpacity(.1),
+                                            BlendMode.color),
+                                        borderRadius: BorderRadius.circular(20),
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        image: NetworkImage(controller
+                                            .allsliders[index].image)),
                               ),
                             );
                           },

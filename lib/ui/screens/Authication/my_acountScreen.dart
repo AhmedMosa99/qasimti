@@ -42,6 +42,7 @@ class _MyAccountState extends State<MyAccount> {
       ),
       body: GetBuilder<AuthController>(builder: (controller) {
         return Container(
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Column(
             children: [
               controller.verify == "A"
@@ -79,81 +80,78 @@ class _MyAccountState extends State<MyAccount> {
                 onTap: () {
                   Get.to(EditScreen());
                 },
+                trailing: Icon(Icons.arrow_forward_ios),
                 leading: Container(
-                  margin: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width / 28,
-                      right: MediaQuery.of(context).size.width / 24),
-                  child: SvgPicture.asset(
-                    'assets/images/Profile.svg',
-                    width: 24.w,
-                    height: 30.h,
-                    fit: BoxFit.cover,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.w),
+                      color: Theme.of(context).primaryColor.withOpacity(.1)),
+                  child: Container(
+                    padding: EdgeInsets.all(11),
+                    child: SvgPicture.asset(
+                      'assets/images/Profile.svg',
+                      width: 24.w,
+                      height: 24.h,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 title: Text('Edit Account'.tr,
                     style: TextStyle(
-                        fontSize: 18.sp, fontWeight: FontWeight.w600)),
+                        fontSize: 16.sp, fontWeight: FontWeight.w600)),
                 contentPadding: EdgeInsets.only(top: 10),
-                subtitle: Divider(
-                  height: 10.h,
-                  indent: 0,
-                  endIndent: 30,
-                  color: Colors.black,
-                ),
               ),
+              Divider(),
               ListTile(
                 onTap: () {
                   Get.to(Favourite());
                 },
+                trailing: Icon(Icons.arrow_forward_ios),
                 leading: Container(
-                  margin: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width / 28,
-                      right: MediaQuery.of(context).size.width / 24),
-                  child: SvgPicture.asset(
-                    "assets/images/Star.svg",
-                    color: Color(0xff8A5EA4),
-                    width: 24.w,
-                    height: 30.h,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.w),
+                      color: Theme.of(context).primaryColor.withOpacity(.1)),
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    child: SvgPicture.asset(
+                      "assets/images/Star.svg",
+                      color: Color(0xff8A5EA4),
+                      width: 24.w,
+                      height: 24.h,
+                    ),
                   ),
                 ),
                 title: Text('Favourite'.tr,
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                    style: TextStyle(
+                        fontSize: 16.sp, fontWeight: FontWeight.w600)),
                 contentPadding: EdgeInsets.symmetric(vertical: 0),
-                subtitle: Divider(
-                  height: 10.h,
-                  indent: 0,
-                  endIndent: 30,
-                  color: Colors.black,
-                ),
               ),
+              Divider(),
               ListTile(
                 onTap: () {
                   controller.removeToken();
                   Get.offAll(HomeScreen());
                 },
+                trailing: Icon(Icons.arrow_forward_ios),
                 leading: Container(
-                  margin: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width / 28,
-                      right: MediaQuery.of(context).size.width / 24),
-                  child: SvgPicture.asset(
-                    "assets/images/Iconly-Light-Logout.svg",
-                    color: Color(0xff8A5EA4),
-                    width: 24.w,
-                    height: 30.h,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.w),
+                      color: Theme.of(context).primaryColor.withOpacity(.1)),
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    child: SvgPicture.asset(
+                      "assets/images/Iconly-Light-Logout.svg",
+                      color: Color(0xff8A5EA4),
+                      width: 24.w,
+                      height: 24.h,
+                    ),
                   ),
                 ),
                 title: Text('Log Out'.tr,
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                    style: TextStyle(
+                        fontSize: 16.sp, fontWeight: FontWeight.w600)),
                 contentPadding: EdgeInsets.symmetric(vertical: 0),
-                subtitle: Divider(
-                  height: 10.h,
-                  indent: 0,
-                  endIndent: 30,
-                  color: Colors.black,
-                ),
               ),
+              Divider(),
             ],
           ),
         );

@@ -11,7 +11,6 @@ import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:get/get.dart';
 import 'package:qasimati/controller/AddController.dart';
 import 'package:qasimati/controller/ApiController.dart';
-import 'package:qasimati/models/country.dart';
 import 'package:qasimati/ui/widgets/CustomButton.dart';
 
 class AddCoubon extends StatefulWidget {
@@ -21,7 +20,6 @@ class AddCoubon extends StatefulWidget {
 
 class _AddCoubonState extends State<AddCoubon> {
   final controller = Get.find<AddController>();
-  List<Country> country = [];
 
   String dropdownValue = "coupon";
   TextEditingController dateinputEnter = TextEditingController();
@@ -34,7 +32,6 @@ class _AddCoubonState extends State<AddCoubon> {
   GlobalKey<FormFieldState<dynamic>> key = GlobalKey();
   @override
   void initState() {
-    country = controller1.allcountries;
     controller.type.text = dropdownValue;
 
     super.initState();
@@ -168,31 +165,33 @@ class _AddCoubonState extends State<AddCoubon> {
                               style: TextStyle(fontSize: 12.sp),
                             )),
                           ),
-                          MultiSelectDialogFormField(
-                            cancelText: Text("CANCEL".tr),
-                            confirmText: Text("Ok".tr),
-                            buttonText: Text("Countries".tr),
-                            title: Text("Countries".tr),
-                            key: key,
-                            items: country
-                                .map((e) =>
-                                    MultiSelectItem(e.id.toString(), e.name))
-                                .toList(),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Required".tr;
-                              }
-                              return null;
-                            },
-                            onConfirm: (values) {
-                              setState(() {
-                                controller.selectedCountry = values;
-                                print(controller.selectedCountry);
-                              });
-                              key.currentState.validate();
-                              key.currentState.save();
-                            },
-                          ),
+                          GetBuilder<ApiController>(builder: (logic) {
+                            return MultiSelectDialogFormField(
+                              cancelText: Text("CANCEL".tr),
+                              confirmText: Text("Ok".tr),
+                              buttonText: Text("Countries".tr),
+                              title: Text("Countries".tr),
+                              key: key,
+                              items: logic.allcountries
+                                  .map((e) =>
+                                      MultiSelectItem(e.id.toString(), e.name))
+                                  .toList(),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Required".tr;
+                                }
+                                return null;
+                              },
+                              onConfirm: (values) {
+                                setState(() {
+                                  controller.selectedCountry = values;
+                                  print(controller.selectedCountry);
+                                });
+                                key.currentState.validate();
+                                key.currentState.save();
+                              },
+                            );
+                          }),
                         ],
                       ),
                     ),
@@ -412,7 +411,7 @@ class _AddCoubonState extends State<AddCoubon> {
                           Text(
                             'Addition Terms'.tr,
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15.sp),
+                                fontWeight: FontWeight.bold, fontSize: 14.sp),
                           ),
                           SizedBox(
                             height: 10.h,

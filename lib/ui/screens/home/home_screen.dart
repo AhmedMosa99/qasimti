@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:qasimati/ui/screens/Store/allStores.dart';
 import 'package:qasimati/ui/screens/home/components/header.dart';
 import 'package:qasimati/ui/screens/home/homeBody.dart';
@@ -47,9 +46,11 @@ class _HomeScreenState extends State<HomeScreen> {
         }),
         items: [
           BottomNavigationBarItem(
-            icon:  SvgPicture.asset(
+            icon: SvgPicture.asset(
               "assets/images/Home-icon.svg",
-              color:_currentIndex==0? Theme.of(context).primaryColor:Colors.black,
+              color: _currentIndex == 0
+                  ? Theme.of(context).primaryColor
+                  : Colors.black,
               width: 24.w,
               height: 24.h,
             ),
@@ -60,7 +61,9 @@ class _HomeScreenState extends State<HomeScreen> {
               "assets/images/Iconly-Light-Ticket.svg",
               width: 24.w,
               height: 24.h,
-              color: _currentIndex==1? Theme.of(context).primaryColor:Colors.black,
+              color: _currentIndex == 1
+                  ? Theme.of(context).primaryColor
+                  : Colors.black,
             ),
             label: 'Stores'.tr,
           ),
@@ -69,7 +72,9 @@ class _HomeScreenState extends State<HomeScreen> {
               'assets/images/Profile.svg',
               width: 24.w,
               height: 24.h,
-           color:   _currentIndex==2? Theme.of(context).primaryColor:Colors.black,
+              color: _currentIndex == 2
+                  ? Theme.of(context).primaryColor
+                  : Colors.black,
             ),
             label: 'Profile'.tr,
           ),

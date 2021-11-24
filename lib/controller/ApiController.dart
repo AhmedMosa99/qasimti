@@ -7,6 +7,7 @@ import 'package:qasimati/models/StoreModel.dart';
 import 'package:qasimati/models/category.dart';
 import 'package:qasimati/models/country.dart';
 import 'package:qasimati/models/coupon.dart';
+import 'package:qasimati/models/question.dart';
 import 'package:qasimati/models/slider.dart';
 import 'package:qasimati/ui/screens/Authication/LoginScreen.dart';
 import 'package:qasimati/ui/screens/Authication/signUpScreen.dart';
@@ -22,12 +23,17 @@ class ApiController extends GetxController {
   List<CouponModel> allCouponStore = [];
   List<CouponModel> allstoreSearch = [];
   List<CouponModel> allfavorite = [];
+  List<QuestionsModel> allQuestions = [];
 
   String selectCategoryName;
   String selectedStore;
   int selectCategory = -1;
   String dropdownValue;
   bool iscopy = false;
+  String terms;
+  String policies;
+  String whoAreWe;
+
   toggle() {
     iscopy = true;
     Future.delayed(Duration(seconds: 3), () {
@@ -38,12 +44,13 @@ class ApiController extends GetxController {
   }
 
   @override
-  void onInit() {
-    if(dropdownValue!=null){
+  void onInit() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
 
+    if (pref.getString('Country') != null) {
+      getCountry();
     }
-    getCountry();
-    // print(allBestStores);
+    getAllCountries();
     super.onInit();
   }
 
@@ -61,8 +68,9 @@ class ApiController extends GetxController {
     getCategories();
     getAllCountries();
     getBestStores();
-    // getAllCouponInStore();
+    getAllCouponInStore();
     getCouponsByCategory(selectCategoryName);
+    termsCondtions();
     update();
   }
 
@@ -81,19 +89,10 @@ class ApiController extends GetxController {
 
   getSliders() async {
     try {
-      if (dropdownValue == null) {
-        List<dynamic> sliders = await ApiHelper.apiHelper.getSliders('all');
-        if (sliders != null) {
-          allsliders = sliders.map((e) => SliderModel.fromJson(e)).toList();
-        } else {
-          // Get.snackbar("Error", "No EnterNet");
-        }
-      } else {
-        List<dynamic> sliders =
-            await ApiHelper.apiHelper.getSliders(dropdownValue);
-        if (sliders != null) {
-          allsliders = sliders.map((e) => SliderModel.fromJson(e)).toList();
-        }
+      List<dynamic> sliders =
+          await ApiHelper.apiHelper.getSliders(dropdownValue);
+      if (sliders != null) {
+        allsliders = sliders.map((e) => SliderModel.fromJson(e)).toList();
       }
     } on Exception catch (e) {
       // Get.snackbar("Error".tr, "No internet connection".tr);
@@ -104,20 +103,11 @@ class ApiController extends GetxController {
 
   getStores() async {
     try {
-      if (dropdownValue == null) {
-        List<dynamic> stores =
-            await ApiHelper.apiHelper.getStores('all', Get.locale.toString());
-        if (stores != null) {
-          allStores = stores.map((e) => StoreModel.fromJson(e)).toList();
-          update();
-        }
-      } else {
-        List<dynamic> stores = await ApiHelper.apiHelper
-            .getStores(dropdownValue, Get.locale.toString());
-        if (stores != null) {
-          allStores = stores.map((e) => StoreModel.fromJson(e)).toList();
-          update();
-        }
+      List<dynamic> stores = await ApiHelper.apiHelper
+          .getStores(dropdownValue, Get.locale.toString());
+      if (stores != null) {
+        allStores = stores.map((e) => StoreModel.fromJson(e)).toList();
+        update();
       }
     } on Exception catch (e) {
       // Get.snackbar("Error".tr, "No internet connection".tr);
@@ -127,20 +117,11 @@ class ApiController extends GetxController {
 
   getBestStores() async {
     try {
-      if (dropdownValue == null) {
-        List<dynamic> stores = await ApiHelper.apiHelper
-            .getBestStores('all', Get.locale.toString());
-        if (stores != null) {
-          allBestStores = stores.map((e) => StoreModel.fromJson(e)).toList();
-          update();
-        }
-      } else {
-        List<dynamic> stores = await ApiHelper.apiHelper
-            .getBestStores(dropdownValue, Get.locale.toString());
-        if (stores != null) {
-          allBestStores = stores.map((e) => StoreModel.fromJson(e)).toList();
-          update();
-        }
+      List<dynamic> stores = await ApiHelper.apiHelper
+          .getBestStores(dropdownValue, Get.locale.toString());
+      if (stores != null) {
+        allBestStores = stores.map((e) => StoreModel.fromJson(e)).toList();
+        update();
       }
     } on Exception catch (e) {
       // Get.snackbar("Error".tr, "No internet connection".tr);
@@ -166,30 +147,21 @@ class ApiController extends GetxController {
   getCouponsByCategory(String category) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     int id = sharedPreferences.getInt('id');
-
     try {
       if (selectCategory == -1) {
         selectCategoryName = 'all';
       }
-      if (dropdownValue == null) {
-        print("a");
+      if (selectCategoryName == "all") {
         List<dynamic> coupons = await ApiHelper.apiHelper
-            .getAllCoupon('all', Get.locale.toString(), id);
+            .getAllCoupon(dropdownValue, Get.locale.toString(), id);
         allCoupons = coupons.map((e) => CouponModel.fromJson(e)).toList();
         update();
-      } else {
-        if (selectCategoryName == "all") {
-          List<dynamic> coupons = await ApiHelper.apiHelper
-              .getAllCoupon(dropdownValue, Get.locale.toString(), id);
-          allCoupons = coupons.map((e) => CouponModel.fromJson(e)).toList();
-          update();
-        }
-        List<dynamic> coupons = await ApiHelper.apiHelper.getCouponsByCategory(
-            selectCategoryName, dropdownValue, Get.locale.toString(), id);
-        if (coupons != null) {
-          allCoupons = coupons.map((e) => CouponModel.fromJson(e)).toList();
-          update();
-        }
+      }
+      List<dynamic> coupons = await ApiHelper.apiHelper.getCouponsByCategory(
+          selectCategoryName, dropdownValue, Get.locale.toString(), id);
+      if (coupons != null) {
+        allCoupons = coupons.map((e) => CouponModel.fromJson(e)).toList();
+        update();
       }
     } on Exception catch (e) {
       // Get.snackbar("Error".tr, "No internet connection".tr);
@@ -204,7 +176,6 @@ class ApiController extends GetxController {
     allCouponStore = [];
     try {
       if (dropdownValue == null) {
-        print('notselected');
         update();
       } else {
         if (dropdownValue == null) {
@@ -259,18 +230,16 @@ class ApiController extends GetxController {
   searchStore(String query) async {
     allstoreSearch = [];
     try {
-        List<dynamic> storeSearch = await ApiHelper.apiHelper
-            .search(dropdownValue, Get.locale.toString(), query);
-        if (storeSearch != null) {
-          allstoreSearch =
-              storeSearch.map((e) => CouponModel.fromJson(e)).toList();
-          update();
-        } else {
-          // print(storeSearch);
+      List<dynamic> storeSearch = await ApiHelper.apiHelper
+          .search(dropdownValue, Get.locale.toString(), query);
+      if (storeSearch != null) {
+        allstoreSearch =
+            storeSearch.map((e) => CouponModel.fromJson(e)).toList();
+        update();
+      } else {
+        // print(storeSearch);
 
-
-        }
-
+      }
     } on Exception catch (e) {
       // Get.snackbar("Error".tr, "No internet connection".tr);
       print(e);
@@ -375,6 +344,29 @@ class ApiController extends GetxController {
       Get.snackbar("Error".tr, "No internet connection".tr);
       print(e);
     }
+  }
+
+  termsCondtions() async {
+    terms = await ApiHelper.apiHelper.terms(Get.locale.toString());
+    update();
+  }
+
+  policy() async {
+    policies = await ApiHelper.apiHelper.privacyPolicy(Get.locale.toString());
+
+    update();
+  }
+
+  whoArewe() async {
+    whoAreWe = await ApiHelper.apiHelper.whoAreWe(Get.locale.toString());
+    update();
+  }
+
+  commnQuestion() async {
+    List<dynamic> question =
+        await ApiHelper.apiHelper.commonQestions(Get.locale.toString());
+    allQuestions = question.map((e) => QuestionsModel.fromJson(e)).toList();
+    update();
   }
 
   @override

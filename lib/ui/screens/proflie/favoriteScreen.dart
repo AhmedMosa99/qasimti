@@ -37,6 +37,12 @@ class _FavouriteState extends State<Favourite> {
             style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Get.back();
+            },
+          ),
         ),
         body: Container(
           height: MediaQuery.of(context).size.height,
@@ -71,14 +77,14 @@ class _FavouriteState extends State<Favourite> {
                   ),
                 )
               : Container(
-          //  margin: EdgeInsets.symmetric(vertical: 16.h,horizontal: 24.w),
-                child: ListView.builder(
-                    itemCount: controller.allfavorite.length,
-                    padding: EdgeInsets.only(top: 2),
-                    itemBuilder: (context, index) {
-                      return ItemCoupon(controller.allfavorite[index]);
-                    }),
-              ),
+                  //  margin: EdgeInsets.symmetric(vertical: 16.h,horizontal: 24.w),
+                  child: ListView.builder(
+                      itemCount: controller.allfavorite.length,
+                      padding: EdgeInsets.only(top: 2),
+                      itemBuilder: (context, index) {
+                        return ItemCoupon(controller.allfavorite[index]);
+                      }),
+                ),
         ),
       );
     });
